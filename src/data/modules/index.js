@@ -27,29 +27,59 @@ import m26 from './m26';
 import m27 from './m27';
 import m28 from './m28';
 
-/** All 28 course modules, in order. Content lives in data/, never in components. */
-export const modules = [
+/**
+ * All 28 course modules, in order. Each module file exports { es, en }
+ * with identical structure; only the text differs.
+ * Content lives in data/, never in components.
+ */
+const all = [
   m01, m02, m03, m04, m05, m06, m07, m08, m09, m10,
   m11, m12, m13, m14, m15, m16, m17, m18, m19, m20,
   m21, m22, m23, m24, m25, m26, m27, m28,
 ];
 
-export const moduleById = Object.fromEntries(modules.map((m) => [m.id, m]));
+/** Modules in the requested language ('en' default, falls back to es). */
+export function getModules(lang) {
+  const l = lang === 'es' ? 'es' : 'en';
+  return all.map((m) => m[l] || m.es);
+}
 
-/** The 10 learning-path stages, in order. */
-export const STAGES = [
-  'Fundamentos',
-  'LLM',
-  'Prompts y contexto',
-  'Tools y MCP',
-  'Agentes',
-  'Arquitectura',
-  'APIs',
-  'GitHub',
-  'Vercel',
-  'Aplicaciones con IA',
-];
+export function getModuleById(lang, id) {
+  return getModules(lang).find((m) => m.id === id);
+}
 
-export function modulesByStage(stage) {
-  return modules.filter((m) => m.stage === stage);
+/** The 10 learning-path stages, in order, both languages. */
+export const STAGES = {
+  es: [
+    'Fundamentos',
+    'LLM',
+    'Prompts y contexto',
+    'Tools y MCP',
+    'Agentes',
+    'Arquitectura',
+    'APIs',
+    'GitHub',
+    'Vercel',
+    'Aplicaciones con IA',
+  ],
+  en: [
+    'Fundamentals',
+    'LLM',
+    'Prompts & Context',
+    'Tools & MCP',
+    'Agents',
+    'Architecture',
+    'APIs',
+    'GitHub',
+    'Vercel',
+    'AI Applications',
+  ],
+};
+
+export function getStages(lang) {
+  return STAGES[lang === 'es' ? 'es' : 'en'];
+}
+
+export function modulesByStage(lang, stage) {
+  return getModules(lang).filter((m) => m.stage === stage);
 }

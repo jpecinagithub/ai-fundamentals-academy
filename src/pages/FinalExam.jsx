@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
-import { questions } from '../data/questions';
+import { useLang } from '../i18n/LanguageContext';
+import { useQuestions } from '../hooks/useContent';
 import { useProgress } from '../hooks/ProgressContext';
 import { Quiz } from '../components/Quiz';
 import { getIcon } from '../utils/icons';
 import { pickRandom, examBand } from '../utils/format';
 
-const BANDS = [
-  { range: '90–100', label: 'Dominio avanzado de fundamentos' },
-  { range: '75–89', label: 'Buen dominio' },
-  { range: '60–74', label: 'Conocimientos suficientes, conviene repasar' },
-  { range: 'Menos de 60', label: 'Recomendado repetir módulos fundamentales' },
-];
-
 export function FinalExam() {
+  const { lang, t } = useLang();
+  const questions = useQuestions();
   const { state, recordFinal } = useProgress();
   const [started, setStarted] = useState(false);
   const [seed, setSeed] = useState(0);
+
+  const BANDS = [
+    { range: '90–100', label: t('finalexam.band.advanced') },
+    { range: '75–89', label: t('finalexam.band.good') },
+    { range: '60–74', label: t('finalexam.band.enough') },
+    { range: t('finalexam.band.rangeLow'), label: t('finalexam.band.repeat') },
+  ];
 
   const start = () => {
     setSeed(Date.now());
@@ -25,23 +28,20 @@ export function FinalExam() {
   if (!started) {
     return (
       <div className="page-narrow">
-        <h1>Examen final</h1>
+        <h1>{t('finalexam.title')}</h1>
         <div className="card">
           <h2 className="card-title">
-            {getIcon('GraduationCap', 20)} AI Fundamentals Final Exam
+            {getIcon('GraduationCap', 20)} {t('finalexam.cardTitle')}
           </h2>
-          <p className="card-sub">Reglas del examen:</p>
+          <p className="card-sub">{t('finalexam.rulesTitle')}</p>
           <ul style={{ paddingLeft: '1.2rem' }}>
-            <li>50 preguntas aleatorias de todos los módulos del curso.</li>
-            <li>Solo tienes un intento por pregunta: elige con calma.</li>
-            <li>
-              Al terminar verás tu nota, la banda de resultado y la explicación
-              de cada fallo.
-            </li>
-            <li>Los fallos se añaden a tu lista de repaso.</li>
+            <li>{t('finalexam.rule1')}</li>
+            <li>{t('finalexam.rule2')}</li>
+            <li>{t('finalexam.rule3')}</li>
+            <li>{t('finalexam.rule4')}</li>
           </ul>
 
-          <h3 style={{ marginTop: '1.25rem' }}>Bandas de resultado</h3>
+          <h3 style={{ marginTop: '1.25rem' }}>{t('finalexam.bandsTitle')}</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {BANDS.map((b) => (
               <div
@@ -58,9 +58,9 @@ export function FinalExam() {
 
           {state.bestScores.final != null && (
             <p style={{ marginTop: '1rem' }}>
-              Mejor nota hasta ahora: <strong>{state.bestScores.final}%</strong>{' '}
+              {t('finalexam.bestSoFar')} <strong>{state.bestScores.final}%</strong>{' '}
               <span className="card-sub">
-                ({examBand(state.bestScores.final).label})
+                ({examBand(state.bestScores.final, lang).label})
               </span>
             </p>
           )}
@@ -70,10 +70,10 @@ export function FinalExam() {
             onClick={start}
             style={{ marginTop: '1rem' }}
           >
-            {getIcon('Play', 16)} Comenzar examen
+            {getIcon('Play', 16)} {t('finalexam.start')}
           </button>
           <p className="card-sub" style={{ marginTop: '0.75rem', marginBottom: 0 }}>
-            Puedes repetir el examen cuando quieras.
+            {t('finalexam.repeatNote')}
           </p>
         </div>
       </div>
@@ -85,7 +85,7 @@ export function FinalExam() {
       <Quiz
         key={seed}
         questions={pickRandom(questions, 50)}
-        title="Examen final"
+        title={t('finalexam.title')}
         final
         onDone={({ correct, total, failed }) =>
           recordFinal({ correct, total, failedQs: failed })

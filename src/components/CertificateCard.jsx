@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { modules } from '../data/modules';
+import { useLang } from '../i18n/LanguageContext';
+import { useModules } from '../hooks/useContent';
 import { useProgress } from '../hooks/ProgressContext';
 import { getIcon } from '../utils/icons';
 import {
@@ -19,9 +20,9 @@ function readCertificate() {
   }
 }
 
-function formatLongDate(iso) {
+function formatLongDate(iso, lang) {
   try {
-    return new Intl.DateTimeFormat('es-ES', {
+    return new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -32,12 +33,14 @@ function formatLongDate(iso) {
 }
 
 /**
- * Tarjeta de certificado: solo se muestra cuando los 28 módulos están
- * completados. El certificado se puede descargar UNA sola vez; el registro
- * queda guardado en localStorage.
+ * Tarjeta de certificado / Certificate card: solo se muestra cuando los
+ * 28 módulos están completados / only shown once all 28 modules are done.
+ * El certificado se puede descargar UNA sola vez / one single download.
  */
 export function CertificateCard() {
+  const { lang, t } = useLang();
   const { state } = useProgress();
+  const modules = useModules();
   const [record, setRecord] = useState(readCertificate);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
@@ -63,7 +66,7 @@ export function CertificateCard() {
   const handleDownload = () => {
     const cleanName = name.trim();
     if (!cleanName || !accepted) return;
-    // Doble comprobación: si ya existe registro, no generar de nuevo.
+    // Doble comprobación / double-check: si ya existe registro, no generar de nuevo.
     const existing = readCertificate();
     if (existing) {
       setRecord(existing);
@@ -75,14 +78,15 @@ export function CertificateCard() {
     const doc = buildCertificatePdf({
       name: cleanName,
       code,
-      dateStr: formatLongDate(nowIso),
+      dateStr: formatLongDate(nowIso, lang),
+      lang,
     });
-    downloadCertificatePdf(doc, 'certificado-ai-fundamentals-academy.pdf');
+    downloadCertificatePdf(doc, t('certificatecard.filename'));
     const rec = { name: cleanName, code, downloadedAt: nowIso };
     try {
       window.localStorage.setItem(CERT_KEY, JSON.stringify(rec));
     } catch {
-      /* almacenamiento no disponible: el PDF ya se descargó */
+      /* almacenamiento no disponible / storage unavailable: el PDF ya se descargó */
     }
     setRecord(rec);
     setOpen(false);
@@ -100,35 +104,34 @@ export function CertificateCard() {
           {alreadyDownloaded ? (
             <>
               <h3 className="card-title" style={{ marginBottom: '0.3rem' }}>
-                Certificado emitido
+                {t('certificatecard.issuedTitle')}
               </h3>
               <p className="card-sub" style={{ margin: 0 }}>
-                Emitido el <strong>{formatLongDate(record.downloadedAt)}</strong>{' '}
-                a nombre de <strong>{record.name}</strong>.
+                {t('certificatecard.issuedOn')}{' '}
+                <strong>{formatLongDate(record.downloadedAt, lang)}</strong>{' '}
+                {t('certificatecard.issuedTo')} <strong>{record.name}</strong>.
               </p>
               <p className="card-sub" style={{ margin: '0.3rem 0 0' }}>
-                Código de verificación:{' '}
+                {t('certificatecard.codeLabel')}{' '}
                 <span className="mono">{record.code}</span>
               </p>
               <p className="card-sub" style={{ margin: '0.5rem 0 0' }}>
-                {getIcon('Info', 14)} Ya has utilizado tu descarga del
-                certificado. Solo se permite una descarga por usuario.
+                {getIcon('Info', 14)} {t('certificatecard.alreadyUsed')}
               </p>
             </>
           ) : (
             <>
               <h3 className="card-title" style={{ marginBottom: '0.3rem' }}>
-                ¡Enhorabuena! Has completado los {modules.length} módulos
+                {t('certificatecard.congrats', { n: modules.length })}
               </h3>
               <p className="card-sub" style={{ margin: '0 0 0.8rem' }}>
-                Descarga tu certificado oficial de finalización de AI
-                Fundamentals Academy en PDF.
+                {t('certificatecard.downloadBlurb')}
               </p>
               <button
                 className="btn btn-primary"
                 onClick={() => setOpen(true)}
               >
-                {getIcon('Download', 16)} Descargar certificado
+                {getIcon('Download', 16)} {t('certificatecard.downloadButton')}
               </button>
             </>
           )}
@@ -151,24 +154,22 @@ export function CertificateCard() {
             <button
               className="modal-close"
               onClick={() => setOpen(false)}
-              aria-label="Cerrar"
+              aria-label={t('certificatecard.close')}
             >
               {getIcon('X', 18)}
             </button>
             <h3 id="cert-modal-title" className="card-title">
-              {getIcon('Award', 20)} Descargar certificado
+              {getIcon('Award', 20)} {t('certificatecard.modalTitle')}
             </h3>
-            <p className="card-sub">
-              Introduce el nombre que quieres que aparezca en el certificado.
-            </p>
+            <p className="card-sub">{t('certificatecard.modalBlurb')}</p>
 
             <div className="form-group">
-              <label htmlFor="cert-name">Nombre para el certificado</label>
+              <label htmlFor="cert-name">{t('certificatecard.nameLabel')}</label>
               <input
                 id="cert-name"
                 type="text"
                 className="input"
-                placeholder="Ej.: María García Fernández"
+                placeholder={t('certificatecard.namePlaceholder')}
                 value={name}
                 maxLength={80}
                 autoComplete="name"
@@ -179,10 +180,10 @@ export function CertificateCard() {
             <div className="warn-box">
               {getIcon('AlertTriangle', 18)}
               <p>
-                <strong>Importante:</strong> el certificado solo se puede
-                descargar <strong>una vez</strong>. Revisa que el nombre esté
-                escrito exactamente como quieres que aparezca, porque no
-                podrás volver a descargarlo.
+                <strong>{t('certificatecard.warnTitle')}</strong>{' '}
+                {t('certificatecard.warnA')}{' '}
+                <strong>{t('certificatecard.warnOnce')}</strong>
+                {t('certificatecard.warnB')}
               </p>
             </div>
 
@@ -192,22 +193,19 @@ export function CertificateCard() {
                 checked={accepted}
                 onChange={(e) => setAccepted(e.target.checked)}
               />
-              <span>
-                He revisado el nombre y entiendo que solo podré descargar el
-                certificado una vez.
-              </span>
+              <span>{t('certificatecard.checkbox')}</span>
             </label>
 
             <div className="modal-actions">
               <button className="btn" onClick={() => setOpen(false)}>
-                Cancelar
+                {t('certificatecard.cancel')}
               </button>
               <button
                 className="btn btn-primary"
                 disabled={!name.trim() || !accepted}
                 onClick={handleDownload}
               >
-                {getIcon('Download', 16)} Descargar PDF
+                {getIcon('Download', 16)} {t('certificatecard.downloadPdf')}
               </button>
             </div>
           </div>

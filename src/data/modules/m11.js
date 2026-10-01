@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm11',
   title: 'Qué es un agente de IA',
   short: 'Agentes de IA',
@@ -100,3 +100,108 @@ export default {
     { wrong: 'Si usa herramientas, ya es un agente.', right: 'Usar una herramienta puntual lo convierte en asistente; el agente las combina de forma autónoma para lograr un objetivo.' },
   ],
 };
+
+const en = {
+  id: 'm11',
+  title: 'What an AI agent is',
+  short: 'AI agents',
+  description: 'Chatbot, assistant and agent are not the same thing: they are three distinct levels of help. Learn to tell them apart, discover the seven ingredients that turn a model into an agent, and watch an animated demo of an agent in action.',
+  icon: 'Bot',
+  stage: 'Agents',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'From chatbot to agent: three levels of help',
+      paragraphs: [
+        'The word “agent” is used for almost everything, but in AI it describes something very specific: a system that receives a **goal**, **plans** how to achieve it, uses **tools** to act on the world and **checks** the result in cycles until done. It does not chat for chatting’s sake: it **works**.',
+        'To understand it, it helps to distinguish three levels. The **chatbot** answers questions with text: question → answer. The **assistant** does the same but can also use an occasional tool you ask it to: question → answer + tools. The **agent** starts from a goal and decides itself which steps and tools it needs: goal → planning → tools → actions → verification → result.',
+        'The difference is not how “smart” the model is, but the **architecture**: the agent has autonomy to iterate, memory to remember and permission to act. A very intelligent chatbot is still a chatbot if it only answers once and stops.',
+      ],
+    },
+    {
+      kind: 'table',
+      heading: 'Chatbot, assistant and agent, face to face',
+      headers: ['Aspect', 'Chatbot', 'Assistant', 'Agent'],
+      rows: [
+        ['Basic flow', 'Question → answer', 'Question → answer + tools', 'Goal → plan → tools → actions → verification → result'],
+        ['Autonomy', 'None: it answers and waits for your next message', 'Medium: it executes specific steps you ask for', 'High: it works alone until it achieves the goal'],
+        ['Tools', 'It uses none; it only generates text', 'A few occasional ones: search, calculate, generate images', 'Many, combined: files, terminal, browser, APIs…'],
+        ['Memory', 'Only the current conversation', 'Conversation + some context', 'Persistent memory across sessions'],
+        ['If something fails…', 'It tells you and stops', 'It tells you and waits for instructions', 'It detects it, tries another route and continues'],
+        ['Example', '“What is gross margin?”', '“Summarize this PDF in 5 points”', '“Prepare the quarterly report and email it”'],
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'The seven ingredients of an agent',
+      paragraphs: [
+        'What turns a language model into a real agent? Seven ingredients working together:',
+        '**1. Autonomy.** The ability to make progress without you guiding it step by step. You define the what; the agent decides the how.',
+        '**2. Planning.** It breaks the goal into steps and reorders them when reality does not match the plan.',
+        '**3. Tools.** Its “hands”: searching files, running commands, browsing the web, querying APIs, writing documents. Without tools, an agent is just a good conversationalist.',
+        '**4. Memory.** It remembers the goal, what it has already tried and what it has learned, even across different sessions.',
+        '**5. Loops.** The think-act-observe-evaluate cycle from the previous module: the engine that lets it correct course.',
+        '**6. Permissions.** Clear limits on what it can do alone and what requires your approval: reading yes, deleting maybe not.',
+        '**7. Human-in-the-loop.** The human stays in the circuit: the agent asks for confirmation on sensitive or irreversible decisions. Autonomy does not mean lack of supervision.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'The sign, the waiter and the manager',
+      body: 'Think of a restaurant. The **chatbot** is the sign on the door with the menu: it answers “what do you have today?” but does nothing else. The **assistant** is the waiter: besides informing you, it brings what you ask for (“bring me the bill”). The **agent** is the floor manager: you tell them “tonight everything has to go perfectly” and they organize the shifts, check the pantry, call the supplier if something is missing and verify at the end that everything is in order. Same restaurant, three levels of responsibility.',
+    },
+    {
+      kind: 'simulator',
+      component: 'AgentSimulator',
+    },
+    {
+      kind: 'checklist',
+      heading: 'Is it really an agent? Check',
+      items: [
+        'Does it accept a goal instead of a simple question?',
+        'Does it plan the steps itself instead of waiting for instructions?',
+        'Does it use tools to act on files, apps or the web?',
+        'Does it check the result and correct course if something goes wrong?',
+        'Does it remember context from one session to another?',
+        'Does it ask for your approval before sensitive or irreversible actions?',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'Human-in-the-loop: the human is in charge',
+      body: 'An agent being autonomous does not mean it works unsupervised. Correct design keeps the human in the circuit: the agent advances alone on routine matters and **asks for confirmation** before spending money, deleting data, sending messages on your behalf or making irreversible decisions. If an “agent” acts without asking permission for anything, the problem is not its intelligence: it is its permission configuration.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'Three AI systems: (A) answers questions about a manual; (B) summarizes the PDF you attach when you ask it to; (C) receives the goal “organize my trip to Berlin”, searches for flights and hotels, compares prices and presents the best option for you to approve.',
+      question: 'Which of the three is an AI agent?',
+      options: [
+        'A, because it answers with specialized knowledge.',
+        'B, because it uses a tool to read the PDF.',
+        'C, because it starts from a goal, plans, uses tools and verifies the result.',
+        'All three, because they all use artificial intelligence.',
+      ],
+      correctIndex: 2,
+      explanation: 'Only C meets the agent’s ingredients: its own goal, planning, combined tool use and result verification. A is a chatbot and B is an assistant (it uses an occasional tool when asked, but does not plan or iterate on its own).',
+    },
+  ],
+  keyConcepts: [
+    { term: 'AI agent', def: 'System that receives a goal, plans how to achieve it, uses tools to act and verifies the result in cycles until done.' },
+    { term: 'Autonomy', def: 'The agent’s ability to advance toward the goal without step-by-step instructions; the user defines the what, the agent decides the how.' },
+    { term: 'Tools', def: 'Capabilities that let the agent act: searching files, running commands, browsing the web, querying APIs or writing documents.' },
+    { term: 'Planning', def: 'Breaking the goal into ordered steps, reviewed on every lap of the loop when reality changes.' },
+    { term: 'Memory', def: 'Persistent memory of the goal, attempts made and lessons learned, even across different sessions.' },
+    { term: 'Permissions', def: 'Limits defining what the agent can do on its own and what requires human approval.' },
+    { term: 'Human-in-the-loop', def: 'Design in which the human keeps supervising: the agent asks for confirmation on sensitive or irreversible actions.' },
+  ],
+  mistakes: [
+    { wrong: 'A chatbot with good memory is already an agent.', right: 'Memory helps, but without planning, combined tools and autonomy to iterate it is still a chatbot.' },
+    { wrong: 'Agent means smarter chatbot.', right: 'It is not about intelligence but architecture: perceiving, planning, acting and verifying in cycles.' },
+    { wrong: 'An agent can do whatever it wants without limits.', right: 'It works within defined permissions; sensitive actions ask for human approval (human-in-the-loop).' },
+    { wrong: 'If it uses tools, it is already an agent.', right: 'Using an occasional tool makes it an assistant; the agent combines them autonomously to achieve a goal.' },
+  ],
+};
+
+export default { es, en };

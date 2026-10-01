@@ -1,0 +1,48 @@
+/**
+ * ModulePage strings (page chrome only — section content is bilingual
+ * via the data layer). Namespaced with the "modulepage." prefix.
+ */
+export const dict = {
+  es: {
+    'modulepage.kicker.text': 'Concepto',
+    'modulepage.kicker.concepto': 'Concepto',
+    'modulepage.kicker.analogia': 'Analogía',
+    'modulepage.kicker.explicacion': 'Explicación',
+    'modulepage.kicker.ejemplo': 'Ejemplo',
+    'modulepage.kicker.practica': 'Práctica',
+    'modulepage.kicker.comprueba': 'Comprueba',
+    'modulepage.exampleLabel': 'Ejemplo',
+    'modulepage.result': 'Resultado:',
+    'modulepage.notFound': 'Módulo no encontrado',
+    'modulepage.notFoundText': 'El módulo que buscas no existe.',
+    'modulepage.backToCourse': 'Volver al curso',
+    'modulepage.moduleOf': 'Módulo {n} de {total}',
+    'modulepage.bestScore': 'Mejor nota: {score}%',
+    'modulepage.keyConcepts': 'Conceptos clave',
+    'modulepage.commonMistakes': 'Errores frecuentes',
+    'modulepage.goFinalExam': 'Ir al examen final',
+    'modulepage.assessment': 'Evaluación',
+    'modulepage.moduleTest': 'Test del módulo',
+  },
+  en: {
+    'modulepage.kicker.text': 'Concept',
+    'modulepage.kicker.concepto': 'Concept',
+    'modulepage.kicker.analogia': 'Analogy',
+    'modulepage.kicker.explicacion': 'Explanation',
+    'modulepage.kicker.ejemplo': 'Example',
+    'modulepage.kicker.practica': 'Practice',
+    'modulepage.kicker.comprueba': 'Check yourself',
+    'modulepage.exampleLabel': 'Example',
+    'modulepage.result': 'Result:',
+    'modulepage.notFound': 'Module not found',
+    'modulepage.notFoundText': 'The module you are looking for does not exist.',
+    'modulepage.backToCourse': 'Back to the course',
+    'modulepage.moduleOf': 'Module {n} of {total}',
+    'modulepage.bestScore': 'Best score: {score}%',
+    'modulepage.keyConcepts': 'Key concepts',
+    'modulepage.commonMistakes': 'Common mistakes',
+    'modulepage.goFinalExam': 'Go to the final exam',
+    'modulepage.assessment': 'Assessment',
+    'modulepage.moduleTest': 'Module quiz',
+  },
+};

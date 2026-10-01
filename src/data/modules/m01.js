@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm1',
   title: '¿Qué es la Inteligencia Artificial?',
   short: 'Fundamentos',
@@ -123,3 +123,131 @@ export default {
     { wrong: 'La IA tradicional ya no se usa.', right: 'Sigue siendo la más usada en empresas: detección de fraude, predicción de demanda, segmentación de clientes y mantenimiento predictivo.' },
   ],
 };
+
+const en = {
+  id: 'm1',
+  title: 'What is Artificial Intelligence?',
+  short: 'Fundamentals',
+  description: 'Discover what AI is, how it learns from data, and the branches that make it up, from Machine Learning to generative AI.',
+  icon: 'Brain',
+  stage: 'Fundamentals',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'What AI actually is',
+      paragraphs: [
+        'Artificial Intelligence is the discipline that creates systems capable of performing tasks that normally require human intelligence: perceiving the environment, reasoning, learning from experience, and making decisions. It is not a single technology, but an umbrella covering many different techniques.',
+        'The big difference from traditional software is this: in a classic program, a person writes the **rules** ("if the email contains the word offer, mark it as spam"). In an AI system, the system **learns the rules by itself** by analyzing thousands or millions of examples. You give it the data; it discovers the patterns.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'A simple analogy',
+      body: 'Imagine a cooking apprentice. Nobody hands them a manual with the exact rule for "how much salt every dish needs in every situation". Instead, they taste hundreds of dishes, receive feedback ("needs more salt", "it is perfect"), and gradually develop a **palate**: an intuition they cannot explain with formulas, but which works. AI learns the same way: it does not memorize rules, it develops a "statistical palate" from examples.',
+    },
+    {
+      kind: 'flow',
+      heading: 'From AI to language models',
+      caption: 'Each level is a specialization of the previous one: they are not rival technologies, but layers.',
+      direction: 'down',
+      highlight: [0],
+      nodes: [
+        { label: 'AI', desc: 'Any system that performs intelligent tasks: from a "smart" thermostat to ChatGPT.' },
+        { label: 'Machine Learning', desc: 'Subfield where the system learns patterns from data, instead of following hand-programmed rules.' },
+        { label: 'Deep Learning', desc: 'Branch of ML based on neural networks with many layers; excellent with images, audio, and language.' },
+        { label: 'Generative models', desc: 'Deep networks trained to CREATE new content: text, images, code, music.' },
+        { label: 'LLMs & multimodal', desc: 'Generative language models (GPT, Claude, Gemini) and those combining text, image, and audio.' },
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Machine Learning and Deep Learning, without jargon',
+      paragraphs: [
+        '**Machine Learning** is the idea that the program improves with data. You show it 10,000 photos labeled "cat" or "dog" and it learns to tell them apart on its own. The more good examples, the better it learns; with bad data, it learns badly ("garbage in, garbage out").',
+        '**Deep Learning** uses **neural networks**: structures vaguely inspired by the brain, organized in layers. Each layer detects something slightly more abstract: in a photo, the first layer sees edges, the next sees shapes, and the last ones "understand" that it is a cat. "Deep" simply refers to there being many layers.',
+        'Almost all the modern AI you see in headlines (ChatGPT, translators, facial recognition) is Deep Learning. But beware: "classic" AI is not dead, as you will see in the next comparison.',
+      ],
+    },
+    {
+      kind: 'compare',
+      heading: 'Traditional AI vs generative AI',
+      caption: 'Two different philosophies within the same discipline. Both are used today, for different problems.',
+      left: {
+        title: 'Traditional AI',
+        tone: 'a',
+        items: [
+          'Answers with a label or a number: is it spam? What will the price be? What is the probability of default?',
+          'Classifies, predicts, and recommends from learned patterns.',
+          'Examples: spam filters, Netflix recommenders, bank fraud detection, predictive maintenance.',
+        ],
+      },
+      right: {
+        title: 'Generative AI',
+        tone: 'b',
+        items: [
+          'Creates new content: writes text, programs code, generates images, or composes music.',
+          'Learns the deep structure of language, images, or sound.',
+          'Examples: ChatGPT, Claude, Gemini, image generators like the ones built into those same apps.',
+        ],
+      },
+    },
+    {
+      kind: 'text',
+      heading: 'Foundation models and multimodal models',
+      paragraphs: [
+        'A **foundation model** is a huge model trained on colossal amounts of data (much of the internet, books, code...) that serves as a **base for a great many applications**. Instead of training a model from scratch for each task, companies start from a foundation model and adapt it. GPT, Claude, and Gemini are foundation models.',
+        'A **multimodal model** is one that understands and generates **several types of data at once**: text, images, audio, or video. When you send a photo to ChatGPT or Gemini and it describes it, or when you ask it to generate an image from a sentence, you are using its multimodal capability. The future of AI is multimodal: the real world is not just text.',
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: 'AI is already in your daily life',
+      items: [
+        'Recommenders: Netflix, Spotify, or YouTube decide what to suggest to you with traditional AI.',
+        'Computer vision: phone face unlock, photo tagging, traffic cameras.',
+        'Automatic translation: Google Translate or DeepL use Deep Learning models.',
+        'Writing assistants: Gmail autocomplete, spell checkers, automatic summaries.',
+        'Conversation: ChatGPT, Claude, and Gemini are generative AI in product form.',
+        'Voice: automatic YouTube subtitles or voice assistants transcribe your speech with AI.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'The idea that runs through the whole course',
+      body: 'AI does not "understand" like you do: **it detects statistical patterns in data**. That single sentence explains why it is so powerful (it finds patterns invisible to humans) and why it sometimes fails with total confidence (a pattern is not a truth). Keep it in mind in every module.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'A company wants to predict which customers will cancel their subscription next month, based on their usage history.',
+      question: 'Which type of AI best fits this problem?',
+      options: [
+        'Generative AI, because it is the most modern',
+        'Traditional AI (predictive Machine Learning), because the problem asks for a numerical prediction, not creating content',
+        'A multimodal model, because it combines several types of data',
+        'None: this is better solved with hand-written rules',
+      ],
+      correctIndex: 1,
+      explanation: 'The problem asks to classify/predict (will cancel or not), which is the classic territory of traditional AI. Generative AI creates new content; there is nothing to create here. Choosing the right tool for the problem is the first skill of an AI professional.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'AI', def: 'Discipline that creates systems capable of performing tasks that require human intelligence: perceiving, reasoning, learning, and deciding.' },
+    { term: 'Machine Learning', def: 'Subfield of AI where the system learns patterns from data, instead of following hand-programmed rules.' },
+    { term: 'Deep Learning', def: 'Branch of Machine Learning based on neural networks with many layers, capable of learning very complex representations.' },
+    { term: 'Generative AI', def: 'Type of AI that creates new content (text, images, code, audio) from what it learned during training.' },
+    { term: 'Foundation model', def: 'Large model trained on huge volumes of data that serves as a base for many different applications.' },
+    { term: 'Multimodal model', def: 'Model that understands and generates several types of data at once: text, images, audio, or video.' },
+    { term: 'Neural network', def: 'Computing structure organized in layers, vaguely inspired by the brain, that learns by detecting patterns at levels.' },
+    { term: 'Training', def: 'Process in which a model adjusts its internal parameters by analyzing large amounts of examples.' },
+  ],
+  mistakes: [
+    { wrong: 'AI understands the world like a person does.', right: 'It does not: it detects statistical patterns in data. It can give correct answers without "understanding" anything, which is why it sometimes gets things wrong with total confidence.' },
+    { wrong: 'AI and ChatGPT are the same thing.', right: 'ChatGPT is a product built on a model (GPT). AI covers much more: recommenders, computer vision, translators, robotics...' },
+    { wrong: 'If an AI says it, it must be true.', right: 'Generative models produce plausible text, not verified text. Always double-check important information.' },
+    { wrong: 'Traditional AI is no longer used.', right: 'It is still the most used in companies: fraud detection, demand forecasting, customer segmentation, and predictive maintenance.' },
+  ],
+};
+
+export default { es, en };

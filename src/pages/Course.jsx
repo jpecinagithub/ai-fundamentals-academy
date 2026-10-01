@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { modules } from '../data/modules';
+import { useLang } from '../i18n/LanguageContext';
+import { useModules } from '../hooks/useContent';
 import { useProgress, moduleStatus } from '../hooks/ProgressContext';
 import { getIcon } from '../utils/icons';
 
@@ -19,14 +20,14 @@ const clamp2 = {
 
 export function Course() {
   const { state } = useProgress();
+  const { t } = useLang();
+  const modules = useModules();
 
   return (
     <div className="page">
-      <h1>Curso</h1>
+      <h1>{t('course.title')}</h1>
       <p className="card-sub" style={{ maxWidth: 640 }}>
-        Los 28 módulos del itinerario, de los fundamentos de la IA hasta la
-        construcción de aplicaciones con modelos de lenguaje. Completa el test
-        de cada módulo para avanzar.
+        {t('course.intro')}
       </p>
 
       <div className="grid-3">
@@ -63,13 +64,13 @@ export function Course() {
                   {getIcon(m.icon, 22)}
                 </span>
                 <span className="card-sub" style={{ fontWeight: 700 }}>
-                  Módulo {i + 1}
+                  {t('course.moduleN', { n: i + 1 })}
                 </span>
                 <span
                   className={`badge ${BADGE_CLASS[st.status]}`}
                   style={{ marginLeft: 'auto' }}
                 >
-                  {st.label}
+                  {t(`progresspage.status.${st.status}`)}
                 </span>
               </div>
               <h3 style={{ margin: '0 0 0.4rem', fontSize: '1.02rem' }}>
@@ -91,7 +92,7 @@ export function Course() {
                 <span className="card-sub">{st.pct}%</span>
                 {best != null && (
                   <span className="card-sub">
-                    Mejor nota: <strong>{best}%</strong>
+                    {t('course.bestScore')} <strong>{best}%</strong>
                   </span>
                 )}
               </div>

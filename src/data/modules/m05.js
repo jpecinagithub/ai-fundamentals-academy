@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm5',
   title: 'Prompts: el arte de pedir bien',
   short: 'Prompts',
@@ -89,3 +89,97 @@ export default {
     { wrong: 'Dar ejemplos es hacer trampa o es innecesario.', right: 'Los ejemplos (few-shot) son la técnica más potente para fijar el formato: el modelo imita patrones mejor que sigue descripciones abstractas.' },
   ],
 };
+
+const en = {
+  id: 'm5',
+  title: 'Prompts: the art of asking well',
+  short: 'Prompts',
+  description: 'What a prompt is, the difference between system and user prompts, and the structure that turns mediocre answers into excellent ones.',
+  icon: 'PenLine',
+  stage: 'Prompts & Context',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'What a prompt is',
+      paragraphs: [
+        'A **prompt** is the input you give the model: your message, with its instructions, its context, and its questions. It seems trivial ("it is what I type in the chat"), but it is the **most powerful control lever** you have over an LLM: the same model gives mediocre or brilliant answers depending on how you ask.',
+        'Think of the model as a brilliant intern with no context about your world: if you give a vague order, they will improvise; if you give role, goal, information, and format, they will execute precisely. **Prompt engineering** is precisely the discipline of designing those inputs.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'System prompt vs user prompt',
+      paragraphs: [
+        'The **user prompt** is what you type in the chat. The **system prompt** is invisible instructions the application places before it, defining the assistant personality and rules ("You are a helpful assistant that answers in Spanish, with a professional tone...").',
+        'The system prompt takes **priority**: in case of conflict, the model obeys the system before the user. That is why you cannot ask ChatGPT to "forget its rules": they are shielded by design. As a normal user you neither see nor edit it (although some apps, like custom GPTs, let you define your own).',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'The four ingredients of a good prompt',
+      paragraphs: [
+        '**1. Clear instructions:** what it must do, with action verbs ("analyze", "compare", "summarize"). Avoid vagueness: "give me an analysis" can mean ten different things.',
+        '**2. Context:** the information the model needs and does not have: data, documents, background, your situation. Without context, the model fills gaps with inventions (hello, hallucinations).',
+        '**3. Examples (few-shot):** showing one or two samples of the expected result is the most powerful technique for setting format, tone, and level of detail. The model imitates patterns better than it follows abstract descriptions.',
+        '**4. Constraints:** what it must NOT do and the limits: length, language, format, audience, what to avoid. Constraints narrow the space of possible answers toward the one you want.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'The structure that never fails',
+      body: '**ROLE** (act as...) + **GOAL** (what I want to achieve) + **CONTEXT** (data and background) + **CONSTRAINTS** (limits and what to avoid) + **OUTPUT FORMAT** (how it must present the result). Five blocks, in that order, and almost any request improves radically.',
+    },
+    { kind: 'simulator', component: 'PromptComparer' },
+    {
+      kind: 'example',
+      heading: 'Real example',
+      label: 'From poor prompt to good prompt',
+      body: 'Poor prompt: "Give me a financial analysis." Result: a generic text, with no real data, invented ratios, and an unpredictable format. Improved prompt: "Act as a senior financial analyst. I attach the 2024-2025 balance sheet and income statement of company X (see document). Calculate liquidity, debt, and ROE, compare both years, and flag 3 risks. Maximum 300 words, in Spanish, with a table of ratios and no unnecessary jargon."',
+      result: 'Lesson: the second prompt sets role, goal, context (real document), constraints (300 words, Spanish), and format (table). The model no longer has to guess anything: just execute.',
+    },
+    {
+      kind: 'checklist',
+      heading: 'Prompting best practices',
+      items: [
+        'Be specific: replace "do it well" with concrete, measurable criteria.',
+        'Give the context before asking: paste the data, do not expect it to guess.',
+        'Show an example of the format you want, even if invented.',
+        'Ask for structure: headings, tables, or lists instead of endless paragraphs.',
+        'Iterate: the first answer is a draft; ask for adjustments ("shorter", "with examples").',
+        'One task per prompt: break large assignments into steps.',
+      ],
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'You want the AI to write the launch email for your online course, for subscribers interested in AI.',
+      question: 'What is the MOST important element to add if the first draft comes out generic and hookless?',
+      options: [
+        'More context tokens by pasting your entire website',
+        'Role, audience, and format: who you are, who you write to, what tone, and what structure the email must have',
+        'Asking it to write it twice so you can choose',
+        'Switching AI models',
+      ],
+      correctIndex: 1,
+      explanation: 'A generic draft almost always comes from a generic prompt. Defining role (who speaks), audience (who it is for), tone, and output format narrows the answer space toward exactly what you need. More context without structure only adds noise.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Prompt', def: 'Input you give the model: instructions, context, examples, and questions. Your main control lever over an LLM.' },
+    { term: 'System prompt', def: 'Invisible instructions the application places before your message to define the assistant personality and rules; it takes priority over the user.' },
+    { term: 'User prompt', def: 'The message you type in the chat on each turn of the conversation.' },
+    { term: 'Instruction', def: 'Clear order of what the model must do, with concrete action verbs instead of vagueness.' },
+    { term: 'Few-shot', def: 'Technique of including one or more examples of the expected result so the model imitates format, tone, and level of detail.' },
+    { term: 'Constraint', def: 'Explicit limit (length, language, format, what to avoid) that narrows the possible answers toward the desired one.' },
+    { term: 'Output format', def: 'Specification of how the result must be presented: table, list, email, report, word count...' },
+  ],
+  mistakes: [
+    { wrong: 'Asking once is enough.', right: 'Prompts are iterated: the first answer is a draft. Ask for concrete adjustments until you reach the result ("shorter", "with examples").' },
+    { wrong: 'The longer the prompt, the better.', right: 'Long and messy confuses. What wins is structured and clear: role, goal, context, constraints, and format.' },
+    { wrong: 'The system prompt does not affect me as a user.', right: 'It defines the personality and rules of every answer you receive, and takes priority over your instructions in case of conflict.' },
+    { wrong: 'Giving examples is cheating or unnecessary.', right: 'Examples (few-shot) are the most powerful technique for setting format: the model imitates patterns better than it follows abstract descriptions.' },
+  ],
+};
+
+export default { es, en };

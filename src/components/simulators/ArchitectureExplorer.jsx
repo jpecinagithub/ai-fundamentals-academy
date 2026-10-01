@@ -5,49 +5,53 @@ import {
   User, LayoutDashboard, Server, Plug, BrainCircuit, Wrench, Usb,
   Cloud, History, FileSearch, Database, Github, Rocket,
 } from 'lucide-react';
+import { useLang } from '../../i18n/LanguageContext';
 
 const NODES = [
-  { id: 'usuario', label: 'USUARIO', Icon: User, moduleId: null,
-    desc: 'La persona que usa la aplicación desde el navegador: escribe prompts y recibe respuestas.' },
-  { id: 'frontend', label: 'REACT FRONTEND', Icon: LayoutDashboard, moduleId: 'm14',
-    desc: 'Interfaz construida con React: captura la entrada del usuario, llama al backend y muestra el resultado.' },
-  { id: 'backend', label: 'BACKEND', Icon: Server, moduleId: 'm14',
-    desc: 'Servidor que valida las peticiones, guarda la API key a salvo y orquesta la lógica de la app.' },
-  { id: 'api', label: 'AI API', Icon: Plug, moduleId: 'm17',
-    desc: 'Endpoint HTTP del proveedor de IA: recibe el JSON con el prompt y devuelve los tokens generados.' },
-  { id: 'llm', label: 'LLM', Icon: BrainCircuit, moduleId: 'm2',
-    desc: 'El modelo de lenguaje: predice el siguiente token una y otra vez hasta completar la respuesta.' },
-  { id: 'tools', label: 'TOOLS', Icon: Wrench, moduleId: 'm7',
-    desc: 'Funciones que el agente puede invocar: consultar el clima, calcular, buscar en la web.' },
-  { id: 'mcp', label: 'MCP', Icon: Usb, moduleId: 'm9',
-    desc: 'Protocolo estándar (el «USB-C» de la IA) para conectar herramientas externas con un solo conector.' },
-  { id: 'servicios', label: 'SERVICIOS', Icon: Cloud, moduleId: null,
-    desc: 'APIs externas de terceros: clima, mapas, correo, pagos... accesibles vía tools o MCP.' },
-  { id: 'memoria', label: 'MEMORIA', Icon: History, moduleId: 'm6',
-    desc: 'Historial de la conversación que se reinyecta como contexto para que el modelo «recuerde».' },
-  { id: 'rag', label: 'RAG', Icon: FileSearch, moduleId: 'm21',
-    desc: 'Recupera fragmentos de tus documentos y los añade al prompt para responder con tus datos.' },
-  { id: 'database', label: 'BASE DE DATOS', Icon: Database, moduleId: 'm17',
-    desc: 'Almacena usuarios, sesiones, embeddings y resultados de forma persistente.' },
-  { id: 'github', label: 'GITHUB', Icon: Github, moduleId: 'm23',
-    desc: 'Repositorio del código fuente con control de versiones y despliegue continuo.' },
-  { id: 'vercel', label: 'VERCEL', Icon: Rocket, moduleId: 'm25',
-    desc: 'Plataforma donde se despliegan el frontend y el backend para que sean accesibles en internet.' },
+  { id: 'usuario', labelKey: 'architectureexplorer.node.usuario.label', Icon: User, moduleId: null,
+    descKey: 'architectureexplorer.node.usuario.desc' },
+  { id: 'frontend', labelKey: 'architectureexplorer.node.frontend.label', Icon: LayoutDashboard, moduleId: 'm14',
+    descKey: 'architectureexplorer.node.frontend.desc' },
+  { id: 'backend', labelKey: 'architectureexplorer.node.backend.label', Icon: Server, moduleId: 'm14',
+    descKey: 'architectureexplorer.node.backend.desc' },
+  { id: 'api', labelKey: 'architectureexplorer.node.api.label', Icon: Plug, moduleId: 'm17',
+    descKey: 'architectureexplorer.node.api.desc' },
+  { id: 'llm', labelKey: 'architectureexplorer.node.llm.label', Icon: BrainCircuit, moduleId: 'm2',
+    descKey: 'architectureexplorer.node.llm.desc' },
+  { id: 'tools', labelKey: 'architectureexplorer.node.tools.label', Icon: Wrench, moduleId: 'm7',
+    descKey: 'architectureexplorer.node.tools.desc' },
+  { id: 'mcp', labelKey: 'architectureexplorer.node.mcp.label', Icon: Usb, moduleId: 'm9',
+    descKey: 'architectureexplorer.node.mcp.desc' },
+  { id: 'servicios', labelKey: 'architectureexplorer.node.servicios.label', Icon: Cloud, moduleId: null,
+    descKey: 'architectureexplorer.node.servicios.desc' },
+  { id: 'memoria', labelKey: 'architectureexplorer.node.memoria.label', Icon: History, moduleId: 'm6',
+    descKey: 'architectureexplorer.node.memoria.desc' },
+  { id: 'rag', labelKey: 'architectureexplorer.node.rag.label', Icon: FileSearch, moduleId: 'm21',
+    descKey: 'architectureexplorer.node.rag.desc' },
+  { id: 'database', labelKey: 'architectureexplorer.node.database.label', Icon: Database, moduleId: 'm17',
+    descKey: 'architectureexplorer.node.database.desc' },
+  { id: 'github', labelKey: 'architectureexplorer.node.github.label', Icon: Github, moduleId: 'm23',
+    descKey: 'architectureexplorer.node.github.desc' },
+  { id: 'vercel', labelKey: 'architectureexplorer.node.vercel.label', Icon: Rocket, moduleId: 'm25',
+    descKey: 'architectureexplorer.node.vercel.desc' },
 ];
 
 const MAIN_CHAIN = ['usuario', 'frontend', 'backend', 'api', 'llm'];
 
 export function ArchitectureExplorer() {
-  const [selected, setSelected] = useState(NODES[0]);
+  const { t } = useLang();
+
+  const nodes = NODES.map((n) => ({ ...n, label: t(n.labelKey), desc: t(n.descKey) }));
+  const [selectedId, setSelectedId] = useState(NODES[0].id);
+  const selected = nodes.find((n) => n.id === selectedId) ?? nodes[0];
   const { Icon } = selected;
 
   return (
     <div>
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title"><Network size={18} /> Explorador de arquitectura</h3>
+        <h3 className="card-title"><Network size={18} /> {t('architectureexplorer.title')}</h3>
         <p className="card-sub">
-          Pulsa cada pieza para ver qué papel juega en el sistema. Las piezas con módulo enlazan
-          a su explicación completa.
+          {t('architectureexplorer.intro')}
         </p>
         <div
           style={{
@@ -57,13 +61,13 @@ export function ArchitectureExplorer() {
             marginTop: '1rem',
           }}
         >
-          {NODES.map((n) => {
+          {nodes.map((n) => {
             const NIcon = n.Icon;
             const active = selected.id === n.id;
             return (
               <button
                 key={n.id}
-                onClick={() => setSelected(n)}
+                onClick={() => setSelectedId(n.id)}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -95,20 +99,20 @@ export function ArchitectureExplorer() {
         <p style={{ marginTop: '0.5rem' }}>{selected.desc}</p>
         {selected.moduleId ? (
           <Link to={`/modulo/${selected.moduleId}`} className="btn btn-primary" style={{ marginTop: '0.75rem', display: 'inline-flex', alignItems: 'center' }}>
-            Ver módulo
+            {t('architectureexplorer.view_module')}
           </Link>
         ) : (
           <span className="badge badge-muted" style={{ marginTop: '0.75rem', display: 'inline-block' }}>
-            Sin módulo asociado
+            {t('architectureexplorer.no_module')}
           </span>
         )}
       </div>
 
       <div className="card">
-        <h3 className="card-title">Cadena principal de una petición</h3>
+        <h3 className="card-title">{t('architectureexplorer.main_chain')}</h3>
         <div className="flow">
           {MAIN_CHAIN.map((id, i) => {
-            const n = NODES.find((x) => x.id === id);
+            const n = nodes.find((x) => x.id === id);
             return (
               <div key={id}>
                 <div className="flow-node">
@@ -123,9 +127,7 @@ export function ArchitectureExplorer() {
           })}
         </div>
         <p className="card-sub">
-          Las piezas laterales (tools, MCP, memoria, RAG, base de datos, servicios) se conectan
-          al backend o al LLM según lo necesite cada petición; GitHub y Vercel sostienen el ciclo
-          de desarrollo y despliegue.
+          {t('architectureexplorer.chain_note')}
         </p>
       </div>
     </div>

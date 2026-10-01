@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { glossary } from '../data/glossary';
+import { useLang } from '../i18n/LanguageContext';
+import { useGlossary } from '../hooks/useContent';
 import { getIcon } from '../utils/icons';
 
 export function GlossaryPage() {
+  const { t } = useLang();
+  const glossary = useGlossary();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(null);
 
@@ -13,9 +16,12 @@ export function GlossaryPage() {
 
   return (
     <div className="page">
-      <h1>Glosario</h1>
+      <h1>{t('glossarypage.title')}</h1>
       <p className="card-sub">
-        {filtered.length} {filtered.length === 1 ? 'término' : 'términos'}
+        {filtered.length}{' '}
+        {filtered.length === 1
+          ? t('glossarypage.termOne')
+          : t('glossarypage.termOther')}
       </p>
 
       <div className="search-box">
@@ -23,7 +29,7 @@ export function GlossaryPage() {
         <input
           className="input"
           type="text"
-          placeholder="Buscar término..."
+          placeholder={t('glossarypage.searchPlaceholder')}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -35,8 +41,8 @@ export function GlossaryPage() {
       {filtered.length === 0 ? (
         <div className="empty-state">
           <div className="big-ico">{getIcon('Search', 48)}</div>
-          <h3>Sin resultados</h3>
-          <p>Ningún término coincide con «{query}».</p>
+          <h3>{t('glossarypage.noResults')}</h3>
+          <p>{t('glossarypage.noMatch', { query })}</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
@@ -64,7 +70,7 @@ export function GlossaryPage() {
                   <p style={{ margin: 0 }}>{g.def}</p>
                   {g.example && (
                     <div className="ex">
-                      <strong>Ejemplo:</strong> {g.example}
+                      <strong>{t('glossarypage.example')}</strong> {g.example}
                     </div>
                   )}
                 </div>

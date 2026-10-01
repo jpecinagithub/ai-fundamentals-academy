@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm20',
   title: 'Embeddings: el significado en números',
   short: 'Embeddings',
@@ -99,3 +99,107 @@ export default {
     { wrong: 'Si dos textos no comparten palabras, los embeddings no los relacionan.', right: 'Precisamente la gracia es que «el felino dormía al sol» y «un gato descansaba en el jardín» quedan cerca aunque no compartan ninguna palabra.' },
   ],
 };
+
+const en = {
+  id: 'm20',
+  title: 'Embeddings: meaning in numbers',
+  short: 'Embeddings',
+  description: 'Discover how AI turns words and texts into lists of numbers that make it possible to measure how similar they are in meaning — no complicated math.',
+  icon: 'Boxes',
+  stage: 'APIs',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'Computers do not understand words... but they do understand numbers',
+      paragraphs: [
+        'Everything a computer processes is **numbers**. But the words, phrases, and ideas we use have something that plain numbers do not capture: **meaning**. The word "dog" is not worth 7, and "cat" is not worth 8.',
+        'An **embedding** is the solution to this problem: a way of turning any text (a word, a phrase, an entire document) into a **list of numbers** that represents its meaning. That list of numbers is called a **vector**.',
+        'What matters is not the numbers themselves (they are arbitrary), but what they make possible: **measuring how similar two texts are in meaning**, simply by comparing their numbers.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'A map where similar things sit together',
+      body: 'Imagine that each word is a city on a map. On a normal map, nearby cities tend to share climate and culture. On the "meaning map" the same thing happens: words with similar meaning — "dog" and "cat" — end up in the same neighborhood, while "car" lives in a very distant district. Embeddings are the **GPS coordinates** of that map: a system of numbers that places each text in the right spot on the meaning map.',
+    },
+    {
+      kind: 'text',
+      heading: 'Distance is the key',
+      paragraphs: [
+        'With embeddings, questions like **"how similar are these two texts?"** become a distance calculation: the closer the numbers, the more similar the meaning.',
+        'This is extremely powerful because it works even when the texts **share no words at all**: "The feline slept in the sun" and "A cat rested in the garden" use different words, but their embeddings end up very close because they mean almost the same thing.',
+        'And it is not magic: these numerical maps are learned by analyzing **millions of texts** during the model\'s training. Words that appear in similar contexts end up with similar embeddings.',
+      ],
+    },
+    { kind: 'simulator', component: 'EmbeddingsVisual' },
+    {
+      kind: 'example',
+      heading: 'Conceptual visualization: "dog", "cat", and "car"',
+      label: 'Conceptual case',
+      body: 'Suppose we represent three words on a simplified 2D map of meaning. **"dog"** and **"cat"** appear in similar contexts (pets, home, care), so their points end up very close together. **"car"** appears in totally different contexts (roads, engines, speed), so its point ends up far from both. The numerical distance between the points reflects the distance in meaning. In reality embeddings have hundreds of dimensions, not two, but the idea is exactly the same.',
+      result: 'Measuring the distance between embeddings = measuring semantic similarity. Without understanding a single word: only with numbers.',
+    },
+    {
+      kind: 'flow',
+      heading: 'From text to embedding',
+      caption: 'The model turns text into numbers; the numbers make it possible to compare meanings.',
+      direction: 'right',
+      nodes: [
+        { label: 'Text', desc: 'A word, phrase, or document' },
+        { label: 'Embeddings model', desc: 'Already trained neural network' },
+        { label: 'Vector', desc: 'List of hundreds of numbers' },
+        { label: 'Comparison', desc: 'Distances = meaning similarity' },
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: 'Where embeddings are used (with real examples)',
+      items: [
+        '**Semantic search**: an internal search engine that finds documents even when the query does not use the exact words (searching "how to cancel my account" finds the article "Subscription cancellation procedure").',
+        '**Recommendations**: Netflix or Spotify suggest content "similar to what you liked" by measuring which embeddings are nearby.',
+        '**RAG** (module 21): finding the document fragments most relevant to the user\'s question before responding.',
+        '**Classification**: automatically assigning a label to a text — a support ticket gets classified as "billing" or "technical" — without hand-coding rules.',
+        '**Duplicate detection**: knowing that two questions or two reviews say the same thing even when written with different words.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'What really matters (no math)',
+      paragraphs: [
+        'You do not need to know how anything is computed. Keep the core idea: **embeddings turn meaning into numbers that can be compared**.',
+        'When you hear "semantic search", "recommender", or "RAG", think: *there are embeddings behind it measuring meaning distances*. That intuition will serve you for the rest of the course.',
+      ],
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'Imagine three words — "dog", "cat", and "car" — already converted to embeddings. The system computes the distances between them.',
+      question: 'Which distance will be the smallest?',
+      options: [
+        'Between "dog" and "car", because both can drive down the same street.',
+        'Between "dog" and "cat", because they share meaning: they are pets.',
+        'Between "cat" and "car", because both words have three letters.',
+        'All equal, because distances do not depend on meaning.',
+      ],
+      correctIndex: 1,
+      explanation: 'Correct: embeddings place texts with similar meaning ("dog" and "cat", both pets) together and those with different meaning ("car") far apart. Numerical distance reflects meaning distance, not letter similarity or literal context.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Embedding', def: 'List of numbers (vector) that represents the meaning of a text: a word, a phrase, or a document.' },
+    { term: 'Vector', def: 'Ordered list of numbers that a computer can compare and measure.' },
+    { term: 'Semantic similarity', def: 'How similar two texts are in meaning, even if they share no words.' },
+    { term: 'Vector space', def: 'The "map" where each embedding lives; in it, similar things sit together and different things sit far apart.' },
+    { term: 'Dimensionality', def: 'Number of numbers that make up each embedding (e.g., 1536). More dimensions capture finer nuances.' },
+    { term: 'Embeddings model', def: 'AI model trained to turn text into embeddings; used via API without training anything.' },
+    { term: 'Vector index', def: 'Structure that allows finding similar embeddings among millions of them in milliseconds.' },
+  ],
+  mistakes: [
+    { wrong: 'Embeddings give computers an understanding of meaning like ours.', right: 'Embeddings capture statistical patterns of language, they do not "understand" anything: they are coordinates learned from millions of texts.' },
+    { wrong: 'An embedding is simply assigning each word a fixed number.', right: 'No: the embedding is a list of numbers that represents meaning in context, and what matters is the distance between lists, not a hand-assigned number.' },
+    { wrong: 'To use embeddings I need to train a model myself.', right: 'Embeddings models are used as a service (OpenAI, Cohere APIs, etc.): you send text and receive the vector, without training anything.' },
+    { wrong: 'If two texts share no words, embeddings cannot relate them.', right: 'That is precisely the point: "the feline slept in the sun" and "a cat rested in the garden" end up close even though they share no words.' },
+  ],
+};
+
+export default { es, en };

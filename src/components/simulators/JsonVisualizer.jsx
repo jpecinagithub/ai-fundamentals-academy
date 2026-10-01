@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Braces, ChevronRight, ChevronDown, TriangleAlert } from 'lucide-react';
-
-const EXAMPLE = `{"name":"Jon","course":"AI Fundamentals","progress":45,"active":true,"tags":["ia","llm"],"address":{"city":"Logroño"}}`;
+import { useLang } from '../../i18n/LanguageContext';
 
 const TYPE_COLORS = {
   string: '#16a34a',
@@ -23,6 +22,7 @@ function typeLabel(v) {
 }
 
 function Node({ k, value, path, depth, selected, onSelect }) {
+  const { t: tr } = useLang();
   const [open, setOpen] = useState(true);
   const t = typeOf(value);
   const isContainer = t === 'object' || t === 'array';
@@ -44,7 +44,7 @@ function Node({ k, value, path, depth, selected, onSelect }) {
           <span style={{ color: 'var(--text-muted)' }}>{t === 'array' ? '[' : '{'}</span>
           {!open && (
             <span style={{ color: 'var(--text-muted)' }}>
-              {empty ? (t === 'array' ? ']' : '}') : `… ${entries.length} ${t === 'array' ? 'elementos' : 'claves'} ${t === 'array' ? ']' : '}'}`}
+              {empty ? (t === 'array' ? ']' : '}') : `${tr(t === 'array' ? 'jsonvisualizer.collapsed_items' : 'jsonvisualizer.collapsed_keys', { n: entries.length })} ${t === 'array' ? ']' : '}'}`}
             </span>
           )}
         </div>
@@ -86,7 +86,7 @@ function Node({ k, value, path, depth, selected, onSelect }) {
           borderRadius: '4px',
           padding: '0.1rem 0.3rem',
         }}
-        title="Clic para ver el tipo"
+        title={tr('jsonvisualizer.click_type')}
       >
         {display}
       </span>
@@ -95,8 +95,9 @@ function Node({ k, value, path, depth, selected, onSelect }) {
 }
 
 export function JsonVisualizer() {
-  const [raw, setRaw] = useState(EXAMPLE);
-  const [data, setData] = useState(() => JSON.parse(EXAMPLE));
+  const { t } = useLang();
+  const [raw, setRaw] = useState(() => t('jsonvisualizer.example'));
+  const [data, setData] = useState(() => JSON.parse(t('jsonvisualizer.example')));
   const [error, setError] = useState(null);
   const [selected, setSelected] = useState(null);
   const timer = useRef(null);
@@ -120,10 +121,9 @@ export function JsonVisualizer() {
   return (
     <div>
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title"><Braces size={18} /> Visualizador de JSON</h3>
+        <h3 className="card-title"><Braces size={18} /> {t('jsonvisualizer.title')}</h3>
         <p className="card-sub">
-          Pega o edita un JSON: el árbol se actualiza solo (o pulsa «Visualizar»). Clic en una
-          llave para plegar/desplegar; clic en un valor para ver su tipo.
+          {t('jsonvisualizer.sub')}
         </p>
         <textarea
           className="textarea"
@@ -133,12 +133,12 @@ export function JsonVisualizer() {
           spellCheck={false}
         />
         <button className="btn btn-primary" onClick={() => parse(raw)} style={{ marginTop: '0.75rem' }}>
-          Visualizar
+          {t('jsonvisualizer.visualize')}
         </button>
         {error && (
           <div className="callout warn" style={{ marginTop: '0.75rem' }}>
             <TriangleAlert size={16} className="callout-ico" />
-            <span><strong>Error de parseo:</strong> {error}</span>
+            <span><strong>{t('jsonvisualizer.parse_error')}</strong> {error}</span>
           </div>
         )}
       </div>
@@ -146,10 +146,10 @@ export function JsonVisualizer() {
       {!error && (
         <div className="card">
           <h3 className="card-title">
-            Árbol
+            {t('jsonvisualizer.tree')}
             {selected && (
               <span className="badge badge-primary" style={{ marginLeft: '0.75rem' }}>
-                tipo: {selected.type}
+                {t('jsonvisualizer.type_badge', { type: selected.type })}
               </span>
             )}
           </h3>

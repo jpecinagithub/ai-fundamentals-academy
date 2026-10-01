@@ -1,35 +1,37 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowDown, Send, Github, HardDrive, Database, Usb } from 'lucide-react';
-
-const TOOLS = {
-  github: {
-    label: 'GitHub',
-    Icon: Github,
-    request: "mcp.call_tool('github.list_repos')",
-    response: '{ "repos": ["ai-fundamentals", "mi-portfolio", "chatbot"], "count": 3 }',
-  },
-  drive: {
-    label: 'Google Drive',
-    Icon: HardDrive,
-    request: "mcp.call_tool('drive.search_files', { q: 'informe' })",
-    response: '{ "files": ["informe-2025.pdf", "notas.txt"], "count": 2 }',
-  },
-  database: {
-    label: 'Database',
-    Icon: Database,
-    request: "mcp.call_tool('db.query', { sql: 'SELECT * FROM clientes LIMIT 5' })",
-    response: '{ "rows": 5, "ms": 12 }',
-  },
-};
+import { useLang } from '../../i18n/LanguageContext';
 
 const NODES = ['AI APP', 'MCP CLIENT', 'MCP SERVER'];
 
 export function MCPSimulator() {
+  const { t } = useLang();
   const [toolKey, setToolKey] = useState('github');
   const [highlight, setHighlight] = useState(-1);
   const [log, setLog] = useState([]);
   const [busy, setBusy] = useState(false);
   const timeouts = useRef([]);
+
+  const TOOLS = {
+    github: {
+      label: 'GitHub',
+      Icon: Github,
+      request: t('mcpsimulator.tool.github.request'),
+      response: t('mcpsimulator.tool.github.response'),
+    },
+    drive: {
+      label: 'Google Drive',
+      Icon: HardDrive,
+      request: t('mcpsimulator.tool.drive.request'),
+      response: t('mcpsimulator.tool.drive.response'),
+    },
+    database: {
+      label: 'Database',
+      Icon: Database,
+      request: t('mcpsimulator.tool.database.request'),
+      response: t('mcpsimulator.tool.database.response'),
+    },
+  };
 
   const clearTimers = () => {
     timeouts.current.forEach(clearTimeout);
@@ -51,12 +53,12 @@ export function MCPSimulator() {
         setTimeout(() => {
           setHighlight(i);
           if (i === 1) {
-            setLog((l) => [...l, { cls: 'log-info', text: `→ request: ${TOOLS[toolKey].request}` }]);
+            setLog((l) => [...l, { cls: 'log-info', text: t('mcpsimulator.log_request', { text: TOOLS[toolKey].request }) }]);
           }
           if (i === 3) {
             timeouts.current.push(
               setTimeout(() => {
-                setLog((l) => [...l, { cls: 'log-ok', text: `← response: ${TOOLS[toolKey].response}` }]);
+                setLog((l) => [...l, { cls: 'log-ok', text: t('mcpsimulator.log_response', { text: TOOLS[toolKey].response }) }]);
                 setBusy(false);
               }, 600)
             );
@@ -66,13 +68,13 @@ export function MCPSimulator() {
     }
   };
 
-  const toolNodeLabel = `TOOL: ${TOOLS[toolKey].label}`;
+  const toolNodeLabel = `${t('mcpsimulator.tool_prefix')} ${TOOLS[toolKey].label}`;
 
   return (
     <div>
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title"><Usb size={18} /> Simulador MCP</h3>
-        <p className="card-sub">Elige una herramienta y envía una petición para ver el recorrido.</p>
+        <h3 className="card-title"><Usb size={18} /> {t('mcpsimulator.title')}</h3>
+        <p className="card-sub">{t('mcpsimulator.sub')}</p>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.75rem' }}>
           {Object.entries(TOOLS).map(([key, { label, Icon }]) => (
             <button
@@ -106,12 +108,12 @@ export function MCPSimulator() {
         </div>
         <button className="btn btn-primary btn-block" onClick={send} disabled={busy}>
           <Send size={15} style={{ marginRight: '0.4rem' }} />
-          {busy ? 'Enviando…' : 'Enviar petición'}
+          {busy ? t('mcpsimulator.sending') : t('mcpsimulator.send')}
         </button>
       </div>
 
       <div className="sim-log" style={{ marginBottom: '1rem' }}>
-        {log.length === 0 && <span style={{ color: 'var(--text-muted)' }}>// el request y la response aparecerán aquí…</span>}
+        {log.length === 0 && <span style={{ color: 'var(--text-muted)' }}>{t('mcpsimulator.log_placeholder')}</span>}
         {log.map((entry, i) => (
           <div key={i} className={entry.cls} style={{ wordBreak: 'break-all' }}>{entry.text}</div>
         ))}
@@ -120,9 +122,7 @@ export function MCPSimulator() {
       <div className="callout tip">
         <Usb size={16} className="callout-ico" />
         <span>
-          <strong>La analogía «USB-C»:</strong> el mismo MCP CLIENT sirve para GitHub, Google Drive
-          y la base de datos sin escribir integraciones a medida para cada una. Cambias de herramienta
-          y el protocolo es idéntico: un solo conector estándar para todo.
+          <strong>{t('mcpsimulator.analogy_title')}</strong> {t('mcpsimulator.analogy_body')}
         </span>
       </div>
     </div>

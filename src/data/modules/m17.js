@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm17',
   title: 'APIs: cómo hablan los programas entre sí',
   short: 'APIs',
@@ -92,3 +92,100 @@ export default {
     { wrong: 'Si la API es pública, no necesito key.', right: 'Pública significa documentada y accesible, no anónima: casi todas exigen API key para controlar el uso.' },
   ],
 };
+
+const en = {
+  id: 'm17',
+  title: 'APIs: how programs talk to each other',
+  short: 'APIs',
+  description: 'API stands for Application Programming Interface: the contract that lets two programs communicate. With the waiter analogy you will understand endpoints, requests, responses, and API keys forever.',
+  icon: 'Plug',
+  stage: 'APIs',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'API: Application Programming Interface',
+      paragraphs: [
+        '**API** stands for *Application Programming Interface*. In human language: it is a **contract** that a service publishes so other programs can use it without knowing its insides.',
+        'When your weather app shows the forecast, it does not have its own satellite: it requests the data from the API of a weather service. When you pay by card in an online store, the store does not process the payment: it calls the API of a payment gateway. APIs are the **plugs** that connect programs to each other.',
+        'The key idea: an API lets you **use another service\'s capabilities** (data, calculations, artificial intelligence) from your own program, with clear rules about how to ask for things and what you will receive.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'The restaurant waiter',
+      body: 'You do not walk into the kitchen to cook: you ask the **waiter** for what you want from the menu and he brings you the dish. The waiter is the API: you do not need to know how the kitchen (the service) works, you only need to know the menu (what you can order) and how to order it (the request format). You are the **application** that needs something; the **kitchen** is the service that prepares it; and the **waiter** is the orderly interface between the two. Without a waiter, you would have to negotiate directly with each cook: chaos. Without an API, every program would have to reimplement what others already do well.',
+    },
+    {
+      kind: 'flow',
+      heading: 'From the restaurant to software',
+      caption: 'The same structure, two worlds: each restaurant element has its API equivalent.',
+      direction: 'right',
+      nodes: [
+        { label: 'CUSTOMER → APPLICATION', desc: 'You order "the paella" → your app needs the weather forecast.' },
+        { label: 'WAITER → API', desc: 'Takes the order in the right format → receives the request and translates it for the service.' },
+        { label: 'KITCHEN → SERVICE', desc: 'Prepares the dish → processes the request and prepares the data.' },
+        { label: 'DISH → RESPONSE', desc: 'The dish arrives at your table → the API returns a JSON ready to use.' },
+      ],
+      highlight: [1],
+    },
+    {
+      kind: 'text',
+      heading: 'The vocabulary of APIs',
+      paragraphs: [
+        'With the analogy in mind, the technical vocabulary explains itself. The **endpoint** is each "dish on the menu": a specific address like `GET /weather?city=Madrid` that does one particular thing.',
+        'The **request** is your order: it includes the endpoint, the HTTP method (`GET`, `POST`…), and the **parameters**, which are the details of the order (`city=Madrid`, `days=3`: they specify exactly what you want). The **response** is the dish served: almost always a **JSON** with the data.',
+        'The **API key** is your "customer card": a long password that identifies your application to the service. It is used to know who you are, apply your usage limits, and, if the service is paid, **bill you**. **Authentication** is the process of presenting that key (or another method) to prove you have permission.',
+      ],
+    },
+    {
+      kind: 'example',
+      heading: 'Real example: the weather app',
+      label: 'Practical case',
+      body: 'You open your weather app and see "Madrid: 24 °C, clear". This is what has happened underneath:\n\n1. The app makes a request to the `GET /weather` endpoint with the parameters `city=Madrid` and its API key.\n2. The weather service authenticates the key, looks up Madrid in its database, and prepares the response.\n3. The app receives a JSON with the temperature, humidity, and forecast.\n4. The app draws the sun and the "24 °C" on screen.\n\nYou have only seen the result; underneath there has been a complete API dialogue in tenths of a second.',
+      result: 'Every time an app shows data that is not its own (weather, maps, payments, translations), there is an API in the middle playing waiter.',
+    },
+    {
+      kind: 'checklist',
+      heading: 'You are using an API without realizing it when…',
+      items: [
+        'Your weather app shows the forecast for your city.',
+        'You paste an address and see the map with the route.',
+        'You pay by card in an online store.',
+        'A chatbot translates your text into another language.',
+        'You sign in with "Sign in with Google".',
+        'Your AI assistant responds using a model in the cloud (module 18).',
+      ],
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'A developer wants his website to show the current price of the euro against the dollar without calculating it himself.',
+      question: 'What should he do?',
+      options: [
+        'Copy the price from a website every morning and paste it by hand.',
+        'Call the API of an exchange-rate service: he makes a request to its endpoint with his API key and displays the response on his website.',
+        'Download the European central bank\'s database.',
+        'Ask users to enter the price themselves.',
+      ],
+      correctIndex: 1,
+      explanation: 'That is exactly the use case for an API: using another service\'s capability (exchange-rate data) from your own program, with a clear contract (endpoint + API key + parameters) and receiving a JSON you can display.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'API', def: 'Application Programming Interface: a contract a service publishes so other programs can use its data or functions.' },
+    { term: 'Endpoint', def: 'A specific address within an API that performs a particular operation, like `GET /weather`.' },
+    { term: 'Request', def: 'A request to an API: endpoint + HTTP method + parameters and, if needed, credentials.' },
+    { term: 'Response', def: 'The API\'s response: usually a JSON with the requested data or the result of the operation.' },
+    { term: 'API key', def: 'Key that identifies your application to the service; used to authenticate you, apply limits, and bill usage.' },
+    { term: 'Authentication', def: 'The process of proving who you are (or who your app is) to a service, usually by presenting an API key.' },
+    { term: 'Parameters', def: 'Details that specify a request: `city=Madrid` or `days=3` pinpoint exactly which data you want.' },
+  ],
+  mistakes: [
+    { wrong: 'An API is an app you download.', right: 'It is an interface: a contract for two programs to talk to each other, usually over the internet. It is not installed.' },
+    { wrong: 'I need an API to view a website.', right: 'Viewing a website uses HTTP directly; the API comes in when a program wants data or functions from another service.' },
+    { wrong: 'An API key and a password are the same thing.', right: 'Both authenticate, but the API key identifies an application and is sent with every request; the password identifies a person at login.' },
+    { wrong: 'If the API is public, I do not need a key.', right: 'Public means documented and accessible, not anonymous: almost all of them require an API key to control usage.' },
+  ],
+};
+
+export default { es, en };

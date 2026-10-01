@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { modules } from '../data/modules';
+import { useLang } from '../i18n/LanguageContext';
+import { useModules, useQuestionsById } from '../hooks/useContent';
 import { useProgress, pendingReview } from '../hooks/ProgressContext';
 import { RichText } from '../components/RichText';
 import { getIcon } from '../utils/icons';
 
 export function Review() {
+  const { t } = useLang();
+  const modules = useModules();
+  // Current-language question index: failed snapshots are stored in the
+  // language active when failed, so prefer the current-language version.
+  const qById = useQuestionsById();
   const { state, answerReview } = useProgress();
   // qid -> { picked, ok, streak, mastered }
   const [results, setResults] = useState({});
@@ -44,28 +50,28 @@ export function Review() {
 
   return (
     <div className="page">
-      <h1>Repasar errores</h1>
+      <h1>{t('review.title')}</h1>
       <p className="card-sub" style={{ maxWidth: 680 }}>
-        Aquí aparecen las preguntas que has fallado en los tests. Responde bien
-        una pregunta <strong>2 veces</strong> para marcarla como{' '}
-        <strong>Dominada</strong> y sacarla de la lista.
+        {t('review.intro1')}
+        <strong>{t('review.introTwice')}</strong>
+        {t('review.intro2')}
+        <strong>{t('review.introMastered')}</strong>
+        {t('review.intro3')}
       </p>
 
       {visible.length === 0 ? (
         <div className="empty-state">
           <div className="big-ico">{getIcon('Check', 48)}</div>
-          <h3>Sin errores pendientes</h3>
-          <p>
-            Cuando falles preguntas en los tests aparecerán aquí para que puedas
-            repasarlas.
-          </p>
+          <h3>{t('review.emptyTitle')}</h3>
+          <p>{t('review.emptyText')}</p>
           <Link className="btn btn-primary" to="/tests">
-            Ir a los tests
+            {t('review.goToTests')}
           </Link>
         </div>
       ) : (
         <div className="grid-2">
-          {visible.map((q) => {
+          {visible.map((f) => {
+            const q = qById[f.id] || f;
             const res = results[q.id];
             return (
               <div key={q.id} className="card">
@@ -73,7 +79,7 @@ export function Review() {
                   <span className="badge badge-primary">{moduleTitle(q.moduleId)}</span>
                   {q.concept && <span className="badge badge-muted">{q.concept}</span>}
                   {q.fails > 1 && (
-                    <span className="badge badge-warn">{q.fails} fallos</span>
+                    <span className="badge badge-warn">{t('review.fails', { count: q.fails })}</span>
                   )}
                 </div>
                 <p style={{ fontWeight: 600 }}>{q.question}</p>
@@ -109,9 +115,9 @@ export function Review() {
                       <strong>
                         {res.ok
                           ? res.mastered
-                            ? '¡Dominado!'
-                            : `¡Correcto! Racha: ${res.streak}/2`
-                          : 'Incorrecto. La racha se reinicia.'}
+                            ? t('review.mastered')
+                            : t('review.correct', { streak: res.streak })
+                          : t('review.wrong')}
                       </strong>
                       {q.explanation && (
                         <div style={{ marginTop: '0.4rem' }}>
@@ -129,34 +135,37 @@ export function Review() {
 
       {mastered.length > 0 && (
         <div className="section" style={{ marginTop: '2.25rem' }}>
-          <span className="section-kicker">{getIcon('Trophy', 14)} Logros</span>
-          <h2 className="section-title">Dominados ({mastered.length})</h2>
+          <span className="section-kicker">{getIcon('Trophy', 14)} {t('review.achievements')}</span>
+          <h2 className="section-title">{t('review.masteredTitle', { count: mastered.length })}</h2>
           <div className="grid-2">
-            {mastered.map((q) => (
-              <div
-                key={q.id}
-                className="card"
-                style={{
-                  padding: '0.9rem 1.1rem',
-                  display: 'flex',
-                  gap: '0.7rem',
-                  alignItems: 'flex-start',
-                }}
-              >
-                <span style={{ color: 'var(--success)', flexShrink: 0, marginTop: '0.15rem' }}>
-                  {getIcon('Check', 18)}
-                </span>
-                <div>
-                  <div style={{ fontWeight: 600, fontSize: '0.92rem' }}>
-                    {q.question}
-                  </div>
-                  <div className="card-sub" style={{ fontSize: '0.82rem' }}>
-                    {moduleTitle(q.moduleId)}
-                    {q.concept ? ` · ${q.concept}` : ''}
+            {mastered.map((f) => {
+              const q = qById[f.id] || f;
+              return (
+                <div
+                  key={q.id}
+                  className="card"
+                  style={{
+                    padding: '0.9rem 1.1rem',
+                    display: 'flex',
+                    gap: '0.7rem',
+                    alignItems: 'flex-start',
+                  }}
+                >
+                  <span style={{ color: 'var(--success)', flexShrink: 0, marginTop: '0.15rem' }}>
+                    {getIcon('Check', 18)}
+                  </span>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: '0.92rem' }}>
+                      {q.question}
+                    </div>
+                    <div className="card-sub" style={{ fontSize: '0.82rem' }}>
+                      {moduleTitle(q.moduleId)}
+                      {q.concept ? ` · ${q.concept}` : ''}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

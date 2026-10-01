@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm8',
   title: 'Skills: procedimientos reutilizables',
   short: 'Skills',
@@ -102,3 +102,110 @@ export default {
     { wrong: 'Crear una skill requiere entrenar un modelo.', right: 'Se "crea" escribiendo: instrucciones, metodología, ejemplos, criterios y plantillas. Es documentación experta, no entrenamiento.' },
   ],
 };
+
+const en = {
+  id: 'm8',
+  title: 'Skills: reusable procedures',
+  short: 'Skills',
+  description: 'What a skill is, how it differs from a tool, and how it packages reusable expert knowledge.',
+  icon: 'Puzzle',
+  stage: 'Tools & MCP',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'What a skill is',
+      paragraphs: [
+        'A **skill** is a reusable set of **instructions, knowledge, procedures and rules** that teaches the model **how to solve a specific type of problem well**. If the tool is the hand (the ability to act), the skill is that hand’s **professional training**: the method, the quality criteria and the packaged experience.',
+        'Think of an electrician: their tools are the drill and the multimeter; their skill is knowing how to diagnose a fault step by step, what to check first, which values are normal and how to document the job. Without the skill, the tools are not much use; without tools, the skill cannot be executed.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Example: the “Analyze financial statements” skill',
+      paragraphs: [
+        'Imagine you equip an assistant with a financial-analysis skill. It is not a single instruction, but a complete package: **instructions** (“always follow this order: liquidity, debt, profitability”), **methodology** (how to calculate each ratio and which sources to use), **benchmark ratios** (which values are considered healthy by sector), **templates** (the exact format of the final report) and **tools** (which tools to use to extract data from the balance sheet).',
+        'With that skill installed, every time you ask it to analyze a company, the assistant will follow the same rigorous procedure, without you having to repeat the instructions. And the best part: that skill is **reusable** — it works for any company, any quarter, any user.',
+      ],
+    },
+    {
+      kind: 'compare',
+      heading: 'Tool vs. skill: the difference that clarifies everything',
+      caption: 'They complement each other: the skill says how to do it well, the tool makes it possible.',
+      left: {
+        title: 'Tool: the concrete capability',
+        tone: 'a',
+        items: [
+          'It is an executable action: searching the web, reading a file, querying a database.',
+          'The model decides when to call it and with which parameters.',
+          'Example: `buscar_web("tipos de interés BCE 2026")` or `leer_excel("balance.xlsx")`.',
+          'Without instructions, the tool is used improvisationally.',
+        ],
+      },
+      right: {
+        title: 'Skill: the know-how',
+        tone: 'b',
+        items: [
+          'It is structured knowledge: instructions, methodology, quality criteria, templates.',
+          'It defines the complete procedure for a type of problem.',
+          'Example: analyzing balance sheets following ratios, thresholds and a report format.',
+          'It turns tool use into a rigorous, repeatable process.',
+        ],
+      },
+    },
+    {
+      kind: 'text',
+      heading: 'How they work together: skill + tools + model',
+      paragraphs: [
+        'The full flow is elegant: the **skill** tells the model the procedure (“to analyze a balance sheet, first extract these line items, then calculate these ratios…”), the **model** reasons following that procedure, and the **tools** execute each concrete step (reading the spreadsheet, looking up the current exchange rate, generating the chart).',
+        'This combination is what makes modern assistants like Claude Code powerful: it is not just a model with tools, but a model with tools **and** expert procedures for using them well. Understanding this triad (model + skills + tools) is understanding how applied AI really works.',
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: 'Examples of skills in the real world',
+      items: [
+        'Code review: instructions on what to look for (security, performance), checklist and report format.',
+        'SEO writing: article structure, keyword density, tone and headline template.',
+        'Financial analysis: ratios, sector thresholds and report template (this module’s example).',
+        'Customer support: diagnostic script, response tone and escalation criteria.',
+        'Market research: reliable sources, comparison method and delivery format.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'The skill is your knowledge, packaged',
+      body: 'If there is a task you do over and over with AI and you always give the same instructions, you have a skill waiting to be written. Documenting your method once (steps, criteria, examples, format) and reusing it forever is one of the most profitable ways of working with AI.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'An assistant has the tool `enviar_email` and a “Write newsletters” skill with structure, tone and a quality checklist.',
+      question: 'What does the skill add that the tool alone does not provide?',
+      options: [
+        'The technical ability to send the email',
+        'The expert procedure: which structure to follow, which tone to use and which quality criteria to apply before sending',
+        'Internet access to search for content',
+        'Nothing: the tool alone is enough for a good newsletter',
+      ],
+      correctIndex: 1,
+      explanation: 'The tool only executes the action (sending). The skill adds the know-how: the methodology, the quality criteria and the format that turn an improvised send into a professional, repeatable newsletter.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Skill', def: 'Reusable set of instructions, knowledge, procedures and rules that teaches the model to solve a type of problem well.' },
+    { term: 'Procedure', def: 'Ordered sequence of steps that the skill defines for tackling a task rigorously and repeatably.' },
+    { term: 'Methodology', def: 'The expert method packaged in the skill: what to do, in which order and with which criteria.' },
+    { term: 'Template', def: 'Predefined delivery format included in the skill so results stay consistent.' },
+    { term: 'Tool vs skill', def: 'The tool is the concrete ability to act; the skill is the structured knowledge of how to use it well for a problem.' },
+    { term: 'Reusability', def: 'Key property of skills: defined once, they serve for any case of the same type of problem.' },
+  ],
+  mistakes: [
+    { wrong: 'Skill and tool are the same thing.', right: 'The tool is the concrete ability to act (search, send, calculate); the skill is the structured way of solving a type of problem using those abilities.' },
+    { wrong: 'A skill is a separate AI model.', right: 'No: it is a package of instructions and knowledge used by the same model. Nothing needs to be trained.' },
+    { wrong: 'Skills are only useful for programming.', right: 'They work for finance, marketing, support, writing, research… any repeatable task with a method.' },
+    { wrong: 'Creating a skill requires training a model.', right: 'You “create” one by writing: instructions, methodology, examples, criteria and templates. It is expert documentation, not training.' },
+  ],
+};
+
+export default { es, en };

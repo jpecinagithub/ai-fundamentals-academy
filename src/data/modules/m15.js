@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm15',
   title: 'Cliente-servidor',
   short: 'Cliente-servidor',
@@ -123,3 +123,131 @@ export default {
     { wrong: 'DELETE borra datos de mi ordenador.', right: 'DELETE pide al servidor que elimine un recurso suyo (un producto, un usuario…); no toca tu dispositivo.' },
   ],
 };
+
+const en = {
+  id: 'm15',
+  title: 'Client-server',
+  short: 'Client-server',
+  description: 'The model that powers the internet: a client asks, a server responds. Follow a real request step by step, learn the HTTP methods, the difference between HTTP and HTTPS, and the status codes you will see every day.',
+  icon: 'Server',
+  stage: 'Architecture',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'The client-server dialogue',
+      paragraphs: [
+        'Almost everything that happens on the internet follows the same script: a **client** (your browser, your phone app) asks something of a **server** (a remote computer that is always on, waiting for requests), and the server responds. Requesting the product list, submitting a form, or uploading your profile picture are all client-server dialogues.',
+        'The language of that dialogue is called **HTTP** (HyperText Transfer Protocol): a set of rules about how requests and responses are formulated. You do not need to program it, but you do need to understand its logic: what is asked, how it is asked, and what the server\'s response means.',
+        'Every dialogue has four actors: the client that asks, the server that processes, often a **database** that stores the information, and the exchange format, which is almost always **JSON** (you will see it in module 16).',
+      ],
+    },
+    {
+      kind: 'flow',
+      heading: 'A real request, step by step',
+      caption: 'What happens when your browser requests the product list.',
+      direction: 'down',
+      nodes: [
+        { label: 'BROWSER', desc: 'The frontend requests data: `GET /products`.' },
+        { label: 'SERVER', desc: 'Receives the HTTP request and checks that it is valid.' },
+        { label: 'DATABASE', desc: 'The server queries: "give me all the products".' },
+        { label: 'SERVER', desc: 'Packages the result in JSON format.' },
+        { label: 'BROWSER', desc: 'Receives the JSON and draws the product list on screen.' },
+      ],
+      highlight: [0, 3, 4],
+    },
+    {
+      kind: 'compare',
+      heading: 'HTTP vs. HTTPS',
+      left: {
+        title: 'HTTP',
+        tone: 'poor',
+        items: [
+          'Data travels **unencrypted**, in readable text.',
+          'Anyone on the network (a public Wi-Fi, for example) can read it.',
+          'Acceptable only for public content with no sensitive data.',
+          'The browser marks it as "not secure".',
+        ],
+      },
+      right: {
+        title: 'HTTPS',
+        tone: 'good',
+        items: [
+          'Data travels **encrypted** (the S stands for Secure).',
+          'Nobody can read or modify the communication in transit.',
+          'Mandatory for logins, payments, and any personal data.',
+          'The browser shows the padlock: secure connection.',
+        ],
+      },
+    },
+    {
+      kind: 'table',
+      heading: 'The four HTTP methods you should know',
+      headers: ['Method', 'What it is used for', 'Example'],
+      rows: [
+        ['GET', 'Request data from the server. It modifies nothing.', '`GET /products` → give me the product list.'],
+        ['POST', 'Send new data to the server.', '`POST /orders` → create an order with this data.'],
+        ['PUT', 'Fully update an existing resource.', '`PUT /products/42` → replace product 42 with this data.'],
+        ['DELETE', 'Delete a resource.', '`DELETE /products/42` → delete product 42.'],
+      ],
+    },
+    {
+      kind: 'table',
+      heading: 'Status codes: what the server tells you',
+      headers: ['Code', 'Meaning', 'In plain language'],
+      rows: [
+        ['200', 'OK', 'All good: here is what you asked for.'],
+        ['201', 'Created', 'Successfully created: your order now exists.'],
+        ['400', 'Bad Request', 'Your request is malformed; check it.'],
+        ['401', 'Unauthorized', 'You are not identified: log in first.'],
+        ['404', 'Not Found', 'That does not exist (or the URL is wrong).'],
+        ['500', 'Internal Server Error', 'Server failure: the problem is theirs, not yours.'],
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'The trick to reading any code',
+      body: 'Codes are grouped by hundreds: **2xx = success** (all good), **3xx = redirection** (look elsewhere), **4xx = client error** (your request has a problem), and **5xx = server error** (the failure is theirs). Just by looking at the first digit you know whose fault it is.',
+    },
+    {
+      kind: 'text',
+      heading: 'No advanced programming: what you need to understand',
+      paragraphs: [
+        'You do not need to write a single line of code to master this model. What really matters is the **logic of the dialogue**: who asks, who responds, with which method, and what the response means.',
+        'When you use an AI API (module 18), you will see exactly this: your app will be the client, it will make a `POST` with your question, and receive a `200` with the model\'s response. When a coding agent tells you "the endpoint returns 404", you will know it is calling an address that does not exist.',
+        'Keep three ideas: **GET requests, POST creates**; **4xx is the client\'s fault, 5xx the server\'s**; and **always HTTPS** when sensitive data is involved.',
+      ],
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'You are testing an app and when you press "Save" an error appears with code 401.',
+      question: 'What does it mean, and what should you check first?',
+      options: [
+        'The server is down; it needs to be restarted.',
+        'The request is malformed; the code needs to be rewritten.',
+        'You are not identified: the session has probably expired and you need to log in again.',
+        'The resource does not exist; the URL is misspelled.',
+      ],
+      correctIndex: 2,
+      explanation: 'A 401 (Unauthorized) is a 4xx error: the problem is on the client side, specifically with identification. The first thing to check is whether the session is still active or whether you need to log in again — not restart the server.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Client-server', def: 'Model in which a client requests resources or actions and a server processes them and responds. It is the basis of almost the entire internet.' },
+    { term: 'HTTP', def: 'Protocol (set of rules) that defines how clients and servers communicate on the web.' },
+    { term: 'HTTPS', def: 'Secure version of HTTP: it encrypts communication so nobody can read or modify it in transit.' },
+    { term: 'HTTP method', def: 'Verb indicating the intent of the request: GET (request), POST (create), PUT (update), DELETE (delete).' },
+    { term: 'Status code', def: 'Number returned by the server indicating the result: 2xx success, 4xx client error, 5xx server error.' },
+    { term: 'Request', def: 'Message from the client to the server with a method, an address (endpoint), and optionally data.' },
+    { term: 'Response', def: 'Return message from the server with a status code and, usually, the requested data.' },
+  ],
+  mistakes: [
+    { wrong: 'HTTPS is a different language from HTTP.', right: 'It is the same protocol with encryption (the S stands for Secure): nobody can read or modify the data in transit.' },
+    { wrong: 'GET is used to send form data.', right: 'GET requests data; to send data you use POST, which carries it in the request body rather than in the URL.' },
+    { wrong: 'A 404 means the server is down.', right: '404 = the resource does not exist. If the server were down there would be no response; a 500 does indicate a server failure.' },
+    { wrong: 'DELETE deletes data from my computer.', right: 'DELETE asks the server to remove one of its resources (a product, a user…); it does not touch your device.' },
+  ],
+};
+
+export default { es, en };

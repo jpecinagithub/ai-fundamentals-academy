@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { modules } from '../data/modules';
-import { questions } from '../data/questions';
+import { useLang } from '../i18n/LanguageContext';
+import { useModules, useQuestions } from '../hooks/useContent';
 import { useProgress, moduleStatus } from '../hooks/ProgressContext';
 import { Quiz } from '../components/Quiz';
 import { FlowDiagram } from '../components/FlowDiagram';
@@ -37,14 +37,14 @@ const SIMULATORS = {
   ArchitectureExplorer,
 };
 
-const TEXT_KICKERS = {
-  text: 'Concepto',
-  concepto: 'Concepto',
-  analogia: 'Analogía',
-  explicacion: 'Explicación',
-  ejemplo: 'Ejemplo',
-  practica: 'Práctica',
-  comprueba: 'Comprueba',
+const TEXT_KICKER_KEYS = {
+  text: 'modulepage.kicker.text',
+  concepto: 'modulepage.kicker.concepto',
+  analogia: 'modulepage.kicker.analogia',
+  explicacion: 'modulepage.kicker.explicacion',
+  ejemplo: 'modulepage.kicker.ejemplo',
+  practica: 'modulepage.kicker.practica',
+  comprueba: 'modulepage.kicker.comprueba',
 };
 
 function paragraphs(section) {
@@ -53,10 +53,11 @@ function paragraphs(section) {
 }
 
 function SectionRenderer({ section }) {
+  const { t } = useLang();
   switch (section.kind) {
     case 'text': {
       const key = (section.variant || section.kind || 'text').toLowerCase();
-      const kicker = TEXT_KICKERS[key] || 'Concepto';
+      const kicker = t(TEXT_KICKER_KEYS[key] || 'modulepage.kicker.text');
       return (
         <div className="section">
           <span className="section-kicker">{kicker}</span>
@@ -114,14 +115,14 @@ function SectionRenderer({ section }) {
       const body = paragraphs(section);
       return (
         <div className="card" style={{ margin: '1.2rem 0' }}>
-          <span className="badge badge-primary">{section.label || 'Ejemplo'}</span>
+          <span className="badge badge-primary">{section.label || t('modulepage.exampleLabel')}</span>
           {section.heading && <h3 style={{ margin: '0.6rem 0 0.4rem' }}>{section.heading}</h3>}
           {body.map((p, i) => (
             <p key={i}><RichText text={p} /></p>
           ))}
           {section.result && (
             <p className="card-sub" style={{ marginBottom: 0 }}>
-              <strong>Resultado:</strong> <RichText text={section.result} />
+              <strong>{t('modulepage.result')}</strong> <RichText text={section.result} />
             </p>
           )}
         </div>
@@ -187,6 +188,9 @@ const BADGE_CLASS = {
 export function ModulePage() {
   const { id } = useParams();
   const { state, markVisited, recordQuiz } = useProgress();
+  const { t } = useLang();
+  const modules = useModules();
+  const questions = useQuestions();
 
   useEffect(() => markVisited(id), [id]);
 
@@ -198,10 +202,10 @@ export function ModulePage() {
       <div className="page-narrow">
         <div className="empty-state">
           <div className="big-ico">{getIcon('Search', 48)}</div>
-          <h3>Módulo no encontrado</h3>
-          <p>El módulo que buscas no existe.</p>
+          <h3>{t('modulepage.notFound')}</h3>
+          <p>{t('modulepage.notFoundText')}</p>
           <Link className="btn btn-primary" to="/curso">
-            Volver al curso
+            {t('modulepage.backToCourse')}
           </Link>
         </div>
       </div>
@@ -236,16 +240,16 @@ export function ModulePage() {
           </span>
           <div>
             <span className="section-kicker" style={{ marginBottom: '0.2rem' }}>
-              Módulo {idx + 1} de {modules.length} · {mod.stage}
+              {t('modulepage.moduleOf', { n: idx + 1, total: modules.length })} · {mod.stage}
             </span>
             <h1 style={{ margin: 0 }}>{mod.title}</h1>
           </div>
         </div>
         <p className="card-sub" style={{ maxWidth: 720 }}>{mod.description}</p>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <span className={`badge ${BADGE_CLASS[st.status]}`}>{st.label}</span>
+          <span className={`badge ${BADGE_CLASS[st.status]}`}>{t(`progresspage.status.${st.status}`)}</span>
           {best != null && (
-            <span className="badge badge-primary">Mejor nota: {best}%</span>
+            <span className="badge badge-primary">{t('modulepage.bestScore', { score: best })}</span>
           )}
         </div>
       </header>
@@ -256,7 +260,7 @@ export function ModulePage() {
 
       {keyConcepts.length > 0 && (
         <div className="section">
-          <h2 className="section-title">Conceptos clave</h2>
+          <h2 className="section-title">{t('modulepage.keyConcepts')}</h2>
           <div className="grid-3">
             {keyConcepts.map((kc, i) => (
               <div key={i} className="card" style={{ padding: '1.1rem 1.25rem' }}>
@@ -276,7 +280,7 @@ export function ModulePage() {
 
       {mistakes.length > 0 && (
         <div className="section">
-          <h2 className="section-title">Errores frecuentes</h2>
+          <h2 className="section-title">{t('modulepage.commonMistakes')}</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {mistakes.map((mk, i) => (
               <div key={i} className="card" style={{ padding: '1rem 1.25rem' }}>
@@ -317,14 +321,14 @@ export function ModulePage() {
           </Link>
         ) : (
           <Link className="btn btn-primary" to="/examen-final">
-            Ir al examen final {getIcon('ArrowRight', 16)}
+            {t('modulepage.goFinalExam')} {getIcon('ArrowRight', 16)}
           </Link>
         )}
       </nav>
 
       <div className="section">
-        <span className="section-kicker">{getIcon('ClipboardCheck', 14)} Evaluación</span>
-        <h2 className="section-title">Test del módulo</h2>
+        <span className="section-kicker">{getIcon('ClipboardCheck', 14)} {t('modulepage.assessment')}</span>
+        <h2 className="section-title">{t('modulepage.moduleTest')}</h2>
         <Quiz
           questions={pickRandom(questions.filter((q) => q.moduleId === id), 10)}
           moduleId={id}

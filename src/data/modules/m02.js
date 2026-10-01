@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm2',
   title: 'Qué es un LLM',
   short: 'LLM',
@@ -89,3 +89,97 @@ export default {
     { wrong: 'El modelo razona como un humano antes de responder.', right: 'Genera texto probable paso a paso, sin planificar la respuesta completa de antemano. Puede simular razonamiento sin hacerlo de verdad.' },
   ],
 };
+
+const en = {
+  id: 'm2',
+  title: 'What is an LLM',
+  short: 'LLM',
+  description: 'Large Language Models: what they are, how they are trained, why they predict the next token, and why they sometimes hallucinate.',
+  icon: 'Cpu',
+  stage: 'LLM',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'LLM = Large Language Model',
+      paragraphs: [
+        'An **LLM** (Large Language Model) is an AI model trained on massive amounts of text to **understand and generate human language**. "Large" refers to its size: billions of parameters tuned during training. GPT, Claude, and Gemini are LLMs.',
+        'What exactly is "a model"? Think of it as a **gigantic mathematical formula** (billions of numbers called **parameters**) that, given an input text, computes what text should come next. It is not a program with grammar rules: it is a probability machine over language.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Training: reading the internet to learn language',
+      paragraphs: [
+        'During **training**, the model "reads" huge amounts of text: web pages, books, articles, code... But it does not memorize it like a parrot. Its training task is always the same and very simple: **given a fragment of text, predict the word (token) that comes next**.',
+        'Each time it gets it right or wrong, it slightly adjusts its billions of parameters. Repeat this trillions of times and something surprising emerges: the model learns grammar, facts, writing styles, logic, and even programming. All from a single game: guessing what comes next.',
+        'This process costs millions of euros in computing and takes weeks or months. But once trained, **using** the model (**inference**) is cheap and fast: that is what happens every time you type in ChatGPT.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'The central trick: predicting the next token',
+      paragraphs: [
+        'When you type "The capital of France is...", the model does not "know" the answer like you do. It computes **probabilities** for each possible continuation: "Paris" 97%, "Lyon" 1%, "Madrid" 0.1%... and picks one (usually the most likely, with a touch of randomness).',
+        'Then it repeats the process: with "The capital of France is Paris" as context, it predicts the next token, and the next, and the next. **The answer is built token by token**, as if the model were writing without having planned the full sentence in advance.',
+        'This explains two fundamental things: why LLMs write so fluently (they master the probabilities of language) and why they sometimes invent data (they choose what is **plausible**, not what is verified).',
+      ],
+    },
+    { kind: 'simulator', component: 'TokenProbability' },
+    {
+      kind: 'text',
+      heading: 'Why an LLM is NOT a database',
+      paragraphs: [
+        'It is tempting to imagine the model "looking up" the answer in its memory, like Google searches an index. **It does not work like that.** In a database, information is stored exactly and retrievably: you ask for a datum and it returns that datum or nothing.',
+        'An LLM does not store facts in tables; it stores **statistical patterns** compressed into its parameters. When it answers, it **reconstructs** the likely answer from those patterns. That is why it can answer questions it never saw in training... and also why it can "misremember" a fact with total fluency.',
+        'Practical consequence: an LLM is brilliant at writing, summarizing, explaining, and reasoning about text, but it is a **bad ledger of exact data**. For critical facts (figures, dates, quotes), it needs external help: web search or documents (you will see this in the Tools module).',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Why it gets things wrong: hallucinations',
+      paragraphs: [
+        'A **hallucination** is when the model generates false information with total confidence: an invented quote, an incorrect date, a datum that sounds perfect but does not exist. It happens because the model optimizes for **plausibility**, not truth.',
+        'Hallucinations are more likely when you ask for very specific or uncommon data (exact statistics, academic references, obscure details), when the topic was poorly represented in its training, or when the question assumes something false and the model follows it instead of correcting it.',
+        'How to defend yourself? Ask it to cite sources, verify important data through another channel, give it the document with the information yourself (you will see how in the context module), and distrust **confidence in tone**: an LLM sounds just as convinced when it is right as when it invents.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'info',
+      title: 'LLM ≠ ChatGPT (nor Claude, nor Gemini)',
+      body: 'This distinction will make you sound like a professional: **GPT is the model** (the "mathematical formula"); **ChatGPT is the product** (the app with interface, history, memory, and tools built on that model). The same goes for **Claude** (Anthropic product built on its Claude models) and **Gemini** (Google product built on its Gemini models). When a company "uses AI", it is normally using a product built on an LLM, not the raw model.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'You ask an LLM: "In what year was the fictitious company Tecnologías Iberoamericanas S.L. founded?" and it answers with total confidence: "In 1987, in Seville".',
+      question: 'What happened here?',
+      options: [
+        'The model consulted its internal database and found the datum',
+        'The model hallucinated: it generated a plausible answer (year + city sound believable) without verifying it, because it optimizes plausibility, not truth',
+        'The model searched the internet in real time',
+        'Impossible: LLMs never invent data',
+      ],
+      correctIndex: 1,
+      explanation: 'LLMs generate the most probable text, not the truest. Faced with an invented company, it builds a believable answer (year + Spanish city) with total fluency. That is why exact data must always be verified.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'LLM', def: 'Large Language Model: large AI model trained on massive text to understand and generate human language.' },
+    { term: 'Model', def: 'Gigantic mathematical formula (billions of parameters) that computes what text should come next.' },
+    { term: 'Training', def: 'Phase in which the model adjusts its parameters by predicting the next token trillions of times over massive text.' },
+    { term: 'Parameters', def: 'The internal numbers of the model (billions) that encode the patterns learned during training.' },
+    { term: 'Inference', def: 'Phase of using the already-trained model: generating answers from an input. It is fast and cheap compared to training.' },
+    { term: 'Next-token probability', def: 'Central mechanism of the LLM: it computes which token is most likely to follow the given text and generates it, repeating the process.' },
+    { term: 'Hallucination', def: 'False answer generated with total confidence because the model optimizes text plausibility, not its truthfulness.' },
+    { term: 'Product vs model', def: 'The model (GPT, Claude, Gemini) is the engine; the product (ChatGPT, Claude app, Gemini app) is the application built on it.' },
+  ],
+  mistakes: [
+    { wrong: 'An LLM is a giant database that looks up answers.', right: 'It does not store facts in tables: it stores statistical patterns and reconstructs likely answers token by token. That is why it "remembers" approximately.' },
+    { wrong: 'GPT and ChatGPT are the same thing.', right: 'GPT is the model; ChatGPT is the product built on it. Just like Claude and Gemini are products built on their respective models.' },
+    { wrong: 'If it says it confidently, it is true.', right: 'A confident tone does not indicate truthfulness: the model sounds just as convinced when it is right as when it hallucinates.' },
+    { wrong: 'The model reasons like a human before answering.', right: 'It generates likely text step by step, without planning the full answer in advance. It can simulate reasoning without actually doing it.' },
+  ],
+};
+
+export default { es, en };

@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm14',
   title: 'Frontend y backend',
   short: 'Front & Back',
@@ -111,3 +111,119 @@ export default {
     { wrong: 'Si algo se ve mal en pantalla, el fallo es del backend.', right: 'Lo visual es responsabilidad del frontend; el backend solo entrega los datos. Hay que diagnosticar en qué mitad está el problema.' },
   ],
 };
+
+const en = {
+  id: 'm14',
+  title: 'Frontend and backend',
+  short: 'Front & Back',
+  description: 'Every modern application has two halves: the frontend, what you see and touch in the browser, and the backend, the logic that lives on servers. Learn what each one does, how they communicate and the essential vocabulary.',
+  icon: 'Layers',
+  stage: 'Architecture',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'Two halves of every application',
+      paragraphs: [
+        'When you use an online store, you see buttons, photos and prices. That is the **frontend**: everything that runs in your browser and that you interact with directly. But when you press “Buy”, something has to check the stock, calculate the total, charge your card and save the order. That is the **backend**: the services that live on servers and that you never see.',
+        'The golden rule: the **frontend is what runs in the browser** (React, HTML, CSS, JavaScript) and the **backend is services that run on servers** (Node.js, Python, Java, .NET). Neither can do the other’s job: the frontend cannot store data securely and the backend cannot draw a button on your screen.',
+        'Understanding this division is essential for working with AI: when you ask a coding agent to modify “the visual part”, it is touching the frontend; when you ask for “the user logic”, it is touching the backend.',
+      ],
+    },
+    {
+      kind: 'flow',
+      heading: 'The journey of a click',
+      caption: 'Follow the complete journey from the moment the user clicks to the moment they see the result.',
+      direction: 'right',
+      nodes: [
+        { label: 'USER', desc: 'Clicks “View products”.' },
+        { label: 'BROWSER', desc: 'Runs the frontend: React/JavaScript code on your computer.' },
+        { label: 'FRONTEND', desc: 'Asks the backend for data with an HTTP request: `GET /products`.' },
+        { label: 'BACKEND', desc: 'Receives the request, applies the logic and queries the database (Node.js, Python…).' },
+        { label: 'DATABASE', desc: 'Returns the product list to the backend.' },
+        { label: 'RESPONSE', desc: 'The backend sends the data (JSON) and the frontend draws it on screen.' },
+      ],
+      highlight: [2, 3],
+    },
+    {
+      kind: 'compare',
+      heading: 'Frontend vs. backend, face to face',
+      left: {
+        title: 'Frontend',
+        tone: 'a',
+        items: [
+          'It runs in the user’s browser.',
+          'What you see and touch: screens, buttons, forms.',
+          'Technologies: HTML, CSS, JavaScript, React.',
+          'It asks the backend for data; it never talks to the database.',
+          'Its code is visible to anyone (right-click → view source).',
+        ],
+      },
+      right: {
+        title: 'Backend',
+        tone: 'b',
+        items: [
+          'It runs on remote servers.',
+          'The invisible part: logic, calculations, security, permissions.',
+          'Technologies: Node.js, Python, Java, .NET.',
+          'It talks to the database and decides which data to deliver.',
+          'Its code is protected on the server; nobody sees it.',
+        ],
+      },
+    },
+    {
+      kind: 'table',
+      heading: 'Typical technologies on each side',
+      headers: ['Side', 'Languages and frameworks', 'What they are for'],
+      rows: [
+        ['Frontend', 'HTML, CSS, JavaScript, React, Vue, Angular', 'Structure, style and interactivity of what you see in the browser.'],
+        ['Backend', 'Node.js, Python (Django/Flask), Java (Spring), .NET', 'Business logic, APIs, authentication and data connection.'],
+        ['Database', 'PostgreSQL, MySQL, MongoDB', 'Storing data persistently and querying it.'],
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'The vocabulary: client, server, request, response, endpoint',
+      paragraphs: [
+        'Five words you will see everywhere. The **client** is the one asking (normally your browser or your app). The **server** is the one answering (the backend). The **request** is the message traveling from client to server: “give me the product list”. The **response** is the message back, normally with the requested data.',
+        'The **endpoint** is the specific “address” the client calls inside the server, like `GET /products` or `POST /login`. Think of the backend as a building and the endpoints as the service windows: each one handles a different type of request.',
+        'With these five words you can already read the documentation of almost any API and understand what is happening when an app “loads data”.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'The restaurant',
+      body: 'The frontend is the **dining room**: the tables, the menu, the waiters you see. The backend is the **kitchen**: you do not see it, but that is where they decide what can be served, each dish is prepared and the stockroom is controlled. You (the client) ask the waiter (request to an endpoint); the kitchen prepares the dish (logic + database) and the waiter brings it to your table (response the frontend displays). You never walk into the kitchen to get the food yourself: just like the frontend never accesses the database directly.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'An online store shows the wrong price for a product: the screen shows €19.99 but checkout charges €29.99.',
+      question: 'Where is the problem, in the frontend or the backend?',
+      options: [
+        'In the frontend, because it is what displays the price.',
+        'In the backend, because it is what calculates and validates the real price being charged.',
+        'In the database, because prices only live there.',
+        'In the user’s browser, because it displays numbers wrong.',
+      ],
+      correctIndex: 1,
+      explanation: 'The price being charged is decided by the backend (logic + data). The frontend showing €19.99 may be stale data on screen, but the serious part — charging €29.99 — is determined by the server. That is why critical logic (prices, payments, permissions) always lives in the backend, never in the frontend.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Frontend', def: 'Part of the application that runs in the browser: what the user sees and interacts with (HTML, CSS, JavaScript, React).' },
+    { term: 'Backend', def: 'Services that run on servers: business logic, security and database connection (Node.js, Python, Java, .NET).' },
+    { term: 'Client', def: 'Who initiates the request for data or services; normally the user’s browser or app.' },
+    { term: 'Server', def: 'Remote machine that receives requests, runs the backend logic and returns responses.' },
+    { term: 'Request', def: 'Message the client sends to the server asking for data or actions.' },
+    { term: 'Response', def: 'Message the server returns to the client, normally with the requested data.' },
+    { term: 'Endpoint', def: 'Specific address inside the backend that handles one type of request, like `GET /products`.' },
+  ],
+  mistakes: [
+    { wrong: 'Frontend is design and backend is programming.', right: 'Both are programming: the frontend is code that runs in the browser; the backend, code that runs on servers.' },
+    { wrong: 'The frontend talks directly to the database.', right: 'Never: the frontend asks the backend for data over HTTP, and the backend is what talks to the database.' },
+    { wrong: 'Backend and database are the same thing.', right: 'The database stores data; the backend is the logic that decides which data to deliver, to whom and how.' },
+    { wrong: 'If something looks wrong on screen, the bug is in the backend.', right: 'Visuals are the frontend’s responsibility; the backend only delivers the data. You have to diagnose which half holds the problem.' },
+  ],
+};
+
+export default { es, en };

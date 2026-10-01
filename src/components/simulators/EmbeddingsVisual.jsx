@@ -1,37 +1,42 @@
 import { useState } from 'react';
 import { MapPin } from 'lucide-react';
+import { useLang } from '../../i18n/LanguageContext';
 
-const WORDS = [
-  { w: 'perro', x: 120, y: 150 },
-  { w: 'gato', x: 160, y: 170 },
-  { w: 'cachorro', x: 100, y: 120 },
-  { w: 'coche', x: 320, y: 80 },
-  { w: 'avión', x: 340, y: 120 },
-  { w: 'manzana', x: 300, y: 220 },
-  { w: 'plátano', x: 270, y: 240 },
+const WORD_POINTS = [
+  { id: 'dog', x: 120, y: 150 },
+  { id: 'cat', x: 160, y: 170 },
+  { id: 'puppy', x: 100, y: 120 },
+  { id: 'car', x: 320, y: 80 },
+  { id: 'plane', x: 340, y: 120 },
+  { id: 'apple', x: 300, y: 220 },
+  { id: 'banana', x: 270, y: 240 },
 ];
 
 const LINKS = [
-  { from: 'perro', to: 'gato', pct: '96 %' },
-  { from: 'perro', to: 'cachorro', pct: '93 %' },
-  { from: 'perro', to: 'coche', pct: '21 %' },
+  { from: 'dog', to: 'cat', pct: '96 %' },
+  { from: 'dog', to: 'puppy', pct: '93 %' },
+  { from: 'dog', to: 'car', pct: '21 %' },
 ];
 
-function byWord(name) {
-  return WORDS.find((p) => p.w === name);
-}
-
 export function EmbeddingsVisual() {
+  const { t } = useLang();
   const [showLinks, setShowLinks] = useState(false);
   const [tip, setTip] = useState(null); // { x, y, text }
+
+  const words = WORD_POINTS.map((p) => ({ ...p, w: t(`embeddingsvisual.word.${p.id}`) }));
+
+  function byWord(id) {
+    return words.find((p) => p.id === id);
+  }
+
+  const wordName = (id) => t(`embeddingsvisual.word.${id}`);
 
   return (
     <div>
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title"><MapPin size={18} /> Mapa de embeddings (2D simplificado)</h3>
+        <h3 className="card-title"><MapPin size={18} /> {t('embeddingsvisual.title')}</h3>
         <p className="card-sub">
-          Cada palabra es un vector numérico. En los modelos reales tienen miles de dimensiones;
-          aquí las vemos proyectadas en 2D. Pasa el ratón sobre un punto para ver sus coordenadas.
+          {t('embeddingsvisual.sub')}
         </p>
         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.75rem', cursor: 'pointer' }}>
           <input
@@ -39,7 +44,7 @@ export function EmbeddingsVisual() {
             checked={showLinks}
             onChange={(e) => setShowLinks(e.target.checked)}
           />
-          <strong>Mostrar similitudes</strong>
+          <strong>{t('embeddingsvisual.show_similarities')}</strong>
         </label>
 
         <div style={{ position: 'relative', marginTop: '0.75rem' }}>
@@ -77,10 +82,10 @@ export function EmbeddingsVisual() {
                 );
               })}
 
-            {WORDS.map((p) => (
+            {words.map((p) => (
               <g
-                key={p.w}
-                onMouseEnter={() => setTip({ x: p.x, y: p.y, text: `${p.w} → coordenadas (${p.x}, ${p.y})` })}
+                key={p.id}
+                onMouseEnter={() => setTip({ x: p.x, y: p.y, text: t('embeddingsvisual.tooltip', { w: p.w, x: p.x, y: p.y }) })}
                 onMouseLeave={() => setTip(null)}
                 style={{ cursor: 'pointer' }}
               >
@@ -117,10 +122,14 @@ export function EmbeddingsVisual() {
       </div>
 
       <div className="callout info">
-        <strong>Leyenda:</strong> las palabras con significado parecido («perro», «gato», «cachorro»)
-        quedan cerca entre sí: sus vectores apuntan casi en la misma dirección (similitud 96 % y 93 %).
-        «Coche» está lejos (21 %): comparte poco significado. Así «entiende» el modelo el lenguaje:
-        no con definiciones, sino con <em>distancias numéricas entre vectores</em>.
+        <strong>{t('embeddingsvisual.legend_label')}</strong>{' '}
+        {t('embeddingsvisual.legend_body', {
+          dog: wordName('dog'),
+          cat: wordName('cat'),
+          puppy: wordName('puppy'),
+          car: wordName('car'),
+        })}
+        <em>{t('embeddingsvisual.legend_em')}</em>.
       </div>
     </div>
   );

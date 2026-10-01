@@ -1,61 +1,62 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Brain, Bot, Wrench, LayoutDashboard, GitBranch } from 'lucide-react';
+import { useLang } from '../i18n/LanguageContext';
 
 /** Tree data: "El mapa de la IA". Child moduleId null = not clickable. */
 const BRANCHES = [
   {
-    label: 'LLM',
+    labelKey: 'knowledgemap.label.llm',
     moduleId: 'm2',
     Icon: Brain,
     children: [
-      { label: 'Tokens', moduleId: 'm3' },
-      { label: 'Contexto', moduleId: 'm4' },
-      { label: 'Prompts', moduleId: 'm5' },
-      { label: 'Inferencia', moduleId: 'm2' },
+      { labelKey: 'knowledgemap.label.tokens', moduleId: 'm3' },
+      { labelKey: 'knowledgemap.label.contexto', moduleId: 'm4' },
+      { labelKey: 'knowledgemap.label.prompts', moduleId: 'm5' },
+      { labelKey: 'knowledgemap.label.inferencia', moduleId: 'm2' },
     ],
   },
   {
-    label: 'Agente',
+    labelKey: 'knowledgemap.label.agente',
     moduleId: 'm11',
     Icon: Bot,
     children: [
-      { label: 'LLM', moduleId: 'm2' },
-      { label: 'Tools', moduleId: 'm7' },
-      { label: 'Memoria', moduleId: 'm6' },
-      { label: 'Skills', moduleId: 'm8' },
-      { label: 'Loops', moduleId: 'm10' },
+      { labelKey: 'knowledgemap.label.llm', moduleId: 'm2' },
+      { labelKey: 'knowledgemap.label.tools', moduleId: 'm7' },
+      { labelKey: 'knowledgemap.label.memoria', moduleId: 'm6' },
+      { labelKey: 'knowledgemap.label.skills', moduleId: 'm8' },
+      { labelKey: 'knowledgemap.label.loops', moduleId: 'm10' },
     ],
   },
   {
-    label: 'Tools',
+    labelKey: 'knowledgemap.label.tools',
     moduleId: 'm7',
     Icon: Wrench,
     children: [
-      { label: 'APIs', moduleId: 'm17' },
-      { label: 'MCP', moduleId: 'm9' },
+      { labelKey: 'knowledgemap.label.apis', moduleId: 'm17' },
+      { labelKey: 'knowledgemap.label.mcp', moduleId: 'm9' },
     ],
   },
   {
-    label: 'Aplicación',
+    labelKey: 'knowledgemap.label.aplicacion',
     moduleId: 'm27',
     Icon: LayoutDashboard,
     children: [
-      { label: 'Frontend', moduleId: 'm14' },
-      { label: 'Backend', moduleId: 'm14' },
-      { label: 'API', moduleId: 'm17' },
-      { label: 'LLM', moduleId: 'm2' },
-      { label: 'Base de datos', moduleId: null },
+      { labelKey: 'knowledgemap.label.frontend', moduleId: 'm14' },
+      { labelKey: 'knowledgemap.label.backend', moduleId: 'm14' },
+      { labelKey: 'knowledgemap.label.api', moduleId: 'm17' },
+      { labelKey: 'knowledgemap.label.llm', moduleId: 'm2' },
+      { labelKey: 'knowledgemap.label.basedatos', moduleId: null },
     ],
   },
   {
-    label: 'Desarrollo',
+    labelKey: 'knowledgemap.label.desarrollo',
     moduleId: 'm23',
     Icon: GitBranch,
     children: [
-      { label: 'Git', moduleId: 'm23' },
-      { label: 'GitHub', moduleId: 'm24' },
-      { label: 'Vercel', moduleId: 'm25' },
+      { labelKey: 'knowledgemap.label.git', moduleId: 'm23' },
+      { labelKey: 'knowledgemap.label.github', moduleId: 'm24' },
+      { labelKey: 'knowledgemap.label.vercel', moduleId: 'm25' },
     ],
   },
 ];
@@ -66,6 +67,7 @@ const BRANCHES = [
  * nodes without moduleId are not clickable.
  */
 export function KnowledgeMap() {
+  const { t } = useLang();
   const navigate = useNavigate();
 
   const go = (moduleId) => {
@@ -75,18 +77,19 @@ export function KnowledgeMap() {
   const renderNode = (node, { isRoot = false, Icon = null } = {}) => {
     const clickable = Boolean(node.moduleId);
     const cls = isRoot ? 'kmap-node kmap-root' : 'kmap-node';
+    const label = t(node.labelKey);
     return (
       <button
-        key={`${node.label}-${node.moduleId ?? 'none'}`}
+        key={`${node.labelKey}-${node.moduleId ?? 'none'}`}
         type="button"
         className={cls}
         onClick={clickable ? () => go(node.moduleId) : undefined}
         disabled={!clickable}
         style={!clickable ? { cursor: 'default' } : undefined}
-        title={clickable ? `Ir al módulo ${node.moduleId}` : node.label}
+        title={clickable ? t('knowledgemap.goto', { id: node.moduleId }) : label}
       >
         {Icon && <Icon size={isRoot ? 20 : 16} />}
-        <span>{node.label}</span>
+        <span>{label}</span>
       </button>
     );
   };
@@ -94,7 +97,7 @@ export function KnowledgeMap() {
   return (
     <div className="kmap">
       {BRANCHES.map((branch) => (
-        <div key={branch.label} className="kmap-branch">
+        <div key={branch.labelKey} className="kmap-branch">
           {renderNode(branch, { isRoot: true, Icon: branch.Icon })}
           <div className="kmap-children">
             {branch.children.map((child) => renderNode(child))}

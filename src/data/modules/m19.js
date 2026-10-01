@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm19',
   title: 'Temperature y parámetros: el carácter del modelo',
   short: 'Temperature',
@@ -102,3 +102,110 @@ export default {
     { wrong: 'Los modelos de razonamiento sirven para todo.', right: 'Brillan en problemas complejos, pero son más lentos y caros; para tareas simples basta un modelo rápido.' },
   ],
 };
+
+const en = {
+  id: 'm19',
+  title: 'Temperature and parameters: the model\'s personality',
+  short: 'Temperature',
+  description: 'Temperature, top-p, and max tokens are the dials that control how a model responds: creativity versus precision. Learn to tune them and to choose between fast models and reasoning models.',
+  icon: 'Thermometer',
+  stage: 'APIs',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'Temperature: the creativity dial',
+      paragraphs: [
+        'When a model generates text, it does not choose "the" next word: it computes **probabilities** for many candidate words and picks among them. The **temperature** parameter controls how much risk it takes in that choice.',
+        'With **temperature 0**, the model always picks the most likely option: **deterministic** responses (same question → same answer), precise and conservative. With **temperature 1** (or higher), it allows itself to pick less likely options: more **varied, creative, and unpredictable** responses… with a higher risk of error.',
+        'Think of temperature as the dial between **"be precise"** and **"surprise me"**. It does not make the model smarter or dumber: it changes its personality.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Max tokens and top-p, in plain language',
+      paragraphs: [
+        '**Max tokens** is the response length limit: how many tokens at most the model can generate before stopping. It does not limit how "smart" it is, but **how long it can talk**. If you set it too low, responses come out cut off mid-sentence; if you set it too high, you pay for tokens you may not need.',
+        '**Top-p** (also called *nucleus sampling*) is another variability dial, a cousin of temperature: instead of adjusting the overall risk, it trims the menu of candidate words to the most likely ones adding up to probability `p`. With a low `top-p` (e.g. 0.1), the model only chooses among the safest options; with a high `top-p` (e.g. 0.9), the menu is broad and varied.',
+        'In practice, tune **one of the two** (temperature or top-p), not both at once: they are two ways of moving the same needle between precision and creativity.',
+      ],
+    },
+    {
+      kind: 'table',
+      heading: 'Temperature in practice',
+      headers: ['Value', 'Behavior', 'Use it when…'],
+      rows: [
+        ['0 – 0.2', 'Deterministic: same answer every time. Precise and conservative.', 'Classifying data, extracting information, code, answers that must be reliable.'],
+        ['0.3 – 0.6', 'Balanced: some variety without losing the plot.', 'Professional writing, summaries, explanations.'],
+        ['0.7 – 1', 'Creative: diverse and unpredictable responses.', 'Business ideas, names, stories, brainstorming.'],
+        ['> 1', 'Chaotic: very original but prone to incoherence.', 'Experimentation; rarely in production.'],
+      ],
+    },
+    {
+      kind: 'compare',
+      heading: 'Fast models vs. reasoning models',
+      left: {
+        title: 'Fast models',
+        tone: 'a',
+        items: [
+          'They respond directly, almost instantly.',
+          'Ideal for simple tasks: classifying, summarizing, translating, writing.',
+          'Cheaper per token and with lower latency.',
+          'They can fail at problems that demand several steps of logic.',
+          'Example: "summarize this email in two lines".',
+        ],
+      },
+      right: {
+        title: 'Reasoning models',
+        tone: 'b',
+        items: [
+          'They think before responding: they generate an internal step-by-step reasoning.',
+          'Ideal for complex problems: math, hard code, analysis.',
+          'Slower and more expensive (they generate many "thinking" tokens).',
+          'Overkill for trivial tasks: you would overpay and wait longer.',
+          'Example: "design the tax strategy for this transaction".',
+        ],
+      },
+    },
+    {
+      kind: 'simulator',
+      component: 'TemperatureLab',
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'The golden rule',
+      body: '**Low temperature for data, high temperature for ideas.** If you need the model to classify, extract, or compute → 0–0.2. If you need it to invent, propose, or narrate → 0.7–1. And remember: temperature 0 does not mean "no errors", it means "the same error every time" if the model gets it wrong. Precision also depends on the prompt and the chosen model.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'You have two tasks: (A) extract the amounts from 200 invoices in JSON format; (B) propose 10 names for a new coffee brand.',
+      question: 'Which configuration makes the most sense?',
+      options: [
+        'Temperature 0.9 for both: that way the model performs at its best.',
+        'Temperature 0–0.2 for (A) and 0.7–1 for (B): precision for data, creativity for ideas.',
+        'Temperature 0–0.2 for (B) and 0.7–1 for (A): the other way around.',
+        'It does not matter: temperature does not affect the result.',
+      ],
+      correctIndex: 1,
+      explanation: 'Extracting amounts demands determinism and reliability → low temperature. Inventing names calls for variety and originality → high temperature. Tuning temperature (or top-p) to the task is one of the most profitable decisions when using AI APIs.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Temperature', def: 'Parameter (0 to 1+) that controls response variability: 0 = deterministic and precise; 1 = creative and unpredictable.' },
+    { term: 'Top-p', def: 'Parameter that limits candidate words to the most likely ones adding up to probability p; another way to regulate creativity.' },
+    { term: 'Max tokens', def: 'Maximum number of tokens the model can generate in a response; it controls length, not quality.' },
+    { term: 'Determinism', def: 'Property of always giving the same response to the same input; achieved with temperature 0.' },
+    { term: 'Fast model', def: 'Model optimized to respond directly, cheaply, and with low latency; ideal for simple tasks.' },
+    { term: 'Reasoning model', def: 'Model that generates internal step-by-step reasoning before responding; better at complex problems, but slower and more expensive.' },
+    { term: 'Hallucination', def: 'Error in which the model generates false information with total confidence; the risk increases with high temperature.' },
+  ],
+  mistakes: [
+    { wrong: 'High temperature = smarter model.', right: 'It does not change intelligence: it changes variability. High = more diverse and unpredictable responses, with a higher risk of error.' },
+    { wrong: 'With temperature 0 the model never makes mistakes.', right: 'It will be deterministic (same answer every time), but it can repeat the same mistake with total confidence.' },
+    { wrong: 'Max tokens limits how smart the model is.', right: 'It limits response length, not quality; if it runs short, the response comes out cut off mid-sentence.' },
+    { wrong: 'Reasoning models are good for everything.', right: 'They shine at complex problems, but they are slower and more expensive; a fast model is enough for simple tasks.' },
+  ],
+};
+
+export default { es, en };

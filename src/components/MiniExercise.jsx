@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Check, X, RotateCcw } from 'lucide-react';
 import { cx } from '../utils/format';
+import { useLang } from '../i18n/LanguageContext';
 
 const LETTERS = ['A', 'B', 'C', 'D'];
 
@@ -9,6 +10,7 @@ const LETTERS = ['A', 'B', 'C', 'D'];
  * 4 clickable options, instant feedback + explanation, retry button.
  */
 export function MiniExercise({ prompt, question, options, correctIndex, explanation }) {
+  const { t } = useLang();
   const [selected, setSelected] = useState(null);
 
   const answered = selected !== null;
@@ -58,7 +60,7 @@ export function MiniExercise({ prompt, question, options, correctIndex, explanat
         <div className="fade-in" style={{ marginTop: '1.1rem' }}>
           <div className={cx('feedback', isOk ? 'ok' : 'ko')}>
             {isOk ? <Check size={18} /> : <X size={18} />}
-            <strong>{isOk ? 'Correcto' : 'Incorrecto'}</strong>
+            <strong>{isOk ? t('miniexercise.correct') : t('miniexercise.incorrect')}</strong>
           </div>
           {explanation && (
             <p style={{ marginTop: '0.6rem', color: 'var(--text-muted)', fontSize: '0.93rem' }}>
@@ -68,7 +70,7 @@ export function MiniExercise({ prompt, question, options, correctIndex, explanat
           <div style={{ marginTop: '0.9rem' }}>
             <button type="button" className="btn btn-ghost" onClick={retry}>
               <RotateCcw size={16} />
-              Reintentar
+              {t('miniexercise.retry')}
             </button>
           </div>
         </div>

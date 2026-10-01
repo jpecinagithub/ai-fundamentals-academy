@@ -1,42 +1,35 @@
 import { useState } from 'react';
 import { Thermometer, Code2, Lightbulb } from 'lucide-react';
+import { useLang } from '../../i18n/LanguageContext';
 
-const PROMPT = 'Escribe una frase sobre el mar al amanecer.';
-
-const LEVELS = {
-  determinista: [
-    'El mar al amanecer refleja la luz del sol sobre sus olas tranquilas.',
-    'El mar al amanecer muestra el reflejo del sol en aguas serenas.',
-    'Al amanecer, el mar refleja la luz solar sobre sus olas calmadas.',
-  ],
-  equilibrado: [
-    'El mar al amanecer se tiñe de dorado mientras las olas susurran en la orilla.',
-    'Al amanecer, la niebla se disipa y el mar despierta en tonos cobrizos.',
-    'Un amanecer plateado acaricia el mar y las gaviotas anuncian el día.',
-  ],
-  creativo: [
-    'El amanecer derrama cobre fundido sobre un mar que sueña despierto.',
-    'El mar, pintor sonámbulo, firma el alba con brochazos de fuego líquido.',
-    'Entre la bruma, el horizonte bebe luz y el mar inventa un idioma de espuma.',
-  ],
-};
-
-function labelFor(t) {
-  if (t <= 0.3) return { key: 'determinista', name: 'Determinista', Icon: Code2 };
-  if (t <= 0.7) return { key: 'equilibrado', name: 'Equilibrado', Icon: Thermometer };
-  return { key: 'creativo', name: 'Creativo', Icon: Lightbulb };
+function labelFor(temp) {
+  if (temp <= 0.3) return { key: 'determinista', Icon: Code2 };
+  if (temp <= 0.7) return { key: 'equilibrado', Icon: Thermometer };
+  return { key: 'creativo', Icon: Lightbulb };
 }
 
 export function TemperatureLab() {
+  const { lang, t } = useLang();
   const [temp, setTemp] = useState(0.7);
-  const { key, name, Icon } = labelFor(temp);
+  const { key, Icon } = labelFor(temp);
+
+  const numFmt = (v) =>
+    v.toLocaleString(lang === 'es' ? 'es-ES' : 'en-US', { minimumFractionDigits: 1 });
+  const levelName = t(`temperaturelab.level.${key}`);
+  const prompt = t('temperaturelab.prompt');
+  const samples = {
+    determinista: [0, 1, 2].map((i) => t(`temperaturelab.samples.determinista.${i}`)),
+    equilibrado: [0, 1, 2].map((i) => t(`temperaturelab.samples.equilibrado.${i}`)),
+    creativo: [0, 1, 2].map((i) => t(`temperaturelab.samples.creativo.${i}`)),
+  };
 
   return (
     <div>
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title"><Thermometer size={18} /> Laboratorio de temperatura</h3>
+        <h3 className="card-title"><Thermometer size={18} /> {t('temperaturelab.title')}</h3>
         <p className="card-sub">
-          Prompt fijo: <strong>«{PROMPT}»</strong>
+          {t('temperaturelab.fixedPrompt')}{' '}
+          <strong>{t('temperaturelab.promptQuoted', { prompt })}</strong>
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
           <input
@@ -51,19 +44,19 @@ export function TemperatureLab() {
           />
           <span className="badge badge-primary" style={{ minWidth: '150px', justifyContent: 'center' }}>
             <Icon size={14} style={{ marginRight: '0.35rem' }} />
-            {temp.toLocaleString('es-ES', { minimumFractionDigits: 1 })} · {name}
+            {numFmt(temp)} · {levelName}
           </span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-          <span>0 · Determinista</span>
-          <span>0,5 · Equilibrado</span>
-          <span>1 · Creativo</span>
+          <span>{t('temperaturelab.axis.deterministic')}</span>
+          <span>{t('temperaturelab.axis.balanced')}</span>
+          <span>{t('temperaturelab.axis.creative')}</span>
         </div>
       </div>
 
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title">Respuestas simuladas (temperatura {temp.toLocaleString('es-ES', { minimumFractionDigits: 1 })})</h3>
-        {LEVELS[key].map((frase, i) => (
+        <h3 className="card-title">{t('temperaturelab.simulatedTitle', { temp: numFmt(temp) })}</h3>
+        {samples[key].map((frase, i) => (
           <div
             key={i}
             style={{
@@ -74,17 +67,14 @@ export function TemperatureLab() {
               fontStyle: 'italic',
             }}
           >
-            «{frase}»
+            {t('temperaturelab.sampleQuoted', { phrase: frase })}
           </div>
         ))}
       </div>
 
       <div className="callout info">
-        <strong>Importante:</strong> la temperatura no hace al modelo «más inteligente», solo más
-        o menos <em>predecible</em>. Con temperatura baja, el muestreo favorece siempre los tokens
-        más probables (ideal para código, datos o respuestas fácticas). Con temperatura alta, los
-        tokens menos probables aparecen más a menudo (ideal para brainstorming o escritura creativa,
-        a cambio de más riesgo de errores).
+        <strong>{t('temperaturelab.callout.title')}</strong> {t('temperaturelab.callout.body1')}
+        <em>{t('temperaturelab.callout.predictable')}</em>{t('temperaturelab.callout.body2')}
       </div>
     </div>
   );

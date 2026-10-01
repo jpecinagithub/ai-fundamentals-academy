@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { RotateCcw, BookOpen, Check, X } from 'lucide-react';
 import { quizBand, examBand, cx } from '../utils/format';
+import { useLang } from '../i18n/LanguageContext';
 
 /**
  * QuizResults — score ring, performance band, list of failed questions
@@ -13,13 +14,15 @@ export function QuizResults({
   failed = [],
   answers = null,
   onRetry,
-  retryLabel = 'Reintentar test',
+  retryLabel = null,
   final = false,
 }) {
+  const { lang, t } = useLang();
   const pct = total === 0 ? 0 : Math.round((correct / total) * 100);
-  const band = final ? examBand(pct) : quizBand(pct);
+  const band = final ? examBand(pct, lang) : quizBand(pct, lang);
   const bandLabel = final ? band.label : band;
   const bandTone = final ? band.tone : (pct >= 70 ? 'ok' : 'warn');
+  const retryText = retryLabel || t('quizresults.retry');
 
   return (
     <div className="card">
@@ -41,7 +44,7 @@ export function QuizResults({
 
       {failed.length > 0 ? (
         <div style={{ marginTop: '1.4rem' }}>
-          <h3 className="card-title">Preguntas falladas</h3>
+          <h3 className="card-title">{t('quizresults.failedHeading')}</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginTop: '0.8rem' }}>
             {failed.map((q) => {
               const chosen = answers ? answers[q.id] : undefined;
@@ -52,14 +55,14 @@ export function QuizResults({
                     <p style={{ margin: '0 0 0.35rem', display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
                       <X size={15} />
                       <span>
-                        <strong>Tu respuesta:</strong> {q.options[chosen]}
+                        <strong>{t('quizresults.yourAnswer')}</strong> {q.options[chosen]}
                       </span>
                     </p>
                   )}
                   <p style={{ margin: '0 0 0.35rem', display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
                     <Check size={15} />
                     <span>
-                      <strong>Respuesta correcta:</strong> {q.options[q.correctIndex]}
+                      <strong>{t('quizresults.correctAnswer')}</strong> {q.options[q.correctIndex]}
                     </span>
                   </p>
                   {q.explanation && (
@@ -75,7 +78,7 @@ export function QuizResults({
       ) : (
         <div className="callout tip" style={{ marginTop: '1.4rem' }}>
           <Check size={16} className="callout-ico" />
-          <span><strong>Pleno:</strong> no has fallado ninguna pregunta. ¡Enhorabuena!</span>
+          <span><strong>{t('quizresults.perfectTitle')}</strong> {t('quizresults.perfectBody')}</span>
         </div>
       )}
 
@@ -83,13 +86,13 @@ export function QuizResults({
         {onRetry && (
           <button type="button" className="btn btn-primary" onClick={onRetry}>
             <RotateCcw size={16} />
-            {retryLabel}
+            {retryText}
           </button>
         )}
         {failed.length > 0 && (
           <Link to="/repasar" className="btn btn-ghost">
             <BookOpen size={16} />
-            Repasar conceptos fallados
+            {t('quizresults.reviewFailed')}
           </Link>
         )}
       </div>

@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm10',
   title: 'Agent Loops: cómo piensa un agente',
   short: 'Loops',
@@ -104,3 +104,112 @@ export default {
     { wrong: 'Planificar es perder el tiempo; mejor actuar directamente.', right: 'Sin planificación el agente actúa a ciegas y desperdicia iteraciones. Pensar antes de actuar ahorra vueltas del loop.' },
   ],
 };
+
+const en = {
+  id: 'm10',
+  title: 'Agent Loops: how an agent thinks',
+  short: 'Loops',
+  description: 'An AI agent does not answer just once: it works in cycles of thinking, acting and observing until it reaches its goal. In this module you will see the Agent Loop step by step, its six essential pieces and a complete guided example.',
+  icon: 'RefreshCw',
+  stage: 'Agents',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'An agent does not answer: it works in cycles',
+      paragraphs: [
+        'When you ask a chatbot a question, you get **a single answer** and the conversation stops there. An AI agent works very differently: it receives a **goal** and enters a cycle that repeats until it achieves it.',
+        'That cycle is called the **Agent Loop**, and it always has the same structure: the agent **thinks** about what to do, **acts** using a tool, **observes** the result, **evaluates** whether it is closer to the goal and, if it has not achieved it, **repeats** the cycle with the new information.',
+        'This is the fundamental difference between “answering” and “working”: the chatbot generates text once; the agent **iterates**. It can search for a file, read it, discover it was not the right one, search for another, calculate, get the calculation wrong, correct it and deliver the final result. All of that is laps of the same loop.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'The detective',
+      body: 'An agent works like a detective solving a case. It does not guess the culprit in the first scene: it forms a hypothesis (thinking), questions a witness (acting), listens to what they say (observing) and assesses whether the clue brings it closer to the truth (evaluating). If not, it poses a new hypothesis and starts over. Each lap of the loop leaves it closer to closing the case. The AI agent does exactly the same, except its “witnesses” are tools: file searchers, calculators, browsers or databases.',
+    },
+    {
+      kind: 'flow',
+      heading: 'The Agent Loop, step by step',
+      caption: 'The cycle repeats until the goal is achieved or the stop criterion is reached.',
+      direction: 'down',
+      nodes: [
+        { label: 'GOAL', desc: 'The user defines the target: “Find the September sales and calculate the margin”.' },
+        { label: 'THINK / PLAN', desc: 'The agent reasons: which steps do I need? Which tools do I have available?' },
+        { label: 'ACT', desc: 'It executes an action with a tool: searching for the file, reading it, doing a calculation.' },
+        { label: 'OBSERVE THE RESULT', desc: 'It reads what the tool returns: the file exists, it has these columns, the calculation gave this number…' },
+        { label: 'EVALUATE: goal achieved?', desc: 'It compares the current state with the goal. If NO → back to THINK with what it learned. If YES → finish.' },
+        { label: 'FINISH', desc: 'It delivers the result to the user with a summary of what it did.' },
+      ],
+      highlight: [1, 2, 3, 4],
+    },
+    {
+      kind: 'text',
+      heading: 'The six pieces of the loop',
+      paragraphs: [
+        'Every Agent Loop, however simple it looks, combines six pieces. Understanding them lets you know **what an agent is doing at each moment** and why it sometimes takes several iterations.',
+        '**1. Planning.** Before acting, the agent breaks the goal into steps. It is not a rigid plan: it is a working hypothesis reviewed on every lap. Good planning avoids useless actions.',
+        '**2. Action.** The moment of “touching the world”: calling a tool. Searching for a file, running a command, querying an API or writing a text are actions. Without action there is no progress; an agent that only thinks achieves nothing.',
+        '**3. Observation.** After acting, the agent reads the result: the file’s contents, the command’s output, the error the tool returned. This phase is critical: an agent that ignores what its tools observe repeats the same mistakes.',
+        '**4. Evaluation.** The agent asks itself: “does this bring me closer to the goal?”. It compares the current state with the target. Here it decides whether to continue, change strategy or finish.',
+        '**5. Iteration.** If the goal is not met, the cycle starts again — but never from zero: each lap begins with **more information** than the previous one. Iterating is not repeating; it is advancing in a spiral.',
+        '**6. Stop criterion.** Every loop needs to know when to stop: goal achieved, maximum attempts reached or time limit exceeded. Without a stop criterion, an agent could spin forever on an impossible goal.',
+      ],
+    },
+    {
+      kind: 'example',
+      heading: 'Guided example: the September sales',
+      label: 'Practical case',
+      body: 'User goal: “Find the file with the September sales and calculate the margin”. This is how an agent would solve it, lap by lap:\n\nStep 1 — PLAN: “I need to locate a September sales file. I will search the documents folder for files with ‘sales’ and ‘september’ in the name.”\n\nStep 2 — ACT: uses the file-search tool.\n\nStep 3 — OBSERVE: finds two files: `ventas_septiembre_2025.xlsx` and `ventas_septiembre_borrador.xlsx`.\n\nStep 4 — EVALUATE: “There are two candidates; the draft is probably not the final one, but I should check.”\n\nStep 5 — PLAN (2nd lap): “I will open the final file and review its columns.”\n\nStep 6 — ACT + OBSERVE: reads `ventas_septiembre_2025.xlsx`; it contains revenue and cost columns per product.\n\nStep 7 — EVALUATE and FINISH: calculates the margin (revenue minus costs, divided by revenue), checks the number makes sense and delivers: “September’s margin was 34.2%”.',
+      result: 'The agent did not get it right first time: it found two files, hesitated, checked and corrected. Each lap of the loop gave it new information until it reached the result.',
+    },
+    {
+      kind: 'checklist',
+      heading: 'Signs of a healthy loop',
+      items: [
+        'The agent briefly explains what it is going to do before acting.',
+        'After each tool call, it takes into account what it observed.',
+        'If an action fails, it tries a different strategy instead of repeating it identically.',
+        'It does not ask the user for information it could obtain itself with a tool.',
+        'It finishes with a clear summary of the result and the steps taken.',
+        'It stops on an impossible goal instead of trying forever.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'A loop is not an infinite loop',
+      body: 'The word “loop” is scary, but a well-designed Agent Loop always has a **stop criterion**: a maximum number of iterations, a time limit or a success condition. If you see an agent repeating the same thing without progress, it is not that the loop is malfunctioning: it lacks a good stop criterion or a better evaluation.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'An agent has to book a restaurant for Friday. It searches for options, but the first tool call returns a connection error.',
+      question: 'What should the agent do, following Agent Loop logic?',
+      options: [
+        'Stop and tell the user that booking is impossible.',
+        'Repeat exactly the same search indefinitely until it works.',
+        'Observe the error, evaluate it and plan an alternative: retry, use another tool or ask the user to confirm.',
+        'Invent a booking and present it as done.',
+      ],
+      correctIndex: 2,
+      explanation: 'The loop is designed for this: the observation phase detects the error, evaluation decides the goal is not met, and the next iteration plans an alternative (retry, switch tools or ask for help). It neither gives up at the first hurdle nor repeats blindly.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Agent Loop', def: 'Cycle an AI agent repeats: think, act, observe the result and evaluate whether the goal is achieved; if not, it starts over with the new information.' },
+    { term: 'Planning', def: 'Phase in which the agent breaks the goal into steps and decides which tool to use. Reviewed on every lap of the loop.' },
+    { term: 'Action', def: 'Execution of an operation on the real world through a tool: searching, reading, calculating, writing or executing.' },
+    { term: 'Observation', def: 'Reading and interpreting the result each tool returns. Without observation, the agent would repeat mistakes.' },
+    { term: 'Evaluation', def: 'Comparison between the current state and the goal to decide whether to keep iterating, change strategy or finish.' },
+    { term: 'Iteration', def: 'Each complete lap of the loop. It never starts from zero: every iteration begins with more information than the previous one.' },
+    { term: 'Stop criterion', def: 'Condition that stops the loop: goal achieved, maximum attempts or time limit. Prevents infinite loops.' },
+  ],
+  mistakes: [
+    { wrong: 'An agent answers just once, like a chatbot.', right: 'An agent runs think-act-observe cycles until it achieves the goal; it may need many iterations.' },
+    { wrong: 'If the agent makes a mistake, you have to start from scratch.', right: 'The loop is designed to detect errors in the observation phase and correct them in the next iteration.' },
+    { wrong: 'The agent works non-stop until the user stops it.', right: 'Every agent needs a stop criterion: goal achieved, attempt limit or maximum time.' },
+    { wrong: 'Planning is a waste of time; better to act directly.', right: 'Without planning the agent acts blindly and wastes iterations. Thinking before acting saves laps of the loop.' },
+  ],
+};
+
+export default { es, en };

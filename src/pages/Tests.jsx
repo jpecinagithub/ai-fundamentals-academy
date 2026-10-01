@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { modules } from '../data/modules';
-import { questions } from '../data/questions';
+import { useLang } from '../i18n/LanguageContext';
+import { useModules, useQuestions } from '../hooks/useContent';
 import { useProgress } from '../hooks/ProgressContext';
 import { Quiz } from '../components/Quiz';
 import { getIcon } from '../utils/icons';
@@ -9,6 +9,9 @@ import { pickRandom } from '../utils/format';
 
 export function Tests() {
   const { state, recordQuiz } = useProgress();
+  const { t } = useLang();
+  const modules = useModules();
+  const questions = useQuestions();
   const [openId, setOpenId] = useState(null);
   const [seed, setSeed] = useState(0);
 
@@ -23,10 +26,9 @@ export function Tests() {
 
   return (
     <div className="page">
-      <h1>Tests</h1>
+      <h1>{t('tests.title')}</h1>
       <p className="card-sub" style={{ maxWidth: 680 }}>
-        Pon a prueba lo aprendido con un test por módulo de 10 preguntas
-        aleatorias, o atrévete con el examen final completo.
+        {t('tests.intro')}
       </p>
 
       <div
@@ -39,17 +41,15 @@ export function Tests() {
       >
         <h2 className="card-title">{getIcon('GraduationCap', 20)} AI Fundamentals Final Exam</h2>
         <p className="card-sub">
-          50 preguntas aleatorias de todos los módulos. Bandas de resultado:
-          90–100 Dominio avanzado · 75–89 Buen dominio · 60–74 Suficientes ·
-          menos de 60 Repetir fundamentos.
+          {t('tests.finalBands')}
         </p>
         {state.bestScores.final != null && (
           <p>
-            Mejor nota: <strong>{state.bestScores.final}%</strong>
+            {t('tests.bestScore')} <strong>{state.bestScores.final}%</strong>
           </p>
         )}
         <Link className="btn btn-primary" to="/examen-final">
-          Ir al examen {getIcon('ArrowRight', 16)}
+          {t('tests.goExam')} {getIcon('ArrowRight', 16)}
         </Link>
       </div>
 
@@ -66,19 +66,19 @@ export function Tests() {
                 </span>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <strong>
-                    Módulo {i + 1} · {m.title}
+                    {t('tests.moduleTitle', { n: i + 1, title: m.title })}
                   </strong>
                   <div className="card-sub">
                     {best != null ? (
-                      <>Mejor nota: <strong>{best}%</strong> · </>
+                      <>{t('tests.bestScore')} <strong>{best}%</strong> · </>
                     ) : (
-                      'Sin nota todavía · '
+                      <>{t('tests.noScore')} · </>
                     )}
-                    {attempts} {attempts === 1 ? 'intento' : 'intentos'}
+                    {attempts} {attempts === 1 ? t('tests.attempt') : t('tests.attempts')}
                   </div>
                 </div>
                 <button className="btn btn-sm" onClick={() => toggle(m.id)}>
-                  {isOpen ? 'Cerrar' : 'Hacer test'}
+                  {isOpen ? t('tests.close') : t('tests.takeQuiz')}
                 </button>
               </div>
               {isOpen && (
@@ -96,7 +96,7 @@ export function Tests() {
                       10
                     )}
                     moduleId={m.id}
-                    title={`Test · ${m.title}`}
+                    title={t('tests.quizTitle', { title: m.title })}
                     onDone={({ correct, total, failed }) =>
                       recordQuiz(m.id, { correct, total, failedQs: failed })
                     }

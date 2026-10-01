@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Check, X, ArrowRight, ClipboardList } from 'lucide-react';
 import { shuffle, cx } from '../utils/format';
+import { useLang } from '../i18n/LanguageContext';
 import { QuizResults } from './QuizResults';
 
 const LETTERS = ['A', 'B', 'C', 'D'];
@@ -13,6 +14,7 @@ const LETTERS = ['A', 'B', 'C', 'D'];
  * exactly once, where failed holds the ORIGINAL question objects.
  */
 export function Quiz({ questions, moduleId = null, title = 'Test', onDone = () => {}, final = false }) {
+  const { t } = useLang();
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null); // displayed position (0..3)
   const [answers, setAnswers] = useState({});     // { [qid]: chosenIndex (original) }
@@ -76,8 +78,8 @@ export function Quiz({ questions, moduleId = null, title = 'Test', onDone = () =
       <div className="card">
         <div className="empty-state">
           <ClipboardList size={36} className="big-ico" />
-          <p><strong>No hay preguntas en este test</strong></p>
-          <p className="card-sub">Vuelve cuando haya contenido disponible para practicar.</p>
+          <p><strong>{t('quiz.empty.title')}</strong></p>
+          <p className="card-sub">{t('quiz.empty.subtitle')}</p>
         </div>
       </div>
     );
@@ -92,7 +94,7 @@ export function Quiz({ questions, moduleId = null, title = 'Test', onDone = () =
         failed={failed}
         answers={answers}
         onRetry={retry}
-        retryLabel="Reintentar test"
+        retryLabel={t('quiz.retryLabel')}
         final={final}
       />
     );
@@ -108,7 +110,7 @@ export function Quiz({ questions, moduleId = null, title = 'Test', onDone = () =
     <div className="card">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.6rem' }}>
         <span className="card-sub">{title}</span>
-        <span className="badge badge-info">Pregunta {idx + 1} de {total}</span>
+        <span className="badge badge-info">{t('quiz.questionOf', { current: idx + 1, total })}</span>
       </div>
 
       <div className="progress" style={{ marginBottom: '1.2rem' }}>
@@ -147,7 +149,7 @@ export function Quiz({ questions, moduleId = null, title = 'Test', onDone = () =
         <div className="fade-in" style={{ marginTop: '1.1rem' }}>
           <div className={cx('feedback', isOk ? 'ok' : 'ko')}>
             {isOk ? <Check size={18} /> : <X size={18} />}
-            <strong>{isOk ? 'Correcto' : 'Incorrecto'}</strong>
+            <strong>{isOk ? t('quiz.correct') : t('quiz.incorrect')}</strong>
           </div>
           {q.explanation && (
             <p style={{ marginTop: '0.6rem', color: 'var(--text-muted)', fontSize: '0.93rem' }}>
@@ -156,7 +158,7 @@ export function Quiz({ questions, moduleId = null, title = 'Test', onDone = () =
           )}
           <div style={{ marginTop: '0.9rem', display: 'flex', justifyContent: 'flex-end' }}>
             <button type="button" className="btn btn-primary" onClick={next}>
-              {idx + 1 === total ? 'Ver resultados' : 'Siguiente'}
+              {idx + 1 === total ? t('quiz.viewResults') : t('quiz.next')}
               <ArrowRight size={16} />
             </button>
           </div>

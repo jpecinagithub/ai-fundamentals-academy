@@ -1,14 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send, MonitorSmartphone, FileJson, Cpu, KeyRound, TriangleAlert } from 'lucide-react';
 import { estimateTokens } from '../../utils/format';
-
-const DEFAULT_REQUEST = `{
-  "model": "muse-spark-1.3",
-  "messages": [
-    { "role": "user", "content": "Explícame IFRS 9" }
-  ],
-  "temperature": 0.7
-}`;
+import { useLang } from '../../i18n/LanguageContext';
 
 const PHASES = ['idle', 'request', 'model', 'response', 'done'];
 
@@ -19,7 +12,18 @@ function panelStyle(active) {
 }
 
 export function APISimulator() {
-  const [requestRaw, setRequestRaw] = useState(DEFAULT_REQUEST);
+  const { lang, t } = useLang();
+  const locale = lang === 'es' ? 'es-ES' : 'en-US';
+
+  const defaultRequest = `{
+  "model": "muse-spark-1.3",
+  "messages": [
+    { "role": "user", "content": "${t('apisimulator.default_request_content')}" }
+  ],
+  "temperature": 0.7
+}`;
+
+  const [requestRaw, setRequestRaw] = useState(defaultRequest);
   const [phase, setPhase] = useState('idle');
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
@@ -41,13 +45,12 @@ export function APISimulator() {
     try {
       req = JSON.parse(requestRaw);
     } catch (e) {
-      setError(`El JSON del request no es válido: ${e.message}`);
+      setError(t('apisimulator.error_invalid_json', { message: e.message }));
       return;
     }
 
     const content = req?.messages?.map((m) => m.content).join(' ') ?? requestRaw;
-    const reply =
-      'IFRS 9 es la norma internacional sobre instrumentos financieros: clasifica los activos en coste amortizado, valor razonable con cambios en resultados u otro resultado integral, e introduce el modelo de pérdida crediticia esperada (ECL) para el deterioro.';
+    const reply = t('apisimulator.sample_reply');
 
     const inTokens = estimateTokens(content);
     const outTokens = estimateTokens(reply);
@@ -75,14 +78,14 @@ export function APISimulator() {
   };
 
   const phaseIndex = PHASES.indexOf(phase);
-  const dotLabels = ['APP', 'API', 'MODEL', 'RESPUESTA'];
+  const dotLabels = ['APP', 'API', 'MODEL', t('apisimulator.flow_response')];
 
   return (
     <div>
       <div className="grid-3" style={{ marginBottom: '1rem' }}>
         <div className="card" style={panelStyle(phase === 'request')}>
           <h3 className="card-title"><MonitorSmartphone size={18} /> APP</h3>
-          <p className="card-sub">Tu aplicación construye el request.</p>
+          <p className="card-sub">{t('apisimulator.app_sub')}</p>
         </div>
         <div className="card" style={panelStyle(phase === 'request' || phase === 'response')}>
           <h3 className="card-title"><FileJson size={18} /> REQUEST</h3>
@@ -96,14 +99,14 @@ export function APISimulator() {
         </div>
         <div className="card" style={panelStyle(phase === 'model')}>
           <h3 className="card-title"><Cpu size={18} /> AI API</h3>
-          <p className="card-sub">El endpoint recibe el JSON y lo pasa al modelo.</p>
+          <p className="card-sub">{t('apisimulator.api_sub')}</p>
         </div>
       </div>
 
       <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
         <button className="btn btn-primary" onClick={send} disabled={phase !== 'idle' && phase !== 'done'}>
           <Send size={15} style={{ marginRight: '0.4rem' }} />
-          Enviar a la API
+          {t('apisimulator.send')}
         </button>
       </div>
 
@@ -136,7 +139,7 @@ export function APISimulator() {
 
       {phase === 'done' && result && (
         <div className="card" style={{ marginBottom: '1rem' }}>
-          <h3 className="card-title">Respuesta simulada de la API</h3>
+          <h3 className="card-title">{t('apisimulator.result_title')}</h3>
           <pre
             style={{
               fontFamily: 'var(--font-mono)',
@@ -152,11 +155,11 @@ export function APISimulator() {
             {JSON.stringify(result.response, null, 2)}
           </pre>
           <div className="grid-3" style={{ marginTop: '0.75rem' }}>
-            <div><strong>Tokens entrada:</strong> {result.inTokens.toLocaleString('es-ES')}</div>
-            <div><strong>Tokens salida:</strong> {result.outTokens.toLocaleString('es-ES')}</div>
+            <div><strong>{t('apisimulator.tokens_in')}</strong> {result.inTokens.toLocaleString(locale)}</div>
+            <div><strong>{t('apisimulator.tokens_out')}</strong> {result.outTokens.toLocaleString(locale)}</div>
             <div>
-              <strong>Coste estimado:</strong>{' '}
-              {result.cost.toLocaleString('es-ES', { minimumFractionDigits: 6, maximumFractionDigits: 6 })} €
+              <strong>{t('apisimulator.cost')}</strong>{' '}
+              {result.cost.toLocaleString(locale, { minimumFractionDigits: 6, maximumFractionDigits: 6 })} €
             </div>
           </div>
         </div>
@@ -165,9 +168,8 @@ export function APISimulator() {
       <div className="callout info">
         <KeyRound size={16} className="callout-ico" />
         <span>
-          <strong>Seguridad:</strong> en producción la API key viaja en las cabeceras HTTP
-          desde tu <em>backend</em>, nunca en el frontend. Si la clave queda expuesta en el
-          navegador, cualquiera podría usarla y facturarte el consumo.
+          <strong>{t('apisimulator.security_title')}</strong> {t('apisimulator.security_before')}{' '}
+          <em>backend</em>{t('apisimulator.security_after')}
         </span>
       </div>
     </div>

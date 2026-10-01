@@ -1,5 +1,6 @@
 import React from 'react';
-import { modules } from '../data/modules';
+import { useLang } from '../i18n/LanguageContext';
+import { useModules } from '../hooks/useContent';
 import {
   useProgress, moduleStatus, globalProgressPct,
   masteredCount, accuracyPct,
@@ -10,16 +11,16 @@ import { getIcon } from '../utils/icons';
 import { formatDate } from '../utils/format';
 
 const GROUPS = [
-  { label: 'LLM', modules: ['m2', 'm3'] },
-  { label: 'Contexto y prompts', modules: ['m4', 'm5'] },
-  { label: 'Memoria', modules: ['m6'] },
-  { label: 'Tools y MCP', modules: ['m7', 'm8', 'm9'] },
-  { label: 'Agentes', modules: ['m10', 'm11', 'm12', 'm13'] },
-  { label: 'Arquitectura web', modules: ['m14', 'm15', 'm16'] },
-  { label: 'APIs', modules: ['m17', 'm18', 'm19', 'm20', 'm21', 'm22'] },
-  { label: 'GitHub', modules: ['m23', 'm24'] },
-  { label: 'Vercel', modules: ['m25', 'm26'] },
-  { label: 'Apps con IA', modules: ['m27', 'm28'] },
+  { key: 'llm', modules: ['m2', 'm3'] },
+  { key: 'context', modules: ['m4', 'm5'] },
+  { key: 'memory', modules: ['m6'] },
+  { key: 'tools', modules: ['m7', 'm8', 'm9'] },
+  { key: 'agents', modules: ['m10', 'm11', 'm12', 'm13'] },
+  { key: 'web', modules: ['m14', 'm15', 'm16'] },
+  { key: 'apis', modules: ['m17', 'm18', 'm19', 'm20', 'm21', 'm22'] },
+  { key: 'github', modules: ['m23', 'm24'] },
+  { key: 'vercel', modules: ['m25', 'm26'] },
+  { key: 'aiapps', modules: ['m27', 'm28'] },
 ];
 
 const BADGE_CLASS = {
@@ -29,6 +30,8 @@ const BADGE_CLASS = {
 };
 
 export function ProgressPage() {
+  const { lang, t } = useLang();
+  const modules = useModules();
   const { state, resetAll } = useProgress();
 
   const pct = globalProgressPct(state, modules.length);
@@ -46,23 +49,19 @@ export function ProgressPage() {
   };
 
   const handleReset = () => {
-    if (
-      window.confirm(
-        '¿Seguro que quieres reiniciar todo el progreso? Esta acción no se puede deshacer.'
-      )
-    ) {
+    if (window.confirm(t('progresspage.confirmReset'))) {
       resetAll();
     }
   };
 
   return (
     <div className="page">
-      <h1>Mi progreso</h1>
+      <h1>{t('progresspage.title')}</h1>
 
       <div className="card" style={{ marginBottom: '1rem' }}>
         <div className="stat-card">
           <span className="stat-num">{pct}%</span>
-          <div className="stat-label">Progreso global del curso</div>
+          <div className="stat-label">{t('progresspage.globalProgress')}</div>
         </div>
         <div className="progress progress-lg" style={{ margin: '0.8rem 0' }}>
           <div className="progress-fill" style={{ width: `${pct}%` }} />
@@ -73,22 +72,22 @@ export function ProgressPage() {
         <div className="card stat-card">
           <div className="stat-ico">{getIcon('BookOpen', 22)}</div>
           <div className="stat-num">{completedCount}/{modules.length}</div>
-          <div className="stat-label">Módulos completados</div>
+          <div className="stat-label">{t('progresspage.modulesDone')}</div>
         </div>
         <div className="card stat-card">
           <div className="stat-ico">{getIcon('ListChecks', 22)}</div>
           <div className="stat-num">{answered}</div>
-          <div className="stat-label">Preguntas respondidas</div>
+          <div className="stat-label">{t('progresspage.questionsAnswered')}</div>
         </div>
         <div className="card stat-card">
           <div className="stat-ico">{getIcon('Target', 22)}</div>
           <div className="stat-num">{acc}%</div>
-          <div className="stat-label">Aciertos</div>
+          <div className="stat-label">{t('progresspage.accuracy')}</div>
         </div>
         <div className="card stat-card">
           <div className="stat-ico">{getIcon('Check', 22)}</div>
           <div className="stat-num">{mastered}</div>
-          <div className="stat-label">Preguntas dominadas</div>
+          <div className="stat-label">{t('progresspage.mastered')}</div>
         </div>
       </div>
 
@@ -96,21 +95,22 @@ export function ProgressPage() {
 
       <div className="card" style={{ marginBottom: '1.75rem', padding: '1rem 1.25rem' }}>
         <span className="card-sub">
-          Última actividad: <strong>{formatDate(state.lastActivity)}</strong>
+          {t('progresspage.lastActivity')}{' '}
+          <strong>{formatDate(state.lastActivity, lang)}</strong>
         </span>
       </div>
 
       <div className="section">
-        <h2 className="section-title">Detalle por módulo</h2>
+        <h2 className="section-title">{t('progresspage.detailTitle')}</h2>
         <div className="table-wrap">
           <table className="data">
             <thead>
               <tr>
-                <th>Módulo</th>
-                <th>Estado</th>
-                <th>Progreso</th>
-                <th>Mejor nota</th>
-                <th>Intentos</th>
+                <th>{t('progresspage.colModule')}</th>
+                <th>{t('progresspage.colStatus')}</th>
+                <th>{t('progresspage.colProgress')}</th>
+                <th>{t('progresspage.colBest')}</th>
+                <th>{t('progresspage.colAttempts')}</th>
               </tr>
             </thead>
             <tbody>
@@ -128,7 +128,7 @@ export function ProgressPage() {
                     </td>
                     <td>
                       <span className={`badge ${BADGE_CLASS[st.status]}`}>
-                        {st.label}
+                        {t(`progresspage.status.${st.status}`)}
                       </span>
                     </td>
                     <td style={{ minWidth: 140 }}>
@@ -150,13 +150,13 @@ export function ProgressPage() {
       </div>
 
       <div className="section">
-        <span className="section-kicker">{getIcon('BarChart3', 14)} Por áreas</span>
-        <h2 className="section-title">Mapa de conocimientos</h2>
+        <span className="section-kicker">{getIcon('BarChart3', 14)} {t('progresspage.areasKicker')}</span>
+        <h2 className="section-title">{t('progresspage.knowledgeMap')}</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '1.5rem' }}>
           {GROUPS.map((g) => {
             const p = groupPct(g.modules);
             return (
-              <div key={g.label}>
+              <div key={g.key}>
                 <div
                   style={{
                     display: 'flex',
@@ -165,7 +165,7 @@ export function ProgressPage() {
                     fontSize: '0.92rem',
                   }}
                 >
-                  <strong>{g.label}</strong>
+                  <strong>{t(`progresspage.group.${g.key}`)}</strong>
                   <span className="card-sub">{p}%</span>
                 </div>
                 <div className="progress">
@@ -180,13 +180,12 @@ export function ProgressPage() {
 
       <div className="section" style={{ marginTop: '2rem' }}>
         <div className="card" style={{ borderColor: 'var(--danger)' }}>
-          <h3 className="card-title">{getIcon('AlertTriangle', 18)} Zona de peligro</h3>
+          <h3 className="card-title">{getIcon('AlertTriangle', 18)} {t('progresspage.dangerTitle')}</h3>
           <p className="card-sub">
-            Borra todo tu progreso: módulos visitados, notas, intentos y
-            preguntas repasadas. Esta acción no se puede deshacer.
+            {t('progresspage.dangerText')}
           </p>
           <button className="btn" onClick={handleReset}>
-            {getIcon('RotateCcw', 16)} Reiniciar todo el progreso
+            {getIcon('RotateCcw', 16)} {t('progresspage.resetButton')}
           </button>
         </div>
       </div>

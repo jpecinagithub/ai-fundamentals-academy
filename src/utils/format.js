@@ -24,11 +24,11 @@ export function cx(...parts) {
   return parts.filter(Boolean).join(' ');
 }
 
-/** Format ISO date to a readable Spanish string. */
-export function formatDate(iso) {
+/** Format ISO date to a readable string in the active language. */
+export function formatDate(iso, lang) {
   if (!iso) return '—';
   try {
-    return new Date(iso).toLocaleString('es-ES', {
+    return new Date(iso).toLocaleString(lang === 'es' ? 'es-ES' : 'en-US', {
       day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
     });
   } catch {
@@ -43,16 +43,18 @@ export function estimateTokens(text) {
 }
 
 /** Final exam band for a percentage. */
-export function examBand(pct) {
-  if (pct >= 90) return { label: 'Dominio avanzado de fundamentos', tone: 'ok' };
-  if (pct >= 75) return { label: 'Buen dominio', tone: 'ok' };
-  if (pct >= 60) return { label: 'Conocimientos suficientes, conviene repasar', tone: 'warn' };
-  return { label: 'Recomendado repetir módulos fundamentales', tone: 'ko' };
+export function examBand(pct, lang) {
+  const en = lang !== 'es';
+  if (pct >= 90) return { label: en ? 'Advanced mastery of fundamentals' : 'Dominio avanzado de fundamentos', tone: 'ok' };
+  if (pct >= 75) return { label: en ? 'Good mastery' : 'Buen dominio', tone: 'ok' };
+  if (pct >= 60) return { label: en ? 'Sufficient knowledge, review recommended' : 'Conocimientos suficientes, conviene repasar', tone: 'warn' };
+  return { label: en ? 'Repeating the core modules is recommended' : 'Recomendado repetir módulos fundamentales', tone: 'ko' };
 }
 
 /** Module quiz band. */
-export function quizBand(pct) {
-  if (pct >= 90) return 'Excelente';
-  if (pct >= 70) return 'Bien';
-  return 'Necesitas repasar';
+export function quizBand(pct, lang) {
+  const en = lang !== 'es';
+  if (pct >= 90) return en ? 'Excellent' : 'Excelente';
+  if (pct >= 70) return en ? 'Good' : 'Bien';
+  return en ? 'You need to review' : 'Necesitas repasar';
 }

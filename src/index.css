@@ -136,6 +136,22 @@ pre code { background: none; padding: 0; color: inherit; white-space: pre; }
   color: #0a0c12; box-shadow: var(--glow);
 }
 .topbar-spacer { flex: 1; }
+.lang-toggle {
+  display: inline-flex; align-items: center;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--card); overflow: hidden; flex-shrink: 0;
+}
+.lang-toggle button {
+  border: 0; background: transparent; color: var(--text-muted);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em;
+  padding: 0.45rem 0.7rem; cursor: pointer; transition: var(--transition);
+}
+.lang-toggle button + button { border-left: 1px solid var(--border-soft); }
+.lang-toggle button:hover { color: var(--text); }
+.lang-toggle button.active {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #0a0c12;
+}
 .topbar-progress { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: var(--text-muted); white-space: nowrap; }
 .topbar-progress .progress { width: 130px; }
 

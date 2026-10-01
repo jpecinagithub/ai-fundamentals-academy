@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm16',
   title: 'JSON: el idioma de los datos',
   short: 'JSON',
@@ -87,3 +87,95 @@ export default {
     { wrong: 'JSON solo sirve para JavaScript.', right: 'Casi todos los lenguajes (Python, Java, PHP…) saben generar y leer JSON; por eso es el estándar de intercambio.' },
   ],
 };
+
+const en = {
+  id: 'm16',
+  title: 'JSON: the language of data',
+  short: 'JSON',
+  description: 'JSON is the format data travels in across the internet and the one AI APIs use. Learn to read and write it with a real example and an interactive visualizer.',
+  icon: 'FileJson',
+  stage: 'Architecture',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'What JSON is and why you see it everywhere',
+      paragraphs: [
+        '**JSON** (JavaScript Object Notation) is a text format for representing data in a structured way. It is the "language" in which the frontend and backend talk to each other, applications talk to APIs, and — very importantly — **you talk to AI models** when you use them programmatically.',
+        'Its success is due to three virtues: it is **human-readable** (you can read it at a glance), it is **lightweight** (it takes up little space), and **almost every language** knows how to generate and understand it. That is why, when a server responds to a request, it most likely does so in JSON.',
+        'It is not a programming language: it does nothing, it executes nothing. It is just an orderly way of writing data: names, values, lists, and combinations of them.',
+      ],
+    },
+    {
+      kind: 'example',
+      heading: 'Anatomy of a real JSON',
+      label: 'Example',
+      body: 'This is a valid JSON object that could describe a student of the course:\n\n`{"name": "Jon", "course": "AI Fundamentals", "progress": 45, "premium": true, "tags": ["ai", "agents", "apis"]}`\n\nLook at the pieces: each datum has a **name** (always in double quotes) followed by a colon and its **value**. Values can be text (`"Jon"`), numbers (`45`), true/false (`true`), or lists in square brackets (`["ai", "agents", "apis"]`). Name-value pairs are separated by commas and the whole set goes in curly braces.',
+      result: 'If you can read this example, you can read 90% of the JSON you will find in real APIs: they are objects with properties, and sometimes lists of objects.',
+    },
+    {
+      kind: 'table',
+      heading: 'The pieces of JSON',
+      headers: ['Piece', 'What it is', 'Example'],
+      rows: [
+        ['Object', 'Set of name-value pairs in curly braces `{ }`.', '`{"name": "Jon"}`'],
+        ['Property (key)', 'The name of each datum; always in double quotes.', '`name`, `course`, `progress`'],
+        ['Value', 'The datum itself: it can be of several types.', '`"Jon"`, `45`, `true`'],
+        ['String', 'Text in double quotes.', '`"AI Fundamentals"`'],
+        ['Number', 'Number, with or without decimals; no quotes.', '`45`, `19.99`'],
+        ['Boolean', 'True or false; no quotes.', '`true`, `false`'],
+        ['Array', 'Ordered list of values in square brackets `[ ]`.', '`["ai", "agents", "apis"]`'],
+        ['null', 'Special value meaning "no value" or "empty".', '`"phone": null`'],
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'JSON in APIs and in AI',
+      paragraphs: [
+        'In **APIs**, JSON is the standard exchange format: the client requests with a request and the server responds with a JSON that the frontend knows how to draw on screen. When in module 15 you saw that the server "packages the result in JSON", it meant exactly this.',
+        'In **AI**, JSON shows up everywhere: model APIs receive your instructions in JSON (you will see an example in module 18) and also return the response in JSON. It is also common to ask the model to **respond directly in JSON** when you want structured data: "give me the task list in JSON format" and you get something your program can process without interpreting free text.',
+        'That is why reading JSON fluently is a practical skill: it will help you debug APIs, understand model responses, and design the requests you make to them.',
+      ],
+    },
+    {
+      kind: 'simulator',
+      component: 'JsonVisualizer',
+    },
+    {
+      kind: 'callout',
+      tone: 'info',
+      title: 'JSON looks like JavaScript, but it is not',
+      body: 'JSON was born inspired by JavaScript syntax, which is why they get confused. Key differences: in JSON **keys always carry double quotes** (in JavaScript they may not), it **does not allow comments**, and it **does not allow functions** or undefined values. If something "almost" is JSON but has comments or single quotes, it is not valid JSON and many tools will reject it.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'A colleague sends you this snippet and says it is valid JSON: `{ name: "Jon", progress: 45 }`.',
+      question: 'Is he right?',
+      options: [
+        'Yes, it is perfectly valid.',
+        'No: keys must be in double quotes → `{"name": "Jon", "progress": 45}`.',
+        'No: numbers cannot go without quotes.',
+        'No: you must use square brackets instead of curly braces.',
+      ],
+      correctIndex: 1,
+      explanation: 'In valid JSON, keys always carry double quotes. Numbers do go without quotes (that is correct) and curly braces are the right choice for an object; square brackets are for lists (arrays).',
+    },
+  ],
+  keyConcepts: [
+    { term: 'JSON', def: 'Text format for representing structured data; readable, lightweight, and universal. It is the standard language of APIs.' },
+    { term: 'Object', def: 'Set of name-value pairs enclosed in curly braces: the basic unit of a JSON document.' },
+    { term: 'Property (key)', def: 'Name of each datum inside an object; in JSON it always goes in double quotes.' },
+    { term: 'Value', def: 'Datum associated with a property: it can be text, a number, a boolean, a list, an object, or null.' },
+    { term: 'Array', def: 'Ordered list of values in square brackets; its elements are separated by commas.' },
+    { term: 'String', def: 'Text in double quotes; one of the most common value types in JSON.' },
+    { term: 'Boolean', def: 'True (`true`) or false (`false`) value; written without quotes.' },
+  ],
+  mistakes: [
+    { wrong: 'JSON is a programming language.', right: 'It is just a text format for data: it describes information, it executes nothing.' },
+    { wrong: 'You can put comments with // in JSON.', right: 'Pure JSON does not allow comments; if you need them, you are using a variant like JSONC.' },
+    { wrong: 'Keys can go without quotes.', right: 'In valid JSON, keys always carry double quotes: `{"name": "Jon"}`.' },
+    { wrong: 'JSON is only useful for JavaScript.', right: 'Almost every language (Python, Java, PHP…) can generate and read JSON; that is why it is the exchange standard.' },
+  ],
+};
+
+export default { es, en };

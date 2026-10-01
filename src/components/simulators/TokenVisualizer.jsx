@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Scissors, Coins } from 'lucide-react';
+import { useLang } from '../../i18n/LanguageContext';
 
 /** Tokenizador simulado: divide por palabras, parte las largas y separa la puntuación. */
 function fakeTokenize(text) {
@@ -23,20 +24,26 @@ function fakeTokenize(text) {
 const PALETTE = ['#dbeafe', '#dcfce7', '#fef3c7', '#f3e8ff', '#ffe4e6', '#e0e7ff'];
 
 export function TokenVisualizer() {
-  const [text, setText] = useState('Quiero aprender inteligencia artificial');
-  const [tokens, setTokens] = useState(() => fakeTokenize('Quiero aprender inteligencia artificial'));
+  const { lang, t } = useLang();
+  const [text, setText] = useState(() => t('tokenvisualizer.defaultText'));
+  const [tokens, setTokens] = useState(() => fakeTokenize(t('tokenvisualizer.defaultText')));
 
   const tokenizar = () => setTokens(fakeTokenize(text));
   const words = text.trim().split(/\s+/).filter(Boolean).length;
-  const ratio = words > 0 ? (tokens.length / words).toFixed(2).replace('.', ',') : '0';
+  const ratioRaw = words > 0 ? (tokens.length / words).toFixed(2) : '0';
+  const ratio = lang === 'es' ? ratioRaw.replace('.', ',') : ratioRaw;
   const cost = (tokens.length * 0.002) / 1000;
+  const costFmt = cost.toLocaleString(lang === 'es' ? 'es-ES' : 'en-US', {
+    minimumFractionDigits: 6,
+    maximumFractionDigits: 6,
+  });
 
   return (
     <div>
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title"><Scissors size={18} /> Tokenizador visual</h3>
+        <h3 className="card-title"><Scissors size={18} /> {t('tokenvisualizer.title')}</h3>
         <p className="card-sub">
-          Escribe una frase y pulsa «Tokenizar» para ver cómo un modelo la trocearía en tokens.
+          {t('tokenvisualizer.subtitle', { button: t('tokenvisualizer.tokenize') })}
         </p>
         <textarea
           className="textarea"
@@ -45,40 +52,39 @@ export function TokenVisualizer() {
           style={{ width: '100%', marginBottom: '0.75rem' }}
         />
         <button className="btn btn-primary" onClick={tokenizar}>
-          Tokenizar
+          {t('tokenvisualizer.tokenize')}
         </button>
       </div>
 
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title">Tokens ({tokens.length})</h3>
+        <h3 className="card-title">{t('tokenvisualizer.tokensTitle', { count: tokens.length })}</h3>
         <div style={{ marginTop: '0.5rem' }}>
-          {tokens.map((t, i) => (
+          {tokens.map((tok, i) => (
             <span
               key={i}
               className="token-chip"
               style={{ background: PALETTE[i % PALETTE.length] }}
             >
               <span className="tok-idx">{i}</span>
-              {t}
+              {tok}
             </span>
           ))}
         </div>
       </div>
 
       <div className="card">
-        <h3 className="card-title"><Coins size={18} /> Estadísticas</h3>
+        <h3 className="card-title"><Coins size={18} /> {t('tokenvisualizer.stats')}</h3>
         <div className="grid-2" style={{ marginTop: '0.5rem' }}>
-          <div><strong>Nº de tokens:</strong> {tokens.length}</div>
-          <div><strong>Nº de caracteres:</strong> {text.length}</div>
-          <div><strong>≈ tokens por palabra:</strong> {ratio}</div>
+          <div><strong>{t('tokenvisualizer.statTokens')}</strong> {tokens.length}</div>
+          <div><strong>{t('tokenvisualizer.statChars')}</strong> {text.length}</div>
+          <div><strong>{t('tokenvisualizer.statRatio')}</strong> {ratio}</div>
           <div>
-            <strong>Coste estimado:</strong> esta frase costaría ≈{' '}
-            {cost.toLocaleString('es-ES', { minimumFractionDigits: 6, maximumFractionDigits: 6 })} €
+            <strong>{t('tokenvisualizer.statCost')}</strong>{' '}
+            {t('tokenvisualizer.costLine', { cost: costFmt })}
           </div>
         </div>
         <p className="card-sub" style={{ marginTop: '0.75rem' }}>
-          Tarifa de ejemplo: 0,002 € por cada 1.000 tokens de entrada. Los modelos
-          cobran por token, no por palabra: por eso conviene vigilar la longitud de los prompts.
+          {t('tokenvisualizer.tariffNote')}
         </p>
       </div>
     </div>

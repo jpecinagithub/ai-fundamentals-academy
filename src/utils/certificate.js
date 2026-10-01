@@ -19,10 +19,39 @@ export function generateCertificateCode() {
 
 /**
  * Construye el documento PDF del certificado (A4 apaisado).
+ * `lang`: 'en' (por defecto) | 'es' — todo el texto del PDF sigue el idioma.
  * Devuelve la instancia jsPDF para que el llamador decida cómo
  * entregarla (descarga en navegador, test en Node, etc.).
  */
-export function buildCertificatePdf({ name, code, dateStr }) {
+const CERT_STRINGS = {
+  es: {
+    title: 'Certificado de finalización',
+    awardedTo: 'SE OTORGA A',
+    body:
+      'Por haber completado con éxito el programa AI Fundamentals Academy: ' +
+      '28 módulos, 252 preguntas, 11 simuladores interactivos, examen final ' +
+      'de 50 preguntas y proyecto final aplicado, demostrando un dominio ' +
+      'sólido de los fundamentos de la inteligencia artificial moderna.',
+    creator: 'Creador de AI Fundamentals Academy',
+    codeLabel: 'Código de verificación',
+    issuedLabel: 'Expedido el',
+  },
+  en: {
+    title: 'Certificate of Completion',
+    awardedTo: 'PRESENTED TO',
+    body:
+      'For having successfully completed the AI Fundamentals Academy program: ' +
+      '28 modules, 252 questions, 11 interactive simulators, a 50-question ' +
+      'final exam and an applied final project, demonstrating solid mastery ' +
+      'of the fundamentals of modern artificial intelligence.',
+    creator: 'Creator of AI Fundamentals Academy',
+    codeLabel: 'Verification code',
+    issuedLabel: 'Issued on',
+  },
+};
+
+export function buildCertificatePdf({ name, code, dateStr, lang }) {
+  const S = CERT_STRINGS[lang === 'es' ? 'es' : 'en'];
   const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
 
   const W = 297;
@@ -62,13 +91,13 @@ export function buildCertificatePdf({ name, code, dateStr }) {
   doc.setFont('times', 'bold');
   doc.setFontSize(32);
   doc.setTextColor(...NAVY);
-  doc.text('Certificado de finalización', CX, 60, { align: 'center' });
+  doc.text(S.title, CX, 60, { align: 'center' });
 
   // "Se otorga a"
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(12);
   doc.setTextColor(...MUTED);
-  doc.text('SE OTORGA A', CX, 76, { align: 'center' });
+  doc.text(S.awardedTo, CX, 76, { align: 'center' });
 
   // Nombre (auto-ajuste si es largo)
   const cleanName = String(name || '').trim();
@@ -91,12 +120,7 @@ export function buildCertificatePdf({ name, code, dateStr }) {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(11.5);
   doc.setTextColor(...INK);
-  const body =
-    'Por haber completado con éxito el programa AI Fundamentals Academy: ' +
-    '28 módulos, 252 preguntas, 11 simuladores interactivos, examen final ' +
-    'de 50 preguntas y proyecto final aplicado, demostrando un dominio ' +
-    'sólido de los fundamentos de la inteligencia artificial moderna.';
-  const lines = doc.splitTextToSize(body, 215);
+  const lines = doc.splitTextToSize(S.body, 215);
   doc.text(lines, CX, 118, { align: 'center', lineHeightFactor: 1.5 });
 
   // Sello dorado
@@ -126,14 +150,14 @@ export function buildCertificatePdf({ name, code, dateStr }) {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(...MUTED);
-  doc.text('Creador de AI Fundamentals Academy', CX, sigY + 14, { align: 'center' });
+  doc.text(S.creator, CX, sigY + 14, { align: 'center' });
 
   // Pie: código de verificación y fecha de expedición
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(...MUTED);
-  doc.text(`Código de verificación: ${code}`, 20, H - 20);
-  doc.text(`Expedido el ${dateStr}`, W - 20, H - 20, { align: 'right' });
+  doc.text(`${S.codeLabel}: ${code}`, 20, H - 20);
+  doc.text(`${S.issuedLabel} ${dateStr}`, W - 20, H - 20, { align: 'right' });
 
   return doc;
 }

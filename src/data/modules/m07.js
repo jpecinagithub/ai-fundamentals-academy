@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm7',
   title: 'Tools: las manos del modelo',
   short: 'Tools',
@@ -93,3 +93,101 @@ export default {
     { wrong: 'Si el modelo usó una tool, el resultado es fiable.', right: 'Los datos externos también pueden ser erróneos, estar desactualizados o ser maliciosos. La tool no garantiza la verdad.' },
   ],
 };
+
+const en = {
+  id: 'm7',
+  title: 'Tools: the hands of the model',
+  short: 'Tools',
+  description: 'How LLMs use tools to search the internet, read your email, or run code: from text to action.',
+  icon: 'Wrench',
+  stage: 'Tools & MCP',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'The central idea: the LLM generates, the tool acts',
+      paragraphs: [
+        'An LLM alone only knows how to **generate text**. It cannot search the internet, read your Gmail, query a database, or run code. **Tools** are the bridge that lets it **interact with external systems**: each tool is a concrete, defined capability, like `buscar_web`, `leer_calendario`, or `ejecutar_codigo`.',
+        'The metaphor that sums it all up: **the LLM is the brain and the tools are its hands**. The brain decides what must be done and with which tool; the hands (external systems) execute it and return the result. Without hands, the brightest brain in the world cannot even open a door.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Tool calling: how the model asks for help',
+      paragraphs: [
+        'The mechanism is called **tool calling** (or **function calling**): when the model detects it needs information or an action it cannot resolve with text, **it does not execute anything directly**: it generates a structured "call request" indicating which tool it wants to use and with which parameters.',
+        'Example: you ask "what is the weather like in Logroño?". The model internally responds with something like `consultar_tiempo(ciudad="Logroño")`. An external system actually executes that function, gets "18 °C, clear" and returns it to the model as text. Then the model writes your final answer using that datum.',
+        'Key security point: **the model proposes, the system disposes**. It is the surrounding software that executes the tool, with the permissions you granted. The model never touches your email or calendar directly.',
+      ],
+    },
+    {
+      kind: 'flow',
+      heading: 'The full cycle of a tool',
+      caption: 'Notice the model appears twice: it decides before and writes after.',
+      direction: 'down',
+      highlight: [1],
+      nodes: [
+        { label: 'USER', desc: 'You ask something requiring external data or actions.' },
+        { label: 'LLM', desc: 'The model reasons: "do I need a tool for this?"' },
+        { label: 'TOOL', desc: 'If so, it generates the call with its parameters: which tool and with what data.' },
+        { label: 'RESULT', desc: 'The system runs the tool and returns the result as text.' },
+        { label: 'LLM', desc: 'The model integrates the result into its reasoning.' },
+        { label: 'RESPONSE', desc: 'It writes the final answer for you, now with real data.' },
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: 'Examples of tools you already use',
+      items: [
+        'Web search: when ChatGPT or Gemini answer with up-to-date information, they have called a search tool.',
+        'Reading your email or calendar: assistants that summarize your emails use Gmail and Calendar tools.',
+        'Running code: when you ask for a complex calculation or a chart, the model writes code and a tool runs it.',
+        'Querying databases: business assistants that answer about your sales or stock.',
+        'Generating images: the image button in ChatGPT or Gemini is a visual generation tool.',
+        'Uploading and reading files: every document you attach is processed with tools before reaching the model.',
+      ],
+    },
+    {
+      kind: 'example',
+      heading: 'Real example',
+      label: '"What is the weather like in Logroño?"',
+      body: 'You type the question in Gemini. The model detects its knowledge does not include the current weather, so it generates the call `consultar_tiempo(ciudad="Logroño")`. The system runs it against a weather service, receives "18 °C, clear, light wind" and passes it to the model. It writes: "In Logroño it is now 18 °C with clear skies...". All in two seconds.',
+      result: 'Lesson: the "intelligence" was in deciding to call the tool and in writing with its result; the real data came from outside the model.',
+    },
+    {
+      kind: 'callout',
+      tone: 'warn',
+      title: 'Tools act in the real world',
+      body: 'A tool can send emails, delete files, or make purchases if it has those permissions. That is why serious applications ask for your confirmation before sensitive actions and limit what each tool can do. Golden rule: **review the permissions** you grant to any assistant with tools, just like you review the permissions of an app on your phone.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'You ask an assistant with tools: "Summarize the three most recent emails from my boss". It returns a perfect summary with dates and subjects.',
+      question: 'Where did the assistant get the content of those emails?',
+      options: [
+        'The model remembered them from its training',
+        'It called an email-reading tool, the system executed it with your permissions, and the model wrote the summary with the result',
+        'The model guessed the likely content of those emails',
+        'Emails automatically travel inside the model',
+      ],
+      correctIndex: 1,
+      explanation: 'The model has no access to your email by itself: it generated a call to the email tool, the system executed it (with the permissions you granted), and the model wrote the summary from the returned result. Brain + hands.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Tool', def: 'Concrete capability that lets the model interact with external systems: searching, reading email, running code, querying data...' },
+    { term: 'Tool calling', def: 'Mechanism by which the model requests using a tool, indicating which one and with which parameters (also called function calling).' },
+    { term: 'Call parameters', def: 'The concrete data the model sends to the tool, for example ciudad="Logroño" to check the weather.' },
+    { term: 'Tool result', def: 'The information the external system returns to the model after running the tool, which it integrates into its answer.' },
+    { term: 'Agent', def: 'System combining an LLM with tools and the ability to act in steps to complete tasks autonomously.' },
+    { term: 'Permissions', def: 'Limits on what each tool can do; the model can only act within the permissions granted by the user.' },
+  ],
+  mistakes: [
+    { wrong: 'The model browses the internet by itself.', right: 'No: it generates a call to a search tool and an external system runs it and returns the result as text.' },
+    { wrong: 'Tool calling means the model runs code directly.', right: 'The model only proposes the call with its parameters; it is the surrounding software that actually executes it.' },
+    { wrong: 'The more tools, the better the assistant.', right: 'Each tool adds complexity and risk. A good design gives the model only the tools needed for its task.' },
+    { wrong: 'If the model used a tool, the result is reliable.', right: 'External data can also be wrong, outdated, or malicious. The tool does not guarantee truth.' },
+  ],
+};
+
+export default { es, en };

@@ -4,22 +4,23 @@ import {
   Home, BookOpen, ListChecks, RotateCcw, BookMarked, BarChart3, PenLine, Check,
 } from 'lucide-react';
 import { useProgress, moduleStatus, pendingReview } from '../../hooks/ProgressContext';
-import { modules } from '../../data/modules';
+import { useLang } from '../../i18n/LanguageContext';
+import { useModules } from '../../hooks/useContent';
 import { getIcon } from '../../utils/icons';
-
-const NAV = [
-  { to: '/', label: 'Inicio', icon: <Home size={18} />, end: true },
-  { to: '/curso', label: 'Curso', icon: <BookOpen size={18} /> },
-  { to: '/tests', label: 'Tests', icon: <ListChecks size={18} /> },
-  { to: '/repasar', label: 'Repasar errores', icon: <RotateCcw size={18} />, badge: true },
-  { to: '/glosario', label: 'Glosario', icon: <BookMarked size={18} /> },
-  { to: '/progreso', label: 'Mi progreso', icon: <BarChart3 size={18} /> },
-  { to: '/proyecto-final', label: 'Proyecto final', icon: <PenLine size={18} /> },
-];
 
 function NavList({ onNavigate }) {
   const { state } = useProgress();
+  const { t } = useLang();
   const pending = pendingReview(state).length;
+  const NAV = [
+    { to: '/', label: t('sidebar.nav.home'), icon: <Home size={18} />, end: true },
+    { to: '/curso', label: t('sidebar.nav.course'), icon: <BookOpen size={18} /> },
+    { to: '/tests', label: t('sidebar.nav.tests'), icon: <ListChecks size={18} /> },
+    { to: '/repasar', label: t('sidebar.nav.review'), icon: <RotateCcw size={18} />, badge: true },
+    { to: '/glosario', label: t('sidebar.nav.glossary'), icon: <BookMarked size={18} /> },
+    { to: '/progreso', label: t('sidebar.nav.progress'), icon: <BarChart3 size={18} /> },
+    { to: '/proyecto-final', label: t('sidebar.nav.finalProject'), icon: <PenLine size={18} /> },
+  ];
   return (
     <nav className="sidebar-nav">
       {NAV.map((n) => (
@@ -41,9 +42,11 @@ function NavList({ onNavigate }) {
 
 function ModuleList({ onNavigate }) {
   const { state } = useProgress();
+  const { t } = useLang();
+  const modules = useModules();
   return (
     <>
-      <p className="sidebar-heading">Módulos del curso</p>
+      <p className="sidebar-heading">{t('sidebar.modulesHeading')}</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {modules.map((m, i) => {
           const st = moduleStatus(state, m.id);

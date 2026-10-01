@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm21',
   title: 'RAG: el modelo consulta tus documentos',
   short: 'RAG',
@@ -119,3 +119,127 @@ export default {
     { wrong: 'RAG es solo una búsqueda por palabras clave.', right: 'RAG busca por significado con embeddings: entiende «¿cuánto ganamos?» aunque el documento diga «EBITDA».' },
   ],
 };
+
+const en = {
+  id: 'm21',
+  title: 'RAG: the model queries your documents',
+  short: 'RAG',
+  description: 'Retrieval-Augmented Generation: how to give the LLM access to your private, up-to-date documents without retraining it, so it responds with real data and cites sources.',
+  icon: 'Search',
+  stage: 'APIs',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'The problem: the model does not know YOUR documents',
+      paragraphs: [
+        'An LLM like ChatGPT knows a huge amount about the world... **up to the date it was trained on**. What it does not know is anything about **your company**: your internal reports, your manuals, your invoices, your prices.',
+        'What is more, its knowledge stays **frozen in time**. If you ask it about "September\'s EBITDA" and it is October, a model trained in June cannot know it.',
+        'The obvious solution — "well, retrain the model on my documents" — is hugely expensive, slow, and you would have to repeat it every time a document changes. We need something smarter.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'An expert with a library at hand',
+      body: 'Imagine you ask an expert something they do not know by heart. Instead of making up the answer, they do the professional thing: **they get up, go to the library, find the right document, consult it, and answer you based on what they read**. RAG does exactly that with the LLM: instead of forcing it to "know everything by heart", we give it the ability to **consult our documents on the spot** and respond based on them.',
+    },
+    {
+      kind: 'flow',
+      heading: 'How RAG works, step by step',
+      caption: 'RAG = Retrieval + Augmented + Generation: generating the answer with the retrieved context.',
+      direction: 'down',
+      highlight: [3],
+      nodes: [
+        { label: 'User question', desc: '"What was the EBITDA in September?"' },
+        { label: 'Search', desc: 'The question is turned into an embedding and the most similar fragments are searched in your documents.' },
+        { label: 'Retrieval', desc: 'The relevant fragments are extracted (e.g., the September financial report).' },
+        { label: 'Augmented context', desc: 'Those fragments are pasted alongside the question in the prompt.' },
+        { label: 'The LLM responds', desc: 'The model writes the answer based on the retrieved fragments.' },
+      ],
+    },
+    {
+      kind: 'compare',
+      heading: 'LLM alone vs. LLM with RAG',
+      caption: 'The same question, two different worlds.',
+      left: {
+        title: 'LLM alone',
+        tone: 'poor',
+        items: [
+          'Only knows what it learned in training',
+          'Does not know your private documents',
+          'Knowledge frozen at the training date',
+          'If it does not know, it may make it up (hallucination)',
+        ],
+      },
+      right: {
+        title: 'LLM + RAG',
+        tone: 'good',
+        items: [
+          'Consults your documents in real time',
+          'Responds with internal, private data',
+          'Always uses the most up-to-date information',
+          'Builds on real fragments: it can cite its sources',
+        ],
+      },
+    },
+    {
+      kind: 'example',
+      heading: 'Real example: "What was the EBITDA in September?"',
+      label: 'Business case',
+      body: 'You ask your company\'s assistant: **"What was our company\'s EBITDA in September?"**. The LLM alone has no idea: that data was not in its training (it is private and recent). With RAG, the system turns your question into an embedding, searches the internal document base, **retrieves the September financial report**, and adds it to the context. The LLM reads the fragment and responds: "September\'s EBITDA was €142,300, according to the monthly financial report".',
+      result: 'Without RAG: "I don\'t know" or a hallucination. With RAG: the correct answer, with the source cited.',
+    },
+    {
+      kind: 'text',
+      heading: 'A key detail: the fragments (chunks)',
+      paragraphs: [
+        'Documents are not searched whole: they are split into **fragments** (*chunks*) of a few paragraphs. Each fragment is turned into an embedding (module 20) and stored in an index.',
+        'When you ask something, the system does not search for **keywords**, but for **meaning**: it finds the fragments whose embedding is closest to your question\'s embedding. That is why it understands "how much did we earn in September?" even if the report says "EBITDA".',
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: 'When to use RAG',
+      items: [
+        'When the LLM needs **private or internal** data (your company\'s documents).',
+        'When the information **changes frequently** (prices, monthly reports, documentation).',
+        'When you want the model to **cite its sources** instead of making up the answer.',
+        'When retraining the model would be too **expensive or slow** for your case.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'info',
+      title: 'RAG does not change the model',
+      body: 'An important nuance we will revisit in module 22: **RAG does not modify what the model knows**, it only adds information to the context of each question. The model stays the same; the difference is in what it can consult.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'An employee asks the internal assistant: "What is this year\'s returns policy?"',
+      question: 'Why is RAG the best option here?',
+      options: [
+        'Because the model memorizes the policy in its training forever.',
+        'Because it retrieves the updated document from the intranet and responds based on it, without retraining anything.',
+        'Because it permanently changes the model\'s behavior.',
+        'Because no document is needed anymore: the model deduces it on its own.',
+      ],
+      correctIndex: 1,
+      explanation: 'The policy can change every year and it is internal information the model does not have in its training. RAG retrieves it from the current document and adds it to the context, giving the correct answer with the source, with no need to retrain.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'RAG', def: 'Technique that combines an LLM with document retrieval: it searches for relevant fragments and adds them to the context before responding.' },
+    { term: 'Retrieval', def: 'The RAG phase in which the document fragments most similar to the question are searched using embeddings.' },
+    { term: 'Chunk', def: 'Small portion of a document (a few paragraphs) that is indexed separately so only the relevant part is retrieved.' },
+    { term: 'Augmented context', def: 'The final prompt that joins the user\'s question with the retrieved fragments.' },
+    { term: 'Vector index', def: 'Database where fragment embeddings are stored to find the most similar ones in milliseconds.' },
+    { term: 'Hallucination', def: 'Invented response from the model when it lacks reliable information; RAG reduces it by building on real data.' },
+  ],
+  mistakes: [
+    { wrong: 'RAG trains or retrains the model on my documents.', right: 'RAG does not modify the model: it only retrieves fragments and pastes them into each question\'s context. Modifying the model is fine-tuning (module 22).' },
+    { wrong: 'With RAG the model always tells the truth.', right: 'RAG greatly reduces hallucinations, but the model can still misinterpret a fragment or combine information incorrectly.' },
+    { wrong: 'RAG is just keyword search.', right: 'RAG searches by meaning with embeddings: it understands "how much did we earn?" even if the document says "EBITDA".' },
+  ],
+};
+
+export default { es, en };

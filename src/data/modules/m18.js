@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm18',
   title: 'Acceso a APIs de IA',
   short: 'APIs de IA',
@@ -99,3 +99,107 @@ export default {
     { wrong: 'Da igual qué modelo elija, todos valen lo mismo.', right: 'Modelos rápidos y modelos potentes difieren en calidad, velocidad y precio; elegir bien es una decisión técnica y económica.' },
   ],
 };
+
+const en = {
+  id: 'm18',
+  title: 'Accessing AI APIs',
+  short: 'AI APIs',
+  description: 'How any application uses an AI model: the complete architecture, a real request example, what tokens are, how much it costs, and the most important security rule of all.',
+  icon: 'KeyRound',
+  stage: 'APIs',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'Your app + an AI model: the bridge is an API',
+      paragraphs: [
+        'AI models (like the ones behind ChatGPT, Claude, or Gemini) do not live on your computer: they live on their providers\' servers. When an application wants to use them — a chatbot on a website, an assistant on your phone, an agent that writes reports — it does not "install" the AI: it **calls its API**.',
+        'The mechanism is the client-server dialogue you already know: your app makes a request with your question and your API key, the provider passes it to the model, the model generates the response, and the API returns it to you in JSON. Everything learned in modules 14 to 17 comes together here.',
+        'Understanding this flow lets you do two very valuable things: **use AI inside your own projects** and **understand what is happening** (and how much it costs) every time an app "talks to the AI".',
+      ],
+    },
+    {
+      kind: 'flow',
+      heading: 'Architecture of an AI API call',
+      caption: 'Six steps that happen in less than a second every time an app queries a model.',
+      direction: 'right',
+      nodes: [
+        { label: 'APP', desc: 'Your application prepares the request: question + configuration.' },
+        { label: 'API REQUEST', desc: '`POST` with your API key, the chosen model, and the messages.' },
+        { label: 'AI PROVIDER', desc: 'Authenticates your key, checks your limits, and routes to the model.' },
+        { label: 'MODEL', desc: 'Generates the response token by token.' },
+        { label: 'API RESPONSE', desc: 'JSON with the generated text and the token count.' },
+        { label: 'APP', desc: 'Extracts the text from the JSON and shows it to the user.' },
+      ],
+      highlight: [1, 3],
+    },
+    {
+      kind: 'example',
+      heading: 'What a request looks like inside',
+      label: 'Conceptual example',
+      body: 'Imagine your app wants to ask the model "Explain IFRS 9". The (simplified) request would carry something like:\n\n`{ "model": "example-model", "messages": [{ "role": "user", "content": "Explain IFRS 9" }] }`\n\nThree pieces: the **model** you want to use, the list of **messages** (each with a `role`: `user` for what the user says, `assistant` for previous responses, `system` for behavior instructions), and your **API key** traveling in the headers to identify you.\n\nThe response returns another JSON with the generated text and, very importantly, how many **input and output tokens** were consumed.',
+      result: 'There is no magic: it is an HTTP request with JSON going and JSON coming back. If you can read JSON and understand the client-server dialogue, you already understand AI APIs.',
+    },
+    {
+      kind: 'text',
+      heading: 'The pieces of each call (and what they cost)',
+      paragraphs: [
+        '**API key.** Your identifier with the provider. It goes in every request and it is what allows them to bill you: guard it like gold (see the warning below).',
+        '**Chosen model.** Not all models cost or perform the same: there are fast, cheap ones for simple tasks and powerful (and expensive) ones for complex reasoning. Choosing the right model is the first economic decision.',
+        '**Prompt.** Your instructions and your question. Everything you send counts as **input tokens**.',
+        '**Input and output tokens.** The **token** is the unit in which the model "measures" text (roughly: 1 token ≈ ¾ of a word in English; in Spanish, somewhat fewer). You pay for the tokens you **send** (input) and for the ones the model **generates** (output), usually at different prices: output tends to cost more.',
+        '**Cost.** Each call adds up: input tokens × price + output tokens × price. An app with thousands of users can spend a lot if it does not control prompt and response length.',
+        '**Usage limits.** Providers limit how many requests or tokens you can consume per minute (rate limits) and how much you can spend. If you exceed them, the API responds with an error and your app must handle it.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'warn',
+      title: 'NEVER put a private API key in public frontend code',
+      body: 'Anyone can read your website\'s JavaScript code with the browser\'s right-click button. If your API key is there, anyone can copy it and use it to make requests **at your expense**: you would see the bill without having made the calls yourself. The rule is absolute: the API key lives in the **backend** (in the server\'s environment variables), and the frontend asks your backend, which is what calls the AI API with the key. No exceptions.',
+    },
+    {
+      kind: 'text',
+      heading: 'Security and good practices',
+      paragraphs: [
+        'The secure architecture has three layers: the **frontend** talks to **your backend**, and only your backend — where the API key lives in an environment variable — talks to the **AI API**. That way the key never travels to the browser.',
+        'Also: rotate keys if you suspect they have been exposed, use different keys per environment (development and production), set **spending limits** in the provider\'s dashboard to avoid surprises, and do not log user prompts containing sensitive data unless you have a legal basis for it.',
+        'And remember the detail from module 11: AI APIs **have no memory between calls**. If your chatbot must remember the conversation, your app has to resend the history with every request (and those tokens are paid for too).',
+      ],
+    },
+    {
+      kind: 'simulator',
+      component: 'APISimulator',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'You are building a website with an AI chatbot. A tutorial suggests putting the API key directly in the frontend JavaScript file "because it is simpler".',
+      question: 'What should you do?',
+      options: [
+        'Follow the tutorial: if it works, it is valid.',
+        'Put the key in the frontend but obfuscated so it is not visible at a glance.',
+        'Do not do it: the key must live in the backend (environment variable); the frontend calls your backend and it calls the AI API.',
+        'Put the key in the frontend and change it every day.',
+      ],
+      correctIndex: 2,
+      explanation: 'Any key in the frontend is readable by anyone who opens the website, no matter how obfuscated, and allows making requests at your expense. The only secure architecture is: frontend → your backend (with the key in an environment variable) → AI API.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'AI API', def: 'Interface that exposes an AI model over the internet: your app sends HTTP requests and receives responses generated by the model.' },
+    { term: 'API key', def: 'Key that identifies your application to the AI provider; it lets you authenticate, apply limits, and bill usage. It must live in the backend.' },
+    { term: 'Model', def: 'The specific engine that generates the response (fast, powerful, reasoning…). It is chosen in each request according to the task and the budget.' },
+    { term: 'Token', def: 'Unit in which the model measures text (roughly ¾ of a word in English). Providers charge for input and output tokens.' },
+    { term: 'System prompt', def: 'Message with `role: system` that defines the model\'s behavior (tone, role, rules) before the conversation.' },
+    { term: 'Rate limit', def: 'Limit of requests or tokens per minute imposed by the provider; exceeding it returns an error.' },
+    { term: 'Cost per token', def: 'Price of each input and output token; the basis of AI API billing.' },
+  ],
+  mistakes: [
+    { wrong: 'I can paste my API key into my website\'s JavaScript.', right: 'Never: anyone can read it in the browser and use it at your expense. The key lives in the backend, in environment variables.' },
+    { wrong: 'Calling the AI API is free.', right: 'Providers charge for input and output tokens; every call adds up, and at scale the cost matters.' },
+    { wrong: 'The API remembers the previous conversation.', right: 'Each request is independent: if you want memory, your app must resend the history with every call (and pay for those tokens).' },
+    { wrong: 'It does not matter which model I choose, they are all worth the same.', right: 'Fast models and powerful models differ in quality, speed, and price; choosing well is a technical and economic decision.' },
+  ],
+};
+
+export default { es, en };

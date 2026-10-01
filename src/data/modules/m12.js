@@ -1,4 +1,4 @@
-export default {
+const es = {
   id: 'm12',
   title: 'Agentes de programación',
   short: 'Coding agents',
@@ -123,3 +123,131 @@ export default {
     { wrong: 'El agente puede borrar o romper cosas sin avisar.', right: 'Bien configurado, pide confirmación antes de acciones destructivas. Aun así, usa Git para poder deshacer cualquier cambio.' },
   ],
 };
+
+const en = {
+  id: 'm12',
+  title: 'Coding agents',
+  short: 'Coding agents',
+  description: 'Coding agents do not give you code snippets: they work directly on your project. Discover what they can do, how they connect to files, terminal, Git and tests, and how they differ from asking a chatbot for code.',
+  icon: 'Code2',
+  stage: 'Agents',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'What a coding agent is',
+      paragraphs: [
+        'A **coding agent** is an AI agent specialized in software: instead of just writing code in the chat, it **works directly on your project**. It inspects your files, understands how they connect, modifies the code, runs commands in the terminal, installs dependencies, runs the tests and uses Git to save the changes.',
+        'The key is the loop: the agent writes code, runs it, **observes the error**, fixes it and tries again, just like a programmer would. That ability to iterate on a real project is what separates it from a mere snippet generator.',
+        'The result is no longer “a block of code to copy and paste”, but **a modified, tested project with its commits done**.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'The current protagonists',
+      paragraphs: [
+        'The coding-agent ecosystem moves very fast, but there are names worth knowing: **Claude Code** (Anthropic’s terminal agent), **OpenAI Codex** (OpenAI’s line of programming agents) and **OpenCode** (an open alternative that works with multiple models).',
+        'Around them there is a whole ecosystem: editors with a built-in agent like **Cursor** or **Windsurf**, assistants like **GitHub Copilot** in its agent mode, and terminal tools that combine several models. They all share the same idea: the agent **lives inside your development environment**, not in a browser tab.',
+        'Do not marry any particular name: what matters is understanding the concept. In a year the list will have changed, but the architecture — agent + development tools + iteration loop — will still be the same.',
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: 'What a coding agent can do',
+      items: [
+        'Inspect your repository: list files, read code and understand the project’s structure.',
+        'Understand multiple files at once and how they relate to each other.',
+        'Modify existing code or create new files directly in your project.',
+        'Run commands in the terminal: start the project, compile, migrate data.',
+        'Install dependencies and configure the project’s environment.',
+        'Run tests and read their results to know what is failing.',
+        'Detect errors in command output and fix the code accordingly.',
+        'Use Git: check status, create branches and stage commits.',
+        'Create commits with descriptive messages of the changes made.',
+        'Work iteratively: try, fail, fix and retry until it works.',
+      ],
+    },
+    {
+      kind: 'flow',
+      heading: 'Coding agent architecture',
+      caption: 'The user describes the goal; the agent combines its tools on the real project.',
+      direction: 'right',
+      nodes: [
+        { label: 'USER', desc: 'Describes the goal in natural language: “add Google login to the app”.' },
+        { label: 'CODING AGENT', desc: 'Plans, writes code, tests it and fixes errors in cycles.' },
+        { label: 'TOOLS', desc: 'FILES · TERMINAL · GIT · TESTS · INTERNET · MCP: its hands on the project.' },
+        { label: 'PROJECT', desc: 'Modified code, green tests and commits created. Ready for review.' },
+      ],
+      highlight: [2],
+    },
+    {
+      kind: 'compare',
+      heading: 'Asking a chatbot for code vs. handing a project to a coding agent',
+      left: {
+        title: 'Chatbot: asking for code',
+        tone: 'poor',
+        items: [
+          'You describe the problem in words and paste your code into the chat.',
+          'You receive a block of text that you have to copy and paste by hand.',
+          'The chatbot does not see the rest of your project: it works blind.',
+          'If the code fails, you have to copy the error back into the chat.',
+          'Every change is a new conversation that starts almost from zero.',
+        ],
+      },
+      right: {
+        title: 'Coding agent: handing over the project',
+        tone: 'good',
+        items: [
+          'You give it access to the repository and describe the goal.',
+          'It modifies the files directly, in place.',
+          'It reads the whole project: it understands the full context.',
+          'It runs the code itself, sees the error and fixes it in the next cycle.',
+          'It iterates autonomously until the tests pass.',
+        ],
+      },
+    },
+    {
+      kind: 'example',
+      heading: 'Guided example: “Add Google authentication”',
+      label: 'Realistic session',
+      body: 'You ask your coding agent: “Add Google sign-in to the app”. This is what happens:\n\n1. It explores the repository and detects a React project with a Node.js backend.\n2. It reads the routes file and the user model to understand where the login fits.\n3. It installs the needed authentication library with the package manager.\n4. It creates the backend endpoint, the “Sign in with Google” button in the frontend and the session logic.\n5. It runs the tests: one fails because an environment variable is missing.\n6. It detects the error, adds the variable to the sample configuration and reruns the tests: all green.\n7. It creates a commit “feat: add Google authentication” and summarizes the changes for you to review.',
+      result: 'You have not copied or pasted anything: you described the goal and reviewed the result. The agent did the mechanical work — and the trial-and-error cycles — for you.',
+    },
+    {
+      kind: 'callout',
+      tone: 'warn',
+      title: 'Always review before trusting',
+      body: 'A coding agent can run commands and modify real files. **Review the changes** (with `git diff`, for example) before accepting them, do not ask it to run commands you do not understand, and keep backups. The agent’s speed is an advantage; human supervision is still mandatory.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Check your understanding',
+      prompt: 'You want to add a comment system to your blog. You have two options: (A) ask a chatbot to write the code and paste it in yourself; (B) ask a coding agent to implement it in your repository.',
+      question: 'What will the coding agent do that the chatbot cannot?',
+      options: [
+        'Write syntactically correct code.',
+        'Modify your files directly, run the tests, fix any errors that appear and leave the changes ready in Git.',
+        'Explain in words how the system would work.',
+        'Generate the code faster than the chatbot.',
+      ],
+      correctIndex: 1,
+      explanation: 'The difference is not the quality of the generated text, but access to the real world: the coding agent acts on your project (files, terminal, tests, Git) and iterates until it works. The chatbot only produces text that you must integrate and debug by hand.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Coding agent', def: 'AI agent specialized in software that works directly on a project: it reads, modifies, runs and tests code iteratively.' },
+    { term: 'Repository', def: 'Project folder with all its code and change history, normally managed with Git.' },
+    { term: 'Terminal', def: 'Command console where the agent runs orders: starting the project, installing dependencies or launching tests.' },
+    { term: 'Tests', def: 'Automated checks that verify the code works. The agent runs them to verify its changes.' },
+    { term: 'Commit', def: 'Saving a set of changes in Git with a descriptive message; it allows reviewing and undoing.' },
+    { term: 'Iteration', def: 'Each try-fix-retry cycle the agent repeats until the code works.' },
+    { term: 'MCP', def: 'Model Context Protocol: open standard that lets agents connect to external tools and data sources uniformly.' },
+  ],
+  mistakes: [
+    { wrong: 'A coding agent writes perfect code on the first try.', right: 'Its strength is not getting it right first time, but iterating: it runs, observes the error and fixes it until it works.' },
+    { wrong: 'Asking a chatbot for code is the same as using a coding agent.', right: 'The chatbot gives you text to copy; the coding agent modifies your real project, runs tests and fixes errors in cycles.' },
+    { wrong: 'With a coding agent you no longer need to know how to program.', right: 'Knowing how to program lets you direct it, review its changes and spot errors. The agent accelerates; it does not replace judgment.' },
+    { wrong: 'The agent can delete or break things without warning.', right: 'Well configured, it asks for confirmation before destructive actions. Even so, use Git so you can undo any change.' },
+  ],
+};
+
+export default { es, en };

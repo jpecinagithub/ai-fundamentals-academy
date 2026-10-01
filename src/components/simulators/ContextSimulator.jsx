@@ -1,48 +1,54 @@
 import { useState } from 'react';
 import { Settings, User, FileText, Database, Wrench, Trash2, TriangleAlert } from 'lucide-react';
 import { estimateTokens } from '../../utils/format';
+import { useLang } from '../../i18n/LanguageContext';
 
 const CONTEXT_LIMIT = 128000;
 const WARN_RATIO = 0.85;
 
 const BLOCK_TYPES = {
   system: {
-    label: 'System Prompt',
+    labelKey: 'contextsimulator.block.system.label',
     Icon: Settings,
-    example: 'Eres un asistente experto en finanzas que responde de forma concisa y profesional.',
+    exampleKey: 'contextsimulator.block.system.example',
   },
   user: {
-    label: 'User Prompt',
+    labelKey: 'contextsimulator.block.user.label',
     Icon: User,
-    example: 'Analiza los estados financieros adjuntos y dime los 3 riesgos principales.',
+    exampleKey: 'contextsimulator.block.user.example',
   },
   file: {
-    label: 'Archivo',
+    labelKey: 'contextsimulator.block.file.label',
     Icon: FileText,
-    example: '[balance-2024.pdf] Activo total: 12,4 M€ · Pasivo: 7,1 M€ · Patrimonio: 5,3 M€ ...',
+    exampleKey: 'contextsimulator.block.file.example',
   },
   memory: {
-    label: 'Memoria recuperada',
+    labelKey: 'contextsimulator.block.memory.label',
     Icon: Database,
-    example: 'El usuario prefiere respuestas en español y con ejemplos numéricos.',
+    exampleKey: 'contextsimulator.block.memory.example',
   },
   tool: {
-    label: 'Tool output',
+    labelKey: 'contextsimulator.block.tool.label',
     Icon: Wrench,
-    example: '{ "ratio_liquidez": 1.8, "roe": 0.14, "endeudamiento": 0.57 }',
+    exampleKey: 'contextsimulator.block.tool.example',
   },
 };
 
 let nextId = 3;
 
 export function ContextSimulator() {
+  const { lang, t } = useLang();
+  const locale = lang === 'es' ? 'es-ES' : 'en-US';
+  const blockLabel = (type) => t(BLOCK_TYPES[type].labelKey);
+  const blockExample = (type) => t(BLOCK_TYPES[type].exampleKey);
+
   const [blocks, setBlocks] = useState([
-    { id: 1, type: 'system', text: BLOCK_TYPES.system.example },
-    { id: 2, type: 'user', text: BLOCK_TYPES.user.example },
+    { id: 1, type: 'system', text: blockExample('system') },
+    { id: 2, type: 'user', text: blockExample('user') },
   ]);
 
   const addBlock = (type) => {
-    setBlocks((b) => [...b, { id: nextId++, type, text: BLOCK_TYPES[type].example }]);
+    setBlocks((b) => [...b, { id: nextId++, type, text: blockExample(type) }]);
   };
 
   const updateBlock = (id, text) => {
@@ -58,28 +64,29 @@ export function ContextSimulator() {
   const overWarn = ratio > WARN_RATIO;
 
   const finalContext = blocks
-    .map((blk) => `### ${BLOCK_TYPES[blk.type].label.toUpperCase()}\n${blk.text}`)
+    .map((blk) => `### ${blockLabel(blk.type).toUpperCase()}\n${blk.text}`)
     .join('\n\n');
 
   return (
     <div>
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title">Paleta de bloques de contexto</h3>
-        <p className="card-sub">Añade bloques para simular lo que entra en la ventana de contexto del modelo.</p>
+        <h3 className="card-title">{t('contextsimulator.palette_title')}</h3>
+        <p className="card-sub">{t('contextsimulator.palette_sub')}</p>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.75rem' }}>
-          {Object.entries(BLOCK_TYPES).map(([key, { label, Icon }]) => (
+          {Object.entries(BLOCK_TYPES).map(([key, { Icon }]) => (
             <button key={key} className="btn btn-sm" onClick={() => addBlock(key)}>
-              <Icon size={14} style={{ marginRight: '0.35rem' }} /> {label}
+              <Icon size={14} style={{ marginRight: '0.35rem' }} /> {blockLabel(key)}
             </button>
           ))}
         </div>
       </div>
 
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title">Bloques añadidos ({blocks.length})</h3>
-        {blocks.length === 0 && <p className="card-sub">Sin bloques. Añade alguno desde la paleta.</p>}
+        <h3 className="card-title">{t('contextsimulator.added_blocks', { count: blocks.length })}</h3>
+        {blocks.length === 0 && <p className="card-sub">{t('contextsimulator.no_blocks')}</p>}
         {blocks.map((blk) => {
-          const { label, Icon } = BLOCK_TYPES[blk.type];
+          const { Icon } = BLOCK_TYPES[blk.type];
+          const label = blockLabel(blk.type);
           return (
             <div
               key={blk.id}
@@ -95,8 +102,8 @@ export function ContextSimulator() {
                   <Icon size={13} style={{ marginRight: '0.35rem' }} /> {label}
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <span className="badge badge-info">≈ {estimateTokens(blk.text).toLocaleString('es-ES')} tokens</span>
-                  <button className="btn btn-sm" onClick={() => removeBlock(blk.id)} aria-label="Eliminar bloque">
+                  <span className="badge badge-info">≈ {estimateTokens(blk.text).toLocaleString(locale)} {t('contextsimulator.tokens')}</span>
+                  <button className="btn btn-sm" onClick={() => removeBlock(blk.id)} aria-label={t('contextsimulator.remove_block')}>
                     <Trash2 size={14} />
                   </button>
                 </span>
@@ -113,10 +120,10 @@ export function ContextSimulator() {
       </div>
 
       <div className="card" style={{ marginBottom: '1rem' }}>
-        <h3 className="card-title">Uso de la ventana de contexto</h3>
+        <h3 className="card-title">{t('contextsimulator.usage_title')}</h3>
         <div style={{ display: 'flex', justifyContent: 'space-between', margin: '0.5rem 0' }}>
-          <span><strong>{totalTokens.toLocaleString('es-ES')}</strong> / {CONTEXT_LIMIT.toLocaleString('es-ES')} tokens</span>
-          <span>{(ratio * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} %</span>
+          <span><strong>{totalTokens.toLocaleString(locale)}</strong> / {CONTEXT_LIMIT.toLocaleString(locale)} {t('contextsimulator.tokens')}</span>
+          <span>{(ratio * 100).toLocaleString(locale, { maximumFractionDigits: 1 })} %</span>
         </div>
         <div className="progress progress-lg">
           <div
@@ -131,15 +138,14 @@ export function ContextSimulator() {
           <div className="callout warn" style={{ marginTop: '0.75rem' }}>
             <TriangleAlert size={16} className="callout-ico" />
             <span>
-              <strong>Atención:</strong> superas el 85 % de la ventana de contexto de ejemplo (128.000 tokens).
-              En un caso real habría que resumir, recortar archivos o usar RAG.
+              <strong>{t('contextsimulator.warn_title')}</strong> {t('contextsimulator.warn_body')}
             </span>
           </div>
         )}
       </div>
 
       <div className="card">
-        <h3 className="card-title">Contexto final enviado al modelo</h3>
+        <h3 className="card-title">{t('contextsimulator.final_title')}</h3>
         <pre
           style={{
             fontFamily: 'var(--font-mono)',
@@ -152,7 +158,7 @@ export function ContextSimulator() {
             marginTop: '0.75rem',
           }}
         >
-          {finalContext || '(vacío)'}
+          {finalContext || t('contextsimulator.empty')}
         </pre>
       </div>
     </div>
