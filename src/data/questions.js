@@ -3092,9 +3092,9 @@ export const questions = [
       'Borrar un repositorio',
       'Crear un usuario nuevo'
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: 'El merge une historias: toma lo desarrollado en la rama y lo incorpora a la principal, resolviendo conflictos si ambos tocaron lo mismo.',
-    difficulty: 'avanzado',
+    difficulty: 'básico',
     concept: 'Merge'
   },
   {
