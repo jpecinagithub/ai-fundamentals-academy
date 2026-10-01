@@ -1,0 +1,95 @@
+export default {
+  id: 'm4',
+  title: 'El contexto: la memoria de trabajo del modelo',
+  short: 'Contexto',
+  description: 'Qué es el context window, qué información entra en él y qué ocurre cuando la conversación se hace muy larga.',
+  icon: 'Layers',
+  stage: 'Prompts y contexto',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'Qué es el contexto',
+      paragraphs: [
+        'El **contexto** es toda la información que el modelo tiene **disponible en este momento** para generar su respuesta: tu mensaje actual, las instrucciones del sistema, la conversación previa, los documentos que adjuntaste y los resultados de las herramientas que haya usado. Es su "mesa de trabajo": solo puede usar lo que esté sobre la mesa.',
+        'Un detalle crucial: el modelo **no recuerda nada entre mensajes por sí mismo**. Cada vez que le escribes, la aplicación le reenvía la conversación completa como contexto. Por eso "recuerda" lo que dijiste hace diez mensajes: porque se lo vuelven a contar cada vez.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'El context window: el tamaño de la mesa',
+      paragraphs: [
+        'El **context window** (ventana de contexto) es el **límite máximo de tokens** que un modelo puede procesar de una vez. Los modelos actuales rondan entre los 128.000 y 1.000.000 de tokens. Para orientarte: 128.000 tokens equivalen a unas **300 páginas** de texto, y un millón, a una pequeña biblioteca.',
+        'Pero hay matices: una ventana grande no significa que el modelo use bien todo su contenido. Los estudios muestran que los modelos prestan más atención al **principio y al final** del contexto y pueden "perder" información enterrada en medio. Además, más contexto = más coste y más lentitud. La calidad del contexto importa más que su tamaño.',
+      ],
+    },
+    {
+      kind: 'flow',
+      heading: 'Qué entra en el contexto',
+      caption: 'Todo esto viaja junto en cada petición al modelo, en este orden típico.',
+      direction: 'down',
+      highlight: [6],
+      nodes: [
+        { label: 'System Prompt', desc: 'Instrucciones invisibles que definen el comportamiento del asistente.' },
+        { label: 'Conversación', desc: 'El historial de mensajes entre tú y el modelo en este chat.' },
+        { label: 'Archivos', desc: 'Documentos o imágenes que adjuntaste o que la app inyectó.' },
+        { label: 'Tools', desc: 'Resultados de herramientas usadas: búsquedas web, datos, código ejecutado.' },
+        { label: 'Memoria relevante', desc: 'Fragmentos recuperados de tu memoria persistente, si existe.' },
+        { label: 'Tu mensaje', desc: 'Lo que acabas de escribir: lo último que se añade.' },
+        { label: 'LLM', desc: 'El modelo lee TODO lo anterior y genera la respuesta.' },
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Cuando la conversación es muy larga',
+      paragraphs: [
+        'Si el contexto supera el límite de la ventana, algo tiene que ceder. Las aplicaciones usan tres estrategias: el **truncado** (se descartan los mensajes más antiguos y el modelo "olvida" el principio), el **resumen** (se comprime la conversación vieja en un resumen que sí cabe) o una combinación de ambas.',
+        'Por eso en chats larguísimos el asistente a veces pierde el hilo de lo que dijiste al principio, o confunde detalles: no es que sea tonto, es que esa parte ya no está sobre su mesa de trabajo. Si trabajas en algo largo e importante, **resume periódicamente los puntos clave** en el propio chat o empieza una conversación nueva con un resumen.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Tres cosas que no debes confundir',
+      paragraphs: [
+        '**Contexto ≠ conocimiento del modelo.** El conocimiento es lo que aprendió durante el entrenamiento (fijo, con fecha de corte); el contexto es la información que le das ahora (fresca, específica). Si le pegas un documento actual, el contexto manda sobre su conocimiento desactualizado.',
+        '**Contexto ≠ memoria.** El contexto es temporal: desaparece cuando cierras el chat. La memoria es información **almacenada** que el sistema puede recuperar en futuras conversaciones. El módulo 6 está dedicado entero a esta diferencia.',
+        '**Más contexto ≠ mejores respuestas.** Rellenar la ventana con información irrelevante distrae al modelo, ralentiza la respuesta y cuesta dinero. El arte está en darle **el contexto justo y relevante**.',
+      ],
+    },
+    { kind: 'simulator', component: 'ContextSimulator' },
+    {
+      kind: 'example',
+      heading: 'Ejemplo real',
+      label: 'El informe que "olvidó"',
+      body: 'Marta pega en Claude un informe de 80 páginas y mantiene una conversación de 40 mensajes analizándolo. Al final le pide: "recuerda la cifra de la página 3". Claude responde con un número... incorrecto. ¿Qué pasó? Entre el informe, el historial y los resúmenes intermedios, el contexto se llenó; la app resumió las primeras partes y el dato exacto de la página 3 se perdió en la compresión.',
+      result: 'Moraleja: para datos exactos que necesitarás al final, mantenlos visibles (repítelos o guárdalos aparte). El contexto es una mesa de trabajo limitada, no un archivo infinito.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Comprueba que lo has entendido',
+      prompt: 'Llevas 60 mensajes en un mismo chat con un asistente de IA y de pronto empieza a contradecir cosas que acordasteis al principio de la conversación.',
+      question: '¿Cuál es la explicación más probable?',
+      options: [
+        'El modelo ha borrado su conocimiento de entrenamiento',
+        'El contexto se ha llenado y la app ha truncado o resumido los mensajes más antiguos, así que esos acuerdos ya no están disponibles para el modelo',
+        'El modelo está alucinando porque hoy funciona mal',
+        'Has superado el número máximo de chats permitidos',
+      ],
+      correctIndex: 1,
+      explanation: 'Cada mensaje reenvía todo el historial como contexto. Al superar la ventana, lo más antiguo se recorta o resume, y el modelo pierde acceso literal a esos acuerdos. La solución: resumir los puntos clave o empezar un chat nuevo con un resumen.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Contexto', def: 'Toda la información disponible para el modelo en este momento: instrucciones, historial, archivos, resultados de tools y tu mensaje.' },
+    { term: 'Context window', def: 'Límite máximo de tokens que un modelo puede procesar de una vez (de 128K a 1M+ en modelos actuales).' },
+    { term: 'System prompt', def: 'Instrucciones invisibles que la aplicación coloca al inicio del contexto para definir el comportamiento del asistente.' },
+    { term: 'Truncado', def: 'Estrategia que descarta los mensajes más antiguos cuando el contexto supera el límite de la ventana.' },
+    { term: 'Resumen de conversación', def: 'Técnica que comprime el historial antiguo en un resumen para que quepa en el context window.' },
+    { term: 'Conocimiento del modelo', def: 'Lo aprendido durante el entrenamiento (fijo, con fecha de corte); distinto del contexto, que es información fresca que le das tú.' },
+  ],
+  mistakes: [
+    { wrong: 'El modelo recuerda todo lo que le dije ayer.', right: 'Cada conversación empieza con el contexto vacío. Solo "recuerda" lo que se le reenvía en el contexto actual, salvo que exista memoria persistente configurada.' },
+    { wrong: 'Contexto y memoria son lo mismo.', right: 'El contexto es la información disponible ahora mismo (temporal); la memoria es información almacenada recuperable en futuras interacciones.' },
+    { wrong: 'Cuanto más contexto, mejor respuesta siempre.', right: 'El contexto irrelevante distrae al modelo, ralentiza y encarece. Importa la relevancia, no solo el tamaño.' },
+    { wrong: 'Si pego mucho texto, lo procesa todo tal cual.', right: 'Lo que exceda la ventana se recorta o se resume; los detalles enterrados en medio pueden perderse.' },
+  ],
+};

@@ -1,0 +1,125 @@
+export default {
+  id: 'm1',
+  title: '¿Qué es la Inteligencia Artificial?',
+  short: 'Fundamentos',
+  description: 'Descubre qué es la IA, cómo aprende de los datos y las ramas que la componen, desde el Machine Learning hasta la IA generativa.',
+  icon: 'Brain',
+  stage: 'Fundamentos',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'Qué es exactamente la IA',
+      paragraphs: [
+        'La **Inteligencia Artificial** es la disciplina que crea sistemas capaces de realizar tareas que normalmente requieren inteligencia humana: percibir el entorno, razonar, aprender de la experiencia y tomar decisiones. No es una sola tecnología, sino un paraguas que agrupa muchas técnicas distintas.',
+        'La gran diferencia frente al software tradicional es esta: en un programa clásico, una persona escribe las **reglas** ("si el correo contiene la palabra oferta, márcalo como spam"). En un sistema de IA, el sistema **aprende las reglas por sí mismo** analizando miles o millones de ejemplos. Tú le das los datos; él descubre los patrones.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'Una analogía sencilla',
+      body: 'Imagina a un aprendiz de cocina. Nadie le entrega un manual con la regla exacta de "cuánta sal lleva cada plato en cada situación". En su lugar, prueba cientos de platos, recibe opiniones ("le falta sal", "está perfecto") y poco a poco desarrolla un **paladar**: una intuición que no puede explicar con fórmulas, pero que funciona. La IA aprende igual: no memoriza reglas, desarrolla un "paladar estadístico" a partir de ejemplos.',
+    },
+    {
+      kind: 'flow',
+      heading: 'De la IA a los modelos de lenguaje',
+      caption: 'Cada nivel es una especialización del anterior: no son tecnologías rivales, sino capas.',
+      direction: 'down',
+      highlight: [0],
+      nodes: [
+        { label: 'IA', desc: 'Cualquier sistema que realiza tareas inteligentes: desde un termostato "listo" hasta ChatGPT.' },
+        { label: 'Machine Learning', desc: 'Subcampo donde el sistema aprende patrones a partir de datos, en vez de seguir reglas programadas a mano.' },
+        { label: 'Deep Learning', desc: 'Rama del ML basada en redes neuronales con muchas capas; excelente con imágenes, audio y lenguaje.' },
+        { label: 'Modelos generativos', desc: 'Redes profundas entrenadas para CREAR contenido nuevo: texto, imágenes, código, música.' },
+        { label: 'LLM y multimodales', desc: 'Los modelos generativos de lenguaje (GPT, Claude, Gemini) y los que combinan texto, imagen y audio.' },
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Machine Learning y Deep Learning, sin tecnicismos',
+      paragraphs: [
+        '**Machine Learning** (aprendizaje automático) es la idea de que el programa mejora con los datos. Le muestras 10.000 fotos etiquetadas como "gato" o "perro" y aprende a distinguirlos solo. Cuantos más ejemplos buenos, mejor aprende; con datos malos, aprende mal ("basura entra, basura sale").',
+        '**Deep Learning** (aprendizaje profundo) usa **redes neuronales**: estructuras inspiradas vagamente en el cerebro, organizadas en capas. Cada capa detecta algo un poco más abstracto: en una foto, la primera capa ve bordes, la siguiente ve formas, y las últimas "entienden" que eso es un gato. "Profundo" se refiere simplemente a que hay muchas capas.',
+        'Casi toda la IA moderna que ves en titulares (ChatGPT, traductores, reconocimiento facial) es Deep Learning. Pero ojo: la IA "clásica" no ha muerto, como verás en la siguiente comparación.',
+      ],
+    },
+    {
+      kind: 'compare',
+      heading: 'IA tradicional frente a IA generativa',
+      caption: 'Dos filosofías distintas dentro de la misma disciplina. Ambas se usan hoy, para problemas distintos.',
+      left: {
+        title: 'IA tradicional',
+        tone: 'a',
+        items: [
+          'Responde con una etiqueta o un número: ¿es spam? ¿qué precio tendrá? ¿qué probabilidad de impago?',
+          'Clasifica, predice y recomienda a partir de patrones aprendidos.',
+          'Ejemplos: filtros antispam, recomendadores de Netflix, detección de fraude bancario, mantenimiento predictivo.',
+        ],
+      },
+      right: {
+        title: 'IA generativa',
+        tone: 'b',
+        items: [
+          'Crea contenido nuevo: redacta textos, programa código, genera imágenes o compone música.',
+          'Aprende la estructura profunda del lenguaje, las imágenes o el sonido.',
+          'Ejemplos: ChatGPT, Claude, Gemini, generadores de imágenes como los integrados en esas mismas apps.',
+        ],
+      },
+    },
+    {
+      kind: 'text',
+      heading: 'Modelos fundacionales y multimodales',
+      paragraphs: [
+        'Un **modelo fundacional** es un modelo enorme entrenado con cantidades colosales de datos (buena parte de internet, libros, código...) que sirve de **base para muchísimas aplicaciones**. En vez de entrenar un modelo desde cero para cada tarea, las empresas parten de un modelo fundacional y lo adaptan. GPT, Claude y Gemini son modelos fundacionales.',
+        'Un **modelo multimodal** es el que entiende y genera **varios tipos de datos a la vez**: texto, imágenes, audio o vídeo. Cuando le envías una foto a ChatGPT o a Gemini y te la describe, o cuando le pides que genere una imagen a partir de una frase, estás usando su capacidad multimodal. El futuro de la IA es multimodal: el mundo real no es solo texto.',
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: 'La IA ya está en tu día a día',
+      items: [
+        'Recomendadores: Netflix, Spotify o YouTube deciden qué sugerirte con IA tradicional.',
+        'Visión por computador: desbloqueo facial del móvil, etiquetado de fotos, cámaras de tráfico.',
+        'Traducción automática: Google Translate o DeepL usan modelos de Deep Learning.',
+        'Asistentes de escritura: autocompletado de Gmail, correctores, resúmenes automáticos.',
+        'Conversación: ChatGPT, Claude y Gemini son IA generativa en forma de producto.',
+        'Voz: subtítulos automáticos de YouTube o los asistentes de voz transcriben tu habla con IA.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'La idea que vertebra todo el curso',
+      body: 'La IA no "comprende" como tú: **detecta patrones estadísticos en datos**. Esa sola frase explica por qué es tan potente (encuentra patrones invisibles para humanos) y por qué a veces falla con total seguridad (un patrón no es una verdad). Tenla presente en cada módulo.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Comprueba que lo has entendido',
+      prompt: 'Una empresa quiere predecir qué clientes cancelarán su suscripción el próximo mes, a partir de su historial de uso.',
+      question: '¿Qué tipo de IA encaja mejor con este problema?',
+      options: [
+        'IA generativa, porque es la más moderna',
+        'IA tradicional (Machine Learning predictivo), porque el problema pide una predicción numérica, no crear contenido',
+        'Un modelo multimodal, porque combina varios tipos de datos',
+        'Ninguna: esto se resuelve mejor con reglas escritas a mano',
+      ],
+      correctIndex: 1,
+      explanation: 'El problema pide clasificar/predecir (cancelará o no), que es el terreno clásico de la IA tradicional. La IA generativa crea contenido nuevo; aquí no hay nada que crear. Elegir la herramienta adecuada al problema es la primera habilidad de un profesional de IA.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'IA', def: 'Disciplina que crea sistemas capaces de realizar tareas que requieren inteligencia humana: percibir, razonar, aprender y decidir.' },
+    { term: 'Machine Learning', def: 'Subcampo de la IA donde el sistema aprende patrones a partir de datos, en lugar de seguir reglas programadas a mano.' },
+    { term: 'Deep Learning', def: 'Rama del Machine Learning basada en redes neuronales con muchas capas, capaz de aprender representaciones muy complejas.' },
+    { term: 'IA generativa', def: 'Tipo de IA que crea contenido nuevo (texto, imágenes, código, audio) a partir de lo aprendido durante su entrenamiento.' },
+    { term: 'Modelo fundacional', def: 'Modelo de gran tamaño entrenado con enormes volúmenes de datos que sirve de base para muchas aplicaciones distintas.' },
+    { term: 'Modelo multimodal', def: 'Modelo que entiende y genera varios tipos de datos a la vez: texto, imágenes, audio o vídeo.' },
+    { term: 'Red neuronal', def: 'Estructura de cálculo organizada en capas, inspirada vagamente en el cerebro, que aprende detectando patrones por niveles.' },
+    { term: 'Entrenamiento', def: 'Proceso en el que un modelo ajusta sus parámetros internos analizando grandes cantidades de ejemplos.' },
+  ],
+  mistakes: [
+    { wrong: 'La IA entiende el mundo como una persona.', right: 'No: detecta patrones estadísticos en datos. Puede dar respuestas correctas sin "comprender" nada, y por eso a veces se equivoca con total seguridad.' },
+    { wrong: 'IA y ChatGPT son lo mismo.', right: 'ChatGPT es un producto construido sobre un modelo (GPT). La IA abarca mucho más: recomendadores, visión por computador, traductores, robótica...' },
+    { wrong: 'Si una IA lo dice, debe ser verdad.', right: 'Los modelos generativos producen texto plausible, no texto verificado. Contrasta siempre la información importante.' },
+    { wrong: 'La IA tradicional ya no se usa.', right: 'Sigue siendo la más usada en empresas: detección de fraude, predicción de demanda, segmentación de clientes y mantenimiento predictivo.' },
+  ],
+};

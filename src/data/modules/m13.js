@@ -1,0 +1,113 @@
+export default {
+  id: 'm13',
+  title: 'Agentes de escritorio y de trabajo',
+  short: 'Agentes de trabajo',
+  description: 'Más allá del chat: agentes que completan tareas de principio a fin usando tus aplicaciones y tus archivos. Qué son, qué herramientas actuales los encarnan y un ejemplo guiado paso a paso.',
+  icon: 'MonitorSmartphone',
+  stage: 'Agentes',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'El concepto: agentes que terminan el trabajo',
+      paragraphs: [
+        'Hay una familia de agentes que no vive en una ventana de chat, sino **en tu escritorio y en tus aplicaciones de trabajo**. Su promesa es distinta: no te ayudan a hacer una tarea, **la completan de principio a fin** usando tus apps y tus archivos como lo harías tú.',
+        'Tú le das un objetivo en lenguaje natural —"analiza mis gastos del trimestre y prepara una presentación"— y el agente se pone en marcha: abre tu hoja de cálculo, lee los datos, hace los cálculos, crea las diapositivas y te entrega el resultado para que lo revises. Tú defines el qué; él se encarga del cómo, navegando entre aplicaciones.',
+        'Fíjate en la diferencia con un chatbot: el chatbot te explicaría cómo hacer la presentación; el asistente te ayudaría con partes sueltas si se lo pides; el **agente de trabajo** te entrega la presentación hecha. Es el salto de "ayudar a pensar" a "ayudar a hacer".',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'Del recadero al gestor',
+      body: 'Un recadero hace exactamente lo que le dices: "lleva esta carta a correos". Si correos está cerrado, vuelve con la carta y te lo cuenta. Un gestor recibe un objetivo —"quiero enviar esta documentación hoy"— y si correos está cerrado busca una alternativa: mensajería urgente, envío digital o lo reprograma para mañana a primera hora. Los agentes de escritorio y de trabajo aspiran a ser gestores, no recaderos: ante un obstáculo, prueban otra vía en lugar de devolverte el problema intacto.',
+    },
+    {
+      kind: 'text',
+      heading: 'Los ejemplos actuales',
+      paragraphs: [
+        'Este espacio evoluciona a toda velocidad, pero hoy ya existen productos que encarnan la idea. **ChatGPT Work** (de OpenAI) plantea agentes que trabajan con tus documentos y aplicaciones. **Claude**, de Anthropic, ofrece modos de trabajo prolongado sobre archivos y proyectos (conocidos en distintos momentos como Cowork o modos agente de escritorio). **Meta Muse** es el asistente-agente de Meta integrado en sus aplicaciones y dispositivos. **Gemini Spark** es la apuesta de Google en esta misma dirección, conectada a su ecosistema de productividad.',
+        'Todos comparten el mismo patrón: se conectan a tus **archivos, tu correo, tu calendario y tus aplicaciones**, entienden el contexto de tu trabajo y ejecutan tareas de varios pasos con tu supervisión.',
+        'Lo importante no es memorizar esta lista —cambiará—, sino reconocer el patrón cuando lo veas: si un producto acepta objetivos, usa tus apps y te devuelve trabajo terminado, estás ante un agente de trabajo, se llame como se llame.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'warn',
+      title: 'Verifica siempre la información actual del proveedor',
+      body: 'Los nombres, funciones y disponibilidad de estos productos **cambian muy rápido**: lo que hoy se llama de una forma mañana puede renombrarse, fusionarse con otro producto o desaparecer. Este portal está diseñado con los contenidos en **archivos de datos fáciles de actualizar** precisamente por eso. Antes de contratar, instalar o recomendar cualquiera de estas herramientas, verifica siempre la información actual en la web oficial del proveedor.',
+    },
+    {
+      kind: 'example',
+      heading: 'Ejemplo guiado: "Analiza mis gastos del trimestre y prepara una presentación"',
+      label: 'Caso práctico',
+      body: 'Objetivo del usuario: "Analiza mis gastos del trimestre y prepara una presentación". Así lo resuelve un agente de trabajo, paso a paso:\n\nPaso 1 — ENTENDER: interpreta el objetivo y localiza el archivo de gastos del trimestre en tus documentos.\n\nPaso 2 — LEER: abre la hoja de cálculo, identifica las columnas (fecha, categoría, importe) y detecta el rango del trimestre.\n\nPaso 3 — CALCULAR: suma por categorías, compara con el trimestre anterior y detecta las tres partidas que más han crecido.\n\nPaso 4 — DECIDIR EL FORMATO: planifica una presentación de 6 diapositivas: resumen, evolución, top categorías, desviaciones y conclusiones.\n\nPaso 5 — CREAR: genera las diapositivas con gráficos a partir de los cálculos, usando tu plantilla corporativa si existe.\n\nPaso 6 — REVISAR: comprueba que los números cuadran y que no hay datos sensibles expuestos.\n\nPaso 7 — ENTREGAR: te presenta el resultado para tu aprobación antes de enviarlo o guardarlo donde le indiques.',
+      result: 'Tú has invertido dos minutos en describir el objetivo y cinco en revisar el resultado. El agente ha hecho el trabajo mecánico intermedio: leer, calcular, diseñar y comprobar.',
+    },
+    {
+      kind: 'compare',
+      heading: 'AI assistant vs. AI worker (agente)',
+      left: {
+        title: 'AI assistant',
+        tone: 'a',
+        items: [
+          'Te ayuda mientras tú haces la tarea.',
+          'Responde preguntas y redacta textos.',
+          'Ejecuta acciones sueltas cuando se lo pides.',
+          'Tú orquestas los pasos; él ejecuta los que le asignas.',
+          'Ejemplo: "redáctame el email para el cliente".',
+        ],
+      },
+      right: {
+        title: 'AI worker / agente',
+        tone: 'b',
+        items: [
+          'Hace la tarea completa por ti, de principio a fin.',
+          'Usa tus aplicaciones y archivos directamente.',
+          'Encadena acciones: lee, calcula, crea, envía.',
+          'Él orquesta los pasos; tú apruebas el resultado.',
+          'Ejemplo: "prepara la propuesta para el cliente y envíasela".',
+        ],
+      },
+    },
+    {
+      kind: 'checklist',
+      heading: 'Qué puede hacer por ti un agente de trabajo',
+      items: [
+        'Leer y organizar tus archivos: hojas de cálculo, PDFs, presentaciones.',
+        'Resumir hilos de correo largos y redactar respuestas pendientes.',
+        'Cruzar datos entre aplicaciones: del CRM a la hoja de cálculo, del calendario al informe.',
+        'Crear documentos completos: informes, presentaciones, presupuestos.',
+        'Preparar reuniones: agenda, resumen de contexto y acta posterior.',
+        'Automatizar tareas repetitivas semanales con tu supervisión.',
+        'Avisarte cuando algo necesita tu decisión en lugar de decidir por ti.',
+      ],
+    },
+    {
+      kind: 'exercise',
+      heading: 'Comprueba que lo has entendido',
+      prompt: 'Le dices a un sistema: "Cada lunes por la mañana, revisa mi bandeja de entrada, resume los correos importantes y prepara un briefing de la semana".',
+      question: '¿Qué lo convierte en un agente de trabajo y no en un simple asistente?',
+      options: [
+        'Que entiende español perfectamente.',
+        'Que acepta un objetivo recurrente, usa tu correo de forma autónoma, encadena varios pasos y te entrega el trabajo terminado para tu revisión.',
+        'Que responde más rápido que un asistente normal.',
+        'Que tiene un nombre comercial atractivo.',
+      ],
+      correctIndex: 1,
+      explanation: 'La clave está en el patrón completo: objetivo (no pregunta suelta), uso autónomo de tus aplicaciones, encadenamiento de pasos y entrega de trabajo terminado con tu supervisión. Ni la velocidad ni el idioma lo definen: lo define la arquitectura de trabajo.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Agente de trabajo', def: 'Agente que completa tareas de principio a fin usando las aplicaciones y archivos del usuario, no solo conversando.' },
+    { term: 'Integraciones', def: 'Conexiones del agente con aplicaciones externas (correo, calendario, hojas de cálculo, CRM) que le permiten actuar sobre datos reales.' },
+    { term: 'Permisos', def: 'Límites que definen a qué aplicaciones y datos puede acceder el agente y qué acciones requieren aprobación.' },
+    { term: 'Contexto de trabajo', def: 'Conjunto de archivos, correos y datos que el agente puede consultar para entender la tarea, como lo haría un compañero.' },
+    { term: 'Tarea de principio a fin', def: 'Encargo completo que el agente ejecuta sin fragmentarlo en micro-instrucciones: del objetivo al resultado entregable.' },
+    { term: 'Supervisión humana', def: 'Revisión y aprobación del resultado por parte del usuario antes de que el trabajo se considere terminado o se envíe.' },
+  ],
+  mistakes: [
+    { wrong: 'Es otro nombre para el chatbot de siempre.', right: 'El chatbot conversa; el agente de trabajo ejecuta tareas completas usando tus aplicaciones y archivos.' },
+    { wrong: 'Hace todo solo sin que yo mire nada.', right: 'Tú defines el objetivo y los permisos; el agente trabaja y te muestra el resultado para que lo apruebes.' },
+    { wrong: 'Vale para cualquier tarea sin preparación.', right: 'Necesita acceso a tus apps y archivos (integraciones y permisos); sin contexto no puede actuar.' },
+    { wrong: 'Si el producto cambia de nombre, el concepto deja de valer.', right: 'Los nombres comerciales cambian; la idea —delegar tareas completas a un agente— permanece. Verifica siempre la información actual del proveedor.' },
+  ],
+};

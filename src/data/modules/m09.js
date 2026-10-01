@@ -1,0 +1,110 @@
+export default {
+  id: 'm9',
+  title: 'MCP: el USB-C de la IA',
+  short: 'MCP',
+  description: 'Model Context Protocol: el estándar abierto que conecta agentes de IA con herramientas, datos y servicios.',
+  icon: 'Cable',
+  stage: 'Tools y MCP',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'Qué es MCP',
+      paragraphs: [
+        '**MCP** (Model Context Protocol, protocolo de contexto para modelos) es un **estándar abierto** que define cómo las aplicaciones de IA se conectan con herramientas, bases de datos y servicios externos. Lo creó Anthropic (la empresa de Claude) y hoy lo adopta buena parte de la industria.',
+        'Su objetivo es sencillo pero ambicioso: que cualquier agente de IA pueda conectarse a cualquier servicio (GitHub, Google Drive, una base de datos, tu empresa...) **hablando el mismo idioma**, sin integraciones a medida para cada combinación. Es un protocolo, es decir, un conjunto de reglas de comunicación, no un programa ni un modelo.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'Una analogía sencilla',
+      body: 'Antes del USB-C, cada móvil necesitaba su propio cargador: el cajón de cables era un caos. El USB-C unificó la conexión: un solo tipo de cable sirve para casi todo. MCP quiere ser el USB-C de la IA: antes, conectar un asistente a cada servicio exigía una integración distinta; con MCP, el servicio publica "su conector" una vez y cualquier agente compatible puede usarlo.',
+    },
+    {
+      kind: 'compare',
+      heading: 'Antes de MCP frente a con MCP',
+      caption: 'El problema que resuelve MCP es la explosión de integraciones a medida.',
+      left: {
+        title: 'Antes: integraciones a medida',
+        tone: 'poor',
+        items: [
+          'Cada app de IA necesitaba una integración específica para cada servicio (GitHub, Drive, Slack...).',
+          'N aplicaciones × M servicios = un caos de código duplicado y mantenimiento imposible.',
+          'Cambiar de proveedor o añadir un servicio nuevo obligaba a reescribir integraciones.',
+        ],
+      },
+      right: {
+        title: 'Con MCP: un estándar común',
+        tone: 'good',
+        items: [
+          'Cada servicio expone un servidor MCP una sola vez, siguiendo el protocolo estándar.',
+          'Cualquier agente compatible (Claude Code, asistentes, IDEs) se conecta sin código a medida.',
+          'Añadir un servicio nuevo = añadir su servidor MCP. Cambiar de agente no rompe nada.',
+        ],
+      },
+    },
+    {
+      kind: 'flow',
+      heading: 'Arquitectura MCP',
+      caption: 'El cliente y el servidor hablan MCP entre ellos; cada uno se conecta a su lado en su propio idioma.',
+      direction: 'down',
+      highlight: [2],
+      nodes: [
+        { label: 'LLM / Agente', desc: 'El modelo o asistente que necesita datos o acciones externas.' },
+        { label: 'Cliente MCP', desc: 'Componente integrado en la app del agente; habla el protocolo MCP.' },
+        { label: 'Protocolo MCP', desc: 'El idioma estándar: cómo pedir tools, leer recursos y usar prompts.' },
+        { label: 'Servidor MCP', desc: 'Programa que expone las capacidades de un servicio concreto.' },
+        { label: 'Herramientas y recursos', desc: 'Lo que ofrece el servicio: crear issues en GitHub, leer archivos, consultar la base de datos...' },
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Los cinco componentes',
+      paragraphs: [
+        '**MCP Client:** vive dentro de la aplicación del agente (p. ej. Claude Code) y es quien inicia la conversación con los servidores. **MCP Server:** programa ligero que expone las capacidades de un servicio concreto; hay servidores oficiales y comunitarios para GitHub, Google Drive, bases de datos, navegadores y cientos de servicios más.',
+        'Lo que un servidor puede exponer son tres cosas: **Tools** (acciones que el modelo puede invocar: crear un issue, ejecutar una consulta), **Resources** (datos que el modelo puede leer: archivos, registros, documentación) y **Prompts** (plantillas de instrucciones reutilizables, parecidas a las skills del módulo anterior).',
+      ],
+    },
+    {
+      kind: 'example',
+      heading: 'Ejemplo real',
+      label: 'Claude Code → MCP → GitHub',
+      body: 'Un desarrollador usa Claude Code con el servidor MCP de GitHub instalado. Le dice: "revisa los issues abiertos del repo mi-app y propón cuáles son bugs". Claude Code, a través del cliente MCP, pide al servidor la lista de issues (Resources), la lee, razona cuáles son bugs y, si el usuario lo aprueba, crea comentarios o PRs usando las Tools del servidor. El desarrollador no escribió ni una línea de integración: instaló el servidor MCP y funcionó.',
+      result: 'Moraleja: MCP convierte "conectar la IA a un servicio" en instalar un conector estándar, no en programar una integración.',
+    },
+    {
+      kind: 'callout',
+      tone: 'warn',
+      title: 'MCP no es un modelo de IA',
+      body: 'Error muy frecuente: MCP no genera texto, no "piensa" y no sustituye a ningún modelo. Es **un protocolo de comunicación**, como el HTTP de la web: define cómo se hablan el agente y los servicios. La inteligencia sigue viniendo del LLM; MCP solo le da enchufes estándar donde conectar sus manos.',
+    },
+    { kind: 'simulator', component: 'MCPSimulator' },
+    {
+      kind: 'exercise',
+      heading: 'Comprueba que lo has entendido',
+      prompt: 'Una empresa quiere que su asistente de IA pueda consultar el stock de su base de datos interna y también crear tareas en su gestor de proyectos.',
+      question: '¿Qué papel juega MCP en esta solución?',
+      options: [
+        'MCP es el modelo de IA que responderá a los empleados',
+        'MCP es el protocolo estándar mediante el cual el asistente se conectará a la base de datos y al gestor de proyectos, usando un servidor MCP para cada servicio en lugar de integraciones a medida',
+        'MCP sustituye a la base de datos: los datos se guardan en el protocolo',
+        'MCP solo sirve para modelos de Anthropic y no se puede usar aquí',
+      ],
+      correctIndex: 1,
+      explanation: 'MCP es el idioma común: la empresa expone (o instala) un servidor MCP para la base de datos y otro para el gestor de proyectos, y el asistente se conecta a ambos con el mismo protocolo. No es un modelo ni un almacén de datos, y es un estándar abierto.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'MCP', def: 'Model Context Protocol: estándar abierto que define cómo las aplicaciones de IA se conectan con herramientas y servicios externos.' },
+    { term: 'MCP Client', def: 'Componente dentro de la app del agente que inicia la comunicación con los servidores usando el protocolo MCP.' },
+    { term: 'MCP Server', def: 'Programa que expone las capacidades de un servicio concreto (GitHub, Drive, base de datos...) siguiendo el estándar MCP.' },
+    { term: 'Tools (en MCP)', def: 'Acciones que un servidor MCP expone para que el modelo las invoque: crear issues, ejecutar consultas, enviar mensajes...' },
+    { term: 'Resources (en MCP)', def: 'Datos que un servidor MCP expone para lectura del modelo: archivos, registros, documentación.' },
+    { term: 'Prompts (en MCP)', def: 'Plantillas de instrucciones reutilizables que un servidor MCP puede ofrecer, similares a skills.' },
+  ],
+  mistakes: [
+    { wrong: 'MCP es un modelo de IA.', right: 'Es un protocolo de comunicación, no un modelo: no genera texto ni "piensa". La inteligencia sigue viniendo del LLM.' },
+    { wrong: 'MCP es solo para Claude.', right: 'Es un estándar abierto creado por Anthropic pero adoptado por la industria: lo usan muchos agentes, IDEs y herramientas.' },
+    { wrong: 'Con MCP ya no hacen falta APIs.', right: 'Los servidores MCP suelen envolver APIs existentes: MCP estandariza cómo se exponen, no elimina la necesidad de que el servicio exista.' },
+    { wrong: 'MCP y tool calling son lo mismo.', right: 'Tool calling es el mecanismo por el que el modelo pide usar una herramienta; MCP es el estándar para exponer y descubrir esas herramientas.' },
+  ],
+};

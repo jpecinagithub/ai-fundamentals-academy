@@ -1,0 +1,91 @@
+export default {
+  id: 'm5',
+  title: 'Prompts: el arte de pedir bien',
+  short: 'Prompts',
+  description: 'Qué es un prompt, la diferencia entre system y user prompt, y la estructura que convierte respuestas mediocres en excelentes.',
+  icon: 'PenLine',
+  stage: 'Prompts y contexto',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'Qué es un prompt',
+      paragraphs: [
+        'Un **prompt** es la entrada que le das al modelo: tu mensaje, con sus instrucciones, su contexto y sus preguntas. Parece trivial ("es lo que escribo en el chat"), pero es la **palanca de control más potente** que tienes sobre un LLM: el mismo modelo da respuestas mediocres o brillantes según cómo se lo pidas.',
+        'Piensa en el modelo como un becario brillantísimo pero sin contexto de tu mundo: si le das una orden vaga, improvisará; si le das rol, objetivo, información y formato, ejecutará con precisión. La **ingeniería de prompts** (prompt engineering) es precisamente la disciplina de diseñar esas entradas.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'System prompt vs user prompt',
+      paragraphs: [
+        'El **user prompt** es lo que tú escribes en el chat. El **system prompt** son instrucciones invisibles que la aplicación coloca antes, y que definen la personalidad y las reglas del asistente ("Eres un asistente útil que responde en español, con tono profesional...").',
+        'El system prompt tiene **prioridad**: si hay conflicto, el modelo obedece antes al sistema que al usuario. Por eso no puedes pedirle a ChatGPT que "olvide sus reglas": están blindadas por diseño. Como usuario normal no lo ves ni lo editas (aunque algunas apps, como los GPTs personalizados, te dejan definir el tuyo).',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Los cuatro ingredientes de un buen prompt',
+      paragraphs: [
+        '**1. Instrucciones claras:** qué debe hacer, con verbos de acción ("analiza", "compara", "resume"). Evita la vaguedad: "hazme un análisis" puede significar diez cosas distintas.',
+        '**2. Contexto:** la información que el modelo necesita y no tiene: datos, documentos, antecedentes, tu situación. Sin contexto, el modelo rellena huecos con invenciones (hola, alucinaciones).',
+        '**3. Ejemplos (few-shot):** mostrarle una o dos muestras del resultado esperado es la técnica más potente para fijar formato, tono y nivel de detalle. El modelo imita patrones mejor que sigue descripciones abstractas.',
+        '**4. Restricciones:** qué NO debe hacer y los límites: longitud, idioma, formato, audiencia, qué evitar. Las restricciones recortan el espacio de respuestas posibles hacia la que tú quieres.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'La estructura que nunca falla',
+      body: '**ROL** (actúa como...) + **OBJETIVO** (qué quiero conseguir) + **CONTEXTO** (datos y antecedentes) + **RESTRICCIONES** (límites y qué evitar) + **FORMATO DE SALIDA** (cómo debe presentar el resultado). Cinco bloques, en ese orden, y casi cualquier petición mejora de forma radical.',
+    },
+    { kind: 'simulator', component: 'PromptComparer' },
+    {
+      kind: 'example',
+      heading: 'Ejemplo real',
+      label: 'Del prompt pobre al prompt bueno',
+      body: 'Prompt pobre: "Hazme un análisis financiero." Resultado: un texto genérico, sin datos reales, con ratios inventados y un formato impredecible. Prompt mejorado: "Actúa como analista financiero senior. Te adjunto el balance y la cuenta de resultados 2024-2025 de la empresa X (ver documento). Calcula liquidez, endeudamiento y ROE, compara ambos años y señala 3 riesgos. Máximo 300 palabras, en español, con una tabla de ratios y sin jerga innecesaria."',
+      result: 'Moraleja: el segundo prompt fija rol, objetivo, contexto (documento real), restricciones (300 palabras, español) y formato (tabla). El modelo ya no tiene que adivinar nada: solo ejecutar.',
+    },
+    {
+      kind: 'checklist',
+      heading: 'Buenas prácticas de prompting',
+      items: [
+        'Sé específico: sustituye "hazlo bien" por criterios concretos y medibles.',
+        'Da el contexto antes de pedir: pega los datos, no esperes que los adivine.',
+        'Muestra un ejemplo del formato que quieres, aunque sea inventado.',
+        'Pide estructura: títulos, tablas o listas en lugar de párrafos eternos.',
+        'Itera: la primera respuesta es un borrador; pide ajustes ("más breve", "con ejemplos").',
+        'Una tarea por prompt: divide los encargos grandes en pasos.',
+      ],
+    },
+    {
+      kind: 'exercise',
+      heading: 'Comprueba que lo has entendido',
+      prompt: 'Quieres que la IA redacte el email de lanzamiento de tu curso online para suscriptores interesados en IA.',
+      question: '¿Qué elemento es MÁS importante añadir si el primer borrador te sale genérico y sin gancho?',
+      options: [
+        'Más tokens de contexto pegando toda tu web',
+        'Rol, audiencia y formato: quién eres, a quién escribes, qué tono y qué estructura debe tener el email',
+        'Pedirle que lo escriba dos veces para elegir',
+        'Cambiar de modelo de IA',
+      ],
+      correctIndex: 1,
+      explanation: 'Un borrador genérico casi siempre viene de un prompt genérico. Definir rol (quién habla), audiencia (a quién), tono y formato de salida recorta el espacio de respuestas hacia exactamente lo que necesitas. Más contexto sin estructura solo añade ruido.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Prompt', def: 'Entrada que le das al modelo: instrucciones, contexto, ejemplos y preguntas. Es tu principal palanca de control sobre un LLM.' },
+    { term: 'System prompt', def: 'Instrucciones invisibles que la aplicación coloca antes de tu mensaje para definir personalidad y reglas del asistente; tiene prioridad sobre el usuario.' },
+    { term: 'User prompt', def: 'El mensaje que tú escribes en el chat en cada turno de la conversación.' },
+    { term: 'Instrucción', def: 'Orden clara de qué debe hacer el modelo, con verbos de acción concretos en lugar de vaguedades.' },
+    { term: 'Few-shot', def: 'Técnica de incluir uno o varios ejemplos del resultado esperado para que el modelo imite formato, tono y nivel de detalle.' },
+    { term: 'Restricción', def: 'Límite explícito (longitud, idioma, formato, qué evitar) que recorta las respuestas posibles hacia la deseada.' },
+    { term: 'Formato de salida', def: 'Especificación de cómo debe presentar el resultado: tabla, lista, email, informe, número de palabras...' },
+  ],
+  mistakes: [
+    { wrong: 'Basta con pedirlo una vez y ya está.', right: 'Los prompts se iteran: la primera respuesta es un borrador. Pide ajustes concretos hasta llegar al resultado ("más breve", "con ejemplos").' },
+    { wrong: 'Cuanto más largo el prompt, mejor.', right: 'Largo y desordenado confunde. Lo que gana es estructurado y claro: rol, objetivo, contexto, restricciones y formato.' },
+    { wrong: 'El system prompt no me afecta como usuario.', right: 'Define la personalidad y las reglas de cada respuesta que recibes, y tiene prioridad sobre tus instrucciones si hay conflicto.' },
+    { wrong: 'Dar ejemplos es hacer trampa o es innecesario.', right: 'Los ejemplos (few-shot) son la técnica más potente para fijar el formato: el modelo imita patrones mejor que sigue descripciones abstractas.' },
+  ],
+};

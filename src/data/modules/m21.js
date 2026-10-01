@@ -1,0 +1,121 @@
+export default {
+  id: 'm21',
+  title: 'RAG: el modelo consulta tus documentos',
+  short: 'RAG',
+  description: 'Retrieval-Augmented Generation: cómo darle al LLM acceso a tus documentos privados y actualizados sin reentrenarlo, para que responda con datos reales y citando fuentes.',
+  icon: 'Search',
+  stage: 'APIs',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'El problema: el modelo no conoce TUS documentos',
+      paragraphs: [
+        'Un LLM como ChatGPT sabe muchísimo sobre el mundo... **hasta la fecha en que se entrenó**. Lo que no sabe es nada de **tu empresa**: tus informes internos, tus manuales, tus facturas, tus precios.',
+        'Además, su conocimiento se queda **congelado en el tiempo**. Si le preguntas por «el EBITDA de septiembre» y estamos en octubre, un modelo entrenado en junio no puede saberlo.',
+        'La solución obvia —«pues vuelve a entrenar el modelo con mis documentos»— es carísima, lenta, y tendrías que repetirla cada vez que cambie un documento. Necesitamos algo más inteligente.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'Un experto con una biblioteca al lado',
+      body: 'Imagina que le preguntas a un experto algo que no sabe de memoria. En lugar de inventarse la respuesta, hace lo profesional: **se levanta, va a la biblioteca, busca el documento correcto, lo consulta y te responde basándose en lo que leyó**. RAG hace exactamente eso con el LLM: en lugar de obligarlo a «sabérselo todo de memoria», le damos la capacidad de **consultar nuestros documentos en el momento** y responder apoyándose en ellos.',
+    },
+    {
+      kind: 'flow',
+      heading: 'Cómo funciona RAG, paso a paso',
+      caption: 'RAG = Retrieval (recuperar) + Augmented (aumentado) + Generation (generación): generar la respuesta con el contexto recuperado.',
+      direction: 'down',
+      highlight: [3],
+      nodes: [
+        { label: 'Pregunta del usuario', desc: '«¿Cuál fue el EBITDA en septiembre?»' },
+        { label: 'Búsqueda', desc: 'La pregunta se convierte a embedding y se buscan los fragmentos más parecidos en tus documentos.' },
+        { label: 'Recuperación', desc: 'Se extraen los fragmentos relevantes (p. ej., el informe financiero de septiembre).' },
+        { label: 'Contexto ampliado', desc: 'Esos fragmentos se pegan junto a la pregunta en el prompt.' },
+        { label: 'El LLM responde', desc: 'El modelo redacta la respuesta basándose en los fragmentos recuperados.' },
+      ],
+    },
+    {
+      kind: 'compare',
+      heading: 'LLM solo vs. LLM con RAG',
+      caption: 'La misma pregunta, dos mundos distintos.',
+      left: {
+        title: 'LLM solo',
+        tone: 'poor',
+        items: [
+          'Solo sabe lo aprendido en el entrenamiento',
+          'No conoce tus documentos privados',
+          'Conocimiento congelado en la fecha de entrenamiento',
+          'Si no lo sabe, puede inventárselo (alucinación)',
+        ],
+      },
+      right: {
+        title: 'LLM + RAG',
+        tone: 'good',
+        items: [
+          'Consulta tus documentos en tiempo real',
+          'Responde con datos internos y privados',
+          'Usa siempre la información más actualizada',
+          'Se apoya en fragmentos reales: puede citar sus fuentes',
+        ],
+      },
+    },
+    {
+      kind: 'example',
+      heading: 'Ejemplo real: «¿Cuál fue el EBITDA en septiembre?»',
+      label: 'Caso de empresa',
+      body: 'Preguntas al asistente de tu empresa: **«¿Cuál fue el EBITDA de nuestra empresa en septiembre?»**. El LLM por sí solo no tiene ni idea: esos datos no estaban en su entrenamiento (son privados y recientes). Con RAG, el sistema convierte tu pregunta en un embedding, busca en la base de documentos internos, **recupera el informe financiero de septiembre** y lo añade al contexto. El LLM lee el fragmento y responde: «El EBITDA de septiembre fue de 142.300 €, según el informe financiero mensual».',
+      result: 'Sin RAG: «no lo sé» o una alucinación. Con RAG: la respuesta correcta, con la fuente citada.',
+    },
+    {
+      kind: 'text',
+      heading: 'Un detalle clave: los fragmentos (chunks)',
+      paragraphs: [
+        'Los documentos no se buscan enteros: se dividen en **fragmentos** (*chunks*) de unos pocos párrafos. Cada fragmento se convierte a embedding (módulo 20) y se guarda en un índice.',
+        'Cuando preguntas algo, el sistema no busca **palabras clave**, sino **significado**: encuentra los fragmentos cuyo embedding está más cerca del embedding de tu pregunta. Por eso entiende «¿cuánto ganamos en septiembre?» aunque el informe diga «EBITDA».',
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: 'Cuándo usar RAG',
+      items: [
+        'Cuando el LLM necesita datos **privados o internos** (documentos de tu empresa).',
+        'Cuando la información **cambia con frecuencia** (precios, informes mensuales, documentación).',
+        'Cuando quieres que el modelo **cite sus fuentes** en lugar de inventarse la respuesta.',
+        'Cuando reentrenar el modelo sería demasiado **caro o lento** para tu caso.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'info',
+      title: 'RAG no cambia el modelo',
+      body: 'Un matiz importante que retomaremos en el módulo 22: **RAG no modifica lo que el modelo sabe**, solo le añade información en el contexto de cada pregunta. El modelo sigue siendo el mismo; la diferencia está en lo que puede consultar.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Comprueba que lo has entendido',
+      prompt: 'Un empleado pregunta al asistente interno: «¿Cuál es la política de devoluciones de este año?»',
+      question: '¿Por qué RAG es la mejor opción aquí?',
+      options: [
+        'Porque el modelo memoriza la política en su entrenamiento para siempre.',
+        'Porque recupera el documento actualizado de la intranet y responde apoyándose en él, sin reentrenar nada.',
+        'Porque cambia permanentemente el comportamiento del modelo.',
+        'Porque ya no hace falta ningún documento: el modelo lo deduce solo.',
+      ],
+      correctIndex: 1,
+      explanation: 'La política puede cambiar cada año y es información interna que el modelo no tiene en su entrenamiento. RAG la recupera del documento actual y la añade al contexto, dando la respuesta correcta con la fuente, sin necesidad de reentrenar.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'RAG', def: 'Técnica que combina un LLM con la recuperación de documentos: busca fragmentos relevantes y los añade al contexto antes de responder.' },
+    { term: 'Retrieval (recuperación)', def: 'Fase de RAG en la que se buscan los fragmentos de documento más parecidos a la pregunta usando embeddings.' },
+    { term: 'Chunk (fragmento)', def: 'Porción pequeña de un documento (unos párrafos) que se indexa por separado para recuperar solo lo relevante.' },
+    { term: 'Contexto aumentado', def: 'El prompt final que une la pregunta del usuario con los fragmentos recuperados.' },
+    { term: 'Índice vectorial', def: 'Base donde se guardan los embeddings de los fragmentos para buscar los más parecidos en milisegundos.' },
+    { term: 'Alucinación', def: 'Respuesta inventada por el modelo cuando no tiene información fiable; RAG la reduce apoyándose en datos reales.' },
+  ],
+  mistakes: [
+    { wrong: 'RAG entrena o reentrena el modelo con mis documentos.', right: 'RAG no modifica el modelo: solo recupera fragmentos y los pega en el contexto de cada pregunta. Modificar el modelo es el fine-tuning (módulo 22).' },
+    { wrong: 'Con RAG el modelo siempre dice la verdad.', right: 'RAG reduce mucho las alucinaciones, pero el modelo puede seguir interpretando mal un fragmento o combinando información de forma incorrecta.' },
+    { wrong: 'RAG es solo una búsqueda por palabras clave.', right: 'RAG busca por significado con embeddings: entiende «¿cuánto ganamos?» aunque el documento diga «EBITDA».' },
+  ],
+};

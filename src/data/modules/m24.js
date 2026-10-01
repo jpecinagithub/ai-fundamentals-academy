@@ -1,0 +1,93 @@
+export default {
+  id: 'm24',
+  title: 'Sacar partido a GitHub',
+  short: 'GitHub en la práctica',
+  description: 'Diez formas reales de usar GitHub en tu día a día: historial, volver atrás, colaborar con agentes de IA, portfolio y el circuito completo hasta publicar en internet.',
+  icon: 'FolderGit2',
+  stage: 'GitHub',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'GitHub es mucho más que un almacén de código',
+      paragraphs: [
+        'En el módulo 23 aprendiste qué es GitHub. Ahora viene lo interesante: **qué puedes hacer con él** en tu día a día como creador de aplicaciones de IA.',
+        'Piensa en GitHub como tu **cuartel general**: ahí vive tu código, tu historial, tus ideas, tu portfolio y la puerta de salida hacia internet.',
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: '10 formas de sacarle partido (una línea cada una)',
+      items: [
+        '**Guardar tus proyectos**: cada proyecto en su repositorio, a salvo en la nube aunque se rompa tu ordenador.',
+        '**Historial de cambios**: cada commit explica qué cambió y por qué; el pasado de tu proyecto, documentado solo.',
+        '**Volver atrás**: ¿algo se rompió? Vuelve al commit donde funcionaba, sin dramas.',
+        '**Compartir código**: pasa un enlace y cualquiera puede ver (o copiar) tu proyecto.',
+        '**Trabajar con agentes de programación**: los coding agents leen y modifican directamente tu repositorio.',
+        '**Revisar cambios**: las pull requests muestran exactamente qué líneas cambiaron antes de aceptarlas.',
+        '**Issues**: apunta errores, ideas y tareas pendientes en el tablón del proyecto.',
+        '**README**: la portada de tu proyecto; un buen README es la diferencia entre que lo usen o lo ignoren.',
+        '**Portfolio**: tu perfil de GitHub con proyectos reales vale más que cualquier currículum para demostrar lo que sabes hacer.',
+        '**Desplegar proyectos**: conecta el repositorio a Vercel y cada push se publica automáticamente en internet.',
+      ],
+    },
+    {
+      kind: 'flow',
+      heading: 'Del portátil a internet',
+      caption: 'Este es el circuito completo que usarás una y otra vez.',
+      direction: 'right',
+      nodes: [
+        { label: 'Proyecto local', desc: 'Tu código' },
+        { label: 'Git', desc: 'Versiones (commits)' },
+        { label: 'GitHub', desc: 'Repositorio en la nube' },
+        { label: 'Vercel', desc: 'Publicado en la web' },
+      ],
+    },
+    {
+      kind: 'example',
+      heading: 'Cómo un coding agent trabaja sobre tu repositorio',
+      label: 'Ejemplo real',
+      body: 'Le pides a un agente de IA: «añade un modo oscuro a mi web». El agente **clona tu repositorio**, lee el código, crea una **rama** nueva, modifica los archivos, hace **commit** de los cambios y abre una **pull request**. Tú revisas exactamente qué líneas cambió y, si te gusta, haces **merge**: el modo oscuro entra en la versión oficial. Todo el trabajo del agente queda registrado en tu historial de GitHub.',
+      result: 'El repositorio es el terreno de juego compartido entre tú y los agentes de IA.',
+    },
+    {
+      kind: 'text',
+      heading: 'Tu perfil es tu escaparate',
+      paragraphs: [
+        'Cuando alguien quiera saber qué sabes hacer con IA, no le enseñes un certificado: **enséñale tu GitHub**. Un perfil con proyectos reales, READMEs cuidados y commits constantes dice más que mil palabras.',
+        'Consejo práctico: fija (*pin*) tus 3-4 mejores proyectos en tu perfil y escribe un README para cada uno explicando **qué hace, cómo se usa y qué aprendiste**.',
+      ],
+    },
+    {
+      kind: 'callout',
+      tone: 'tip',
+      title: 'Empieza hoy',
+      body: 'Crea hoy mismo tu primer repositorio con un proyecto pequeño y haz tu primer push. GitHub se aprende usándolo, no leyéndolo.',
+    },
+    {
+      kind: 'exercise',
+      heading: 'Comprueba que lo has entendido',
+      prompt: 'Pides a un agente de IA que añada una nueva función a tu app. El agente termina y quieres revisar su trabajo antes de aceptarlo.',
+      question: '¿Qué mecanismo de GitHub usarás?',
+      options: [
+        'Un Issue, para apuntar la idea.',
+        'Una pull request, para revisar los cambios línea a línea antes de fusionarlos.',
+        'Un clone, para descargar el proyecto de nuevo.',
+        'El README, para documentar la función.',
+      ],
+      correctIndex: 1,
+      explanation: 'La pull request muestra exactamente qué líneas añadió o cambió el agente; tú las revisas y solo entonces haces merge a la rama principal.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Portfolio en GitHub', def: 'Tu perfil público con proyectos reales: la mejor carta de presentación de lo que sabes hacer.' },
+    { term: 'Integración con Vercel', def: 'Conexión que publica automáticamente en internet cada cambio que subes a GitHub.' },
+    { term: 'Revisión de cambios', def: 'Inspeccionar línea por línea lo que cambió en una pull request antes de aceptarlo.' },
+    { term: 'Coding agent', def: 'Agente de IA que lee, modifica y propone cambios directamente sobre tu repositorio.' },
+    { term: 'Pin (fijar)', def: 'Destacar tus mejores repositorios en la parte superior de tu perfil de GitHub.' },
+  ],
+  mistakes: [
+    { wrong: 'GitHub solo sirve para programadores profesionales.', right: 'Sirve para cualquiera que cree con código, incluidos proyectos hechos con ayuda de IA: guardar, versionar y publicar.' },
+    { wrong: 'Mi código en GitHub lo puede robar cualquiera.', right: 'Puedes crear repositorios privados (gratis) visibles solo para ti; hacerlos públicos es una decisión, no una obligación.' },
+    { wrong: 'Los agentes de IA no necesitan GitHub.', right: 'Los coding agents trabajan sobre repositorios: clonan, crean ramas y abren pull requests como un colaborador más.' },
+  ],
+};

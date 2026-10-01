@@ -1,0 +1,101 @@
+export default {
+  id: 'm20',
+  title: 'Embeddings: el significado en números',
+  short: 'Embeddings',
+  description: 'Descubre cómo la IA convierte palabras y textos en listas de números que permiten medir qué tan parecidos son por su significado, sin matemáticas complicadas.',
+  icon: 'Boxes',
+  stage: 'APIs',
+  sections: [
+    {
+      kind: 'text',
+      heading: 'El ordenador no entiende palabras... pero sí entiende números',
+      paragraphs: [
+        'Todo lo que un ordenador procesa son **números**. Sin embargo, las palabras, frases e ideas que usamos tienen algo que los números simples no capturan: el **significado**. La palabra «perro» no vale 7, y «gato» no vale 8.',
+        'Un **embedding** es la solución a este problema: una forma de convertir cualquier texto (una palabra, una frase, un documento entero) en una **lista de números** que representa su significado. A esa lista de números se la llama **vector**.',
+        'Lo importante no son los números en sí (que son arbitrarios), sino lo que permiten hacer: **medir qué tan parecidos son dos textos por su significado**, simplemente comparando sus números.',
+      ],
+    },
+    {
+      kind: 'analogy',
+      heading: 'Un mapa donde lo parecido está junto',
+      body: 'Imagina que cada palabra es una ciudad en un mapa. En un mapa normal, las ciudades cercanas suelen compartir clima y cultura. En el «mapa del significado» ocurre igual: las palabras con significado parecido —«perro» y «gato»— quedan en el mismo vecindario, mientras que «coche» vive en un barrio muy lejano. Los embeddings son las **coordenadas GPS** de ese mapa: un sistema de números que sitúa cada texto en el lugar correcto del mapa del significado.',
+    },
+    {
+      kind: 'text',
+      heading: 'La distancia es la clave',
+      paragraphs: [
+        'Con los embeddings, preguntas como **«¿qué tan parecidos son estos dos textos?»** se convierten en un cálculo de distancia: cuanto más cerca estén los números, más parecido es el significado.',
+        'Esto es potentísimo porque funciona incluso cuando los textos **no comparten ninguna palabra**: «El felino dormía al sol» y «Un gato descansaba en el jardín» tienen palabras distintas, pero sus embeddings quedan muy cerca porque significan casi lo mismo.',
+        'Y no es magia: estos mapas numéricos se aprenden analizando **millones de textos** durante el entrenamiento del modelo. Las palabras que aparecen en contextos parecidos acaban con embeddings parecidos.',
+      ],
+    },
+    { kind: 'simulator', component: 'EmbeddingsVisual' },
+    {
+      kind: 'example',
+      heading: 'Visualización conceptual: «perro», «gato» y «coche»',
+      label: 'Caso conceptual',
+      body: 'Supón que representamos tres palabras en un mapa 2D simplificado del significado. **«perro»** y **«gato»** aparecen en contextos similares (mascotas, hogar, cuidados), así que sus puntos quedan muy juntos. **«coche»** aparece en contextos totalmente distintos (carreteras, motor, velocidad), así que su punto queda lejos de ambos. La distancia numérica entre los puntos refleja la distancia de significado. En la realidad los embeddings tienen cientos de dimensiones, no dos, pero la idea es exactamente la misma.',
+      result: 'Medir la distancia entre embeddings = medir la similitud semántica. Sin entender una sola palabra: solo con números.',
+    },
+    {
+      kind: 'flow',
+      heading: 'Del texto al embedding',
+      caption: 'El modelo convierte el texto en números; los números permiten comparar significados.',
+      direction: 'right',
+      nodes: [
+        { label: 'Texto', desc: 'Una palabra, frase o documento' },
+        { label: 'Modelo de embeddings', desc: 'Red neuronal ya entrenada' },
+        { label: 'Vector', desc: 'Lista de cientos de números' },
+        { label: 'Comparación', desc: 'Distancias = similitud de significado' },
+      ],
+    },
+    {
+      kind: 'checklist',
+      heading: 'Dónde se usan los embeddings (con ejemplos reales)',
+      items: [
+        '**Búsqueda semántica**: un buscador interno que encuentra documentos aunque la consulta no use las palabras exactas (buscar «cómo dar de baja mi cuenta» encuentra el artículo «Procedimiento de cancelación de suscripciones»).',
+        '**Recomendaciones**: Netflix o Spotify sugieren contenido «parecido a lo que te gustó» midiendo qué embeddings están cerca.',
+        '**RAG** (módulo 21): encontrar los fragmentos de documento más relevantes para la pregunta del usuario antes de responder.',
+        '**Clasificación**: asignar automáticamente una etiqueta a un texto —un ticket de soporte se clasifica como «facturación» o «técnico»— sin programar reglas a mano.',
+        '**Detección de duplicados**: saber que dos preguntas o dos reseñas dicen lo mismo aunque estén escritas con otras palabras.',
+      ],
+    },
+    {
+      kind: 'text',
+      heading: 'Lo que de verdad importa (sin matemáticas)',
+      paragraphs: [
+        'No necesitas saber cómo se calcula nada. Quédate con la idea central: **los embeddings convierten el significado en números que se pueden comparar**.',
+        'Cuando oigas «búsqueda semántica», «recomendador» o «RAG», piensa: *ahí detrás hay embeddings midiendo distancias de significado*. Esa intuición te servirá para todo el resto del curso.',
+      ],
+    },
+    {
+      kind: 'exercise',
+      heading: 'Comprueba que lo has entendido',
+      prompt: 'Imagina tres palabras —«perro», «gato» y «coche»— ya convertidas a embeddings. El sistema calcula las distancias entre ellas.',
+      question: '¿Qué distancia será la más pequeña?',
+      options: [
+        'Entre «perro» y «coche», porque los dos pueden ir por la misma calle.',
+        'Entre «perro» y «gato», porque comparten significado: son mascotas.',
+        'Entre «gato» y «coche», porque las dos palabras tienen cinco letras.',
+        'Todas iguales, porque las distancias no dependen del significado.',
+      ],
+      correctIndex: 1,
+      explanation: 'Correcto: los embeddings sitúan juntos los textos con significado parecido («perro» y «gato», ambos mascotas) y lejos los de significado distinto («coche»). La distancia numérica refleja la distancia de significado, no el parecido de las letras ni el contexto literal.',
+    },
+  ],
+  keyConcepts: [
+    { term: 'Embedding', def: 'Lista de números (vector) que representa el significado de un texto: una palabra, una frase o un documento.' },
+    { term: 'Vector', def: 'Lista ordenada de números que el ordenador puede comparar y medir.' },
+    { term: 'Similitud semántica', def: 'Qué tan parecidos son dos textos por su significado, aunque no compartan palabras.' },
+    { term: 'Espacio vectorial', def: 'El «mapa» donde vive cada embedding; en él, lo parecido queda junto y lo distinto, lejos.' },
+    { term: 'Dimensionalidad', def: 'Cantidad de números que forma cada embedding (p. ej., 1536). Más dimensiones permiten capturar matices más finos.' },
+    { term: 'Modelo de embeddings', def: 'Modelo de IA entrenado para convertir texto en embeddings; se usa vía API sin entrenar nada.' },
+    { term: 'Índice vectorial', def: 'Estructura que permite buscar embeddings parecidos entre millones de ellos en milisegundos.' },
+  ],
+  mistakes: [
+    { wrong: 'Los embeddings le dan al ordenador una comprensión del significado como la nuestra.', right: 'Los embeddings capturan patrones estadísticos del lenguaje, no «comprenden» nada: son coordenadas aprendidas de millones de textos.' },
+    { wrong: 'Un embedding es simplemente asignar a cada palabra un número fijo.', right: 'No: el embedding es una lista de números que representa el significado en contexto, y lo que importa es la distancia entre listas, no un número asignado a mano.' },
+    { wrong: 'Para usar embeddings necesito entrenar un modelo yo mismo.', right: 'Los modelos de embeddings se usan como servicio (API de OpenAI, Cohere, etc.): envías texto y recibes el vector, sin entrenar nada.' },
+    { wrong: 'Si dos textos no comparten palabras, los embeddings no los relacionan.', right: 'Precisamente la gracia es que «el felino dormía al sol» y «un gato descansaba en el jardín» quedan cerca aunque no compartan ninguna palabra.' },
+  ],
+};
