@@ -1218,7 +1218,7 @@ export const questions = [
       'MCP es más lento que cualquier API',
       'Las APIs no usan Internet y MCP sí'
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: 'La API de GitHub es un servicio específico; MCP es el idioma común con el que cualquier servicio puede ofrecerse a cualquier asistente.',
     difficulty: 'básico',
     concept: 'MCP vs API'
@@ -1762,7 +1762,7 @@ export const questions = [
       'Solo si son de la misma empresa',
       'Solo los fines de semana'
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: 'Es un patrón común: tú hablas con el assistant y él reparte el trabajo entre workers (uno busca datos, otro genera el informe) y te presenta el resultado.',
     difficulty: 'básico',
     concept: 'Delegación assistant→worker'
@@ -2427,7 +2427,7 @@ export const questions = [
       'La contraseña del proveedor',
       'El código fuente del modelo'
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: 'La respuesta incluye el "ticket" de la llamada: cuántos tokens gastaste (para controlar coste), qué modelo respondió y cuánto tardó. Imprescindible para operar en serio.',
     difficulty: 'intermedio',
     concept: 'Metadatos de la respuesta'
@@ -3334,7 +3334,7 @@ export const questions = [
       'Reinstalando el sistema operativo',
       'No se puede actualizar nunca'
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: 'El despliegue continuo lo automatiza todo: subes el cambio con push y Vercel detecta, construye y publica sin intervención manual.',
     difficulty: 'intermedio',
     concept: 'Actualizar en Vercel'
@@ -3394,7 +3394,7 @@ export const questions = [
       'Sí, dos como mínimo',
       'Solo si la web tiene imágenes'
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: 'Esa es la propuesta de valor: cero administración de servidores. Subes código y obtienes URL pública con HTTPS incluido.',
     difficulty: 'básico',
     concept: 'Sin servidor propio'
@@ -3787,7 +3787,7 @@ export const questions = [
       'No se pueden reducir',
       'Pidiendo respuestas más largas'
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: 'Tres palancas: anclar en documentos reales (RAG), reducir la creatividad (temperature baja) y exigir trazabilidad (fuentes). Ninguna es perfecta, pero combinadas funcionan.',
     difficulty: 'intermedio',
     concept: 'Reducir alucinaciones'
