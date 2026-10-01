@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { Layout } from './components/layout/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { Course } from './pages/Course';
@@ -13,19 +14,22 @@ import { FinalProject } from './pages/FinalProject';
 
 export function App() {
   return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/curso" element={<Course />} />
-        <Route path="/modulo/:id" element={<ModulePage />} />
-        <Route path="/tests" element={<Tests />} />
-        <Route path="/examen-final" element={<FinalExam />} />
-        <Route path="/repasar" element={<Review />} />
-        <Route path="/glosario" element={<GlossaryPage />} />
-        <Route path="/progreso" element={<ProgressPage />} />
-        <Route path="/proyecto-final" element={<FinalProject />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/curso" element={<Course />} />
+          <Route path="/modulo/:id" element={<ModulePage />} />
+          <Route path="/tests" element={<Tests />} />
+          <Route path="/examen-final" element={<FinalExam />} />
+          <Route path="/repasar" element={<Review />} />
+          <Route path="/glosario" element={<GlossaryPage />} />
+          <Route path="/progreso" element={<ProgressPage />} />
+          <Route path="/proyecto-final" element={<FinalProject />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+      <Analytics />
+    </>
   );
 }
