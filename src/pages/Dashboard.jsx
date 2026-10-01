@@ -6,6 +6,7 @@ import {
   pendingReview, accuracyPct,
 } from '../hooks/ProgressContext';
 import { getIcon } from '../utils/icons';
+import { CertificateCard } from '../components/CertificateCard';
 
 const STAGES = [
   'Fundamentos', 'LLM', 'Prompts y contexto', 'Tools y MCP', 'Agentes',
@@ -117,6 +118,8 @@ export function Dashboard() {
           </Link>
         ))}
       </div>
+
+      <CertificateCard />
 
       <div className="section">
         <span className="section-kicker">{getIcon('Map', 14)} Itinerario</span>

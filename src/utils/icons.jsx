@@ -9,6 +9,7 @@ import {
   ArrowRight, Play, FlaskConical, Eye, Link2, Package, HardDrive, Braces,
   FileCode2, Webhook, Timer, Gauge, Scale, History, FolderGit2, Send,
   PenLine, Presentation, ScanSearch, MemoryStick, Split, Cable,
+  Download, Award,
 } from 'lucide-react';
 
 /**
@@ -26,6 +27,7 @@ export const iconMap = {
   ArrowRight, Play, FlaskConical, Eye, Link2, Package, HardDrive, Braces,
   FileCode2, Webhook, Timer, Gauge, Scale, History, FolderGit2, Send,
   PenLine, Presentation, ScanSearch, MemoryStick, Split, Cable,
+  Download, Award,
 };
 
 export function getIcon(name, size = 18) {

@@ -5,6 +5,7 @@ import {
   masteredCount, accuracyPct,
 } from '../hooks/ProgressContext';
 import { KnowledgeMap } from '../components/KnowledgeMap';
+import { CertificateCard } from '../components/CertificateCard';
 import { getIcon } from '../utils/icons';
 import { formatDate } from '../utils/format';
 
@@ -90,6 +91,8 @@ export function ProgressPage() {
           <div className="stat-label">Preguntas dominadas</div>
         </div>
       </div>
+
+      <CertificateCard />
 
       <div className="card" style={{ marginBottom: '1.75rem', padding: '1rem 1.25rem' }}>
         <span className="card-sub">
