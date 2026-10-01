@@ -49,6 +49,9 @@ export function LanguageProvider({ children }) {
 
   useEffect(() => {
     document.documentElement.setAttribute('lang', lang);
+    // Drives the per-language brand palette in CSS:
+    // [data-theme][data-lang="es"] overrides the blue/violet brand with reds.
+    document.documentElement.setAttribute('data-lang', lang);
     document.title = t('core.meta.title');
     const md = document.querySelector('meta[name="description"]');
     if (md) md.setAttribute('content', t('core.meta.description'));

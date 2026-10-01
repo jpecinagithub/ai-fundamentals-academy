@@ -74,6 +74,35 @@
   --glow: 0 0 24px rgba(91, 75, 214, 0.18);
 }
 
+/* ------------------------------------------------------------------
+   Spanish brand palette: red shades.
+   Active when <html data-lang="es">. Only the brand colors change
+   (primary/accent/info/glow); backgrounds, text, semantic colors
+   (success/warning/danger) and data-viz palettes stay identical.
+   Higher specificity than the [data-theme] blocks above, so these win.
+------------------------------------------------------------------ */
+[data-theme="dark"][data-lang="es"] {
+  --primary: #f43f5e;
+  --primary-strong: #fb7185;
+  --primary-soft: rgba(244, 63, 94, 0.14);
+  --accent: #e11d48;
+  --accent-soft: rgba(225, 29, 72, 0.12);
+  --info: #fca5a5;
+  --info-soft: rgba(252, 165, 165, 0.12);
+  --glow: 0 0 24px rgba(244, 63, 94, 0.35);
+}
+
+[data-theme="light"][data-lang="es"] {
+  --primary: #e11d48;
+  --primary-strong: #f43f5e;
+  --primary-soft: rgba(225, 29, 72, 0.1);
+  --accent: #be123c;
+  --accent-soft: rgba(190, 18, 60, 0.1);
+  --info: #e11d48;
+  --info-soft: rgba(225, 29, 72, 0.1);
+  --glow: 0 0 24px rgba(225, 29, 72, 0.18);
+}
+
 * { box-sizing: border-box; }
 
 html, body {
