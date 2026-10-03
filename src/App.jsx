@@ -11,6 +11,7 @@ import { GlossaryPage } from './pages/GlossaryPage';
 import { ProgressPage } from './pages/ProgressPage';
 import { FinalExam } from './pages/FinalExam';
 import { FinalProject } from './pages/FinalProject';
+import { AuthorPage } from './pages/AuthorPage';
 
 export function App() {
   return (
@@ -26,6 +27,7 @@ export function App() {
           <Route path="/glosario" element={<GlossaryPage />} />
           <Route path="/progreso" element={<ProgressPage />} />
           <Route path="/proyecto-final" element={<FinalProject />} />
+          <Route path="/autor" element={<AuthorPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

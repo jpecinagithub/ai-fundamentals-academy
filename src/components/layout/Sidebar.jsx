@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-  Home, BookOpen, ListChecks, RotateCcw, BookMarked, BarChart3, PenLine, Check,
+  Home, BookOpen, ListChecks, RotateCcw, BookMarked, BarChart3, PenLine, Check, User,
 } from 'lucide-react';
 import { useProgress, moduleStatus, pendingReview } from '../../hooks/ProgressContext';
 import { useLang } from '../../i18n/LanguageContext';
@@ -20,6 +20,7 @@ function NavList({ onNavigate }) {
     { to: '/glosario', label: t('sidebar.nav.glossary'), icon: <BookMarked size={18} /> },
     { to: '/progreso', label: t('sidebar.nav.progress'), icon: <BarChart3 size={18} /> },
     { to: '/proyecto-final', label: t('sidebar.nav.finalProject'), icon: <PenLine size={18} /> },
+    { to: '/autor', label: t('sidebar.nav.author'), icon: <User size={18} /> },
   ];
   return (
     <nav className="sidebar-nav">
